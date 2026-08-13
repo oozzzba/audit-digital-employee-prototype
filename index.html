@@ -1370,6 +1370,51 @@ input, textarea { font-family: inherit; }
 .kb-card-desc { font-size: 12px; color: var(--gray-400); }
 .kb-card-count { font-size: 12px; color: var(--primary); margin-top: 8px; font-weight: 600; }
 
+/* ===== Knowledge Library Detail ===== */
+.asset-detail-view { background: #f7f9fc; }
+.asset-detail-view .admin-header { margin-bottom: 14px; }
+.asset-detail-topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.asset-detail-breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; font-size: 12px; color: var(--gray-500); }
+.asset-detail-breadcrumb button { border: 0; background: transparent; padding: 0; color: var(--primary); font: inherit; cursor: pointer; }
+.asset-detail-kpi { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow-xs); overflow: hidden; margin-bottom: 14px; }
+.asset-detail-kpi-item { padding: 13px 18px; border-right: 1px solid var(--gray-100); min-width: 0; }
+.asset-detail-kpi-item:last-child { border-right: 0; }
+.asset-detail-kpi-label { display: block; color: var(--gray-500); font-size: 11px; margin-bottom: 5px; }
+.asset-detail-kpi-value { color: var(--gray-900); font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.asset-detail-search { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow-xs); margin-bottom: 14px; }
+.asset-detail-search .qa-kb-search { flex: 1; min-width: 180px; }
+.asset-detail-hero { padding: 18px 20px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow-xs); }
+.asset-detail-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 16px; }
+.asset-detail-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 20px; }
+.asset-detail-meta-item { min-width: 0; }
+.asset-detail-meta-label { display: block; color: var(--gray-400); font-size: 11px; margin-bottom: 5px; }
+.asset-detail-meta-value { display: block; color: var(--gray-800); font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.asset-detail-copy { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--gray-100); color: var(--gray-600); font-size: 12px; line-height: 1.75; }
+.asset-detail-panel { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow-xs); padding: 16px; }
+.asset-detail-panel-title { display: flex; align-items: center; justify-content: space-between; color: var(--gray-800); font-size: 13px; font-weight: 700; padding-bottom: 11px; border-bottom: 1px solid var(--gray-100); }
+.asset-detail-panel-title::before { content: ''; width: 3px; height: 14px; background: var(--primary); border-radius: 2px; margin-right: 7px; }
+.asset-detail-panel-title span { margin-right: auto; }
+.asset-file-list { display: grid; gap: 8px; padding-top: 12px; }
+.asset-file { display: flex; align-items: center; gap: 9px; padding: 9px; background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 6px; color: var(--gray-700); font-size: 12px; min-width: 0; }
+.asset-file-icon { color: var(--primary); font-size: 16px; }
+.asset-file-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.asset-detail-content { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(260px, .7fr); gap: 14px; margin-top: 14px; }
+.asset-detail-preview { min-height: 220px; }
+.asset-detail-preview .asset-detail-panel-title { margin-bottom: 16px; }
+.asset-doc-title { color: var(--gray-900); font-size: 18px; font-weight: 700; margin: 4px 0 13px; }
+.asset-doc-section { color: var(--gray-800); font-size: 13px; font-weight: 700; margin: 13px 0 7px; }
+.asset-doc-text { color: var(--gray-600); font-size: 12px; line-height: 1.85; }
+.asset-rule-code { margin: 4px 0 0; padding: 14px; border-radius: 7px; background: #f8fafc; border-left: 3px solid var(--primary); color: var(--gray-700); font-size: 13px; line-height: 1.85; white-space: pre-line; }
+.asset-side-list { display: grid; gap: 10px; padding-top: 12px; }
+.asset-side-item { display: flex; align-items: flex-start; gap: 8px; color: var(--gray-600); font-size: 12px; line-height: 1.55; }
+.asset-side-dot { margin-top: 6px; width: 5px; height: 5px; flex: 0 0 5px; border-radius: 50%; background: var(--primary); }
+.asset-detail-tabs { display: flex; align-items: center; gap: 6px; margin-top: 14px; padding: 8px 10px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius) var(--radius) 0 0; overflow-x: auto; }
+.asset-detail-tab { border: 1px solid transparent; background: transparent; border-radius: 5px; color: var(--gray-600); padding: 7px 13px; white-space: nowrap; font-size: 12px; cursor: pointer; }
+.asset-detail-tab.active { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
+.asset-detail-table-wrap { margin-top: 0; border-radius: 0 0 var(--radius) var(--radius); }
+@media (max-width: 900px) { .asset-detail-kpi { grid-template-columns: repeat(2, minmax(0, 1fr)); } .asset-detail-kpi-item:nth-child(2) { border-right: 0; } .asset-detail-kpi-item:nth-child(-n+2) { border-bottom: 1px solid var(--gray-100); } .asset-detail-hero-grid, .asset-detail-content { grid-template-columns: 1fr; } .asset-detail-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .asset-detail-view { padding: 14px; } .asset-detail-topbar, .asset-detail-search { align-items: stretch; flex-direction: column; } .asset-detail-kpi { grid-template-columns: 1fr; } .asset-detail-kpi-item, .asset-detail-kpi-item:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--gray-100); } .asset-detail-kpi-item:last-child { border-bottom: 0; } .asset-detail-meta { grid-template-columns: 1fr; } .asset-detail-hero { padding: 14px; } }
+
 /* ===== Roles View ===== */
 .roles-view { padding: 24px; }
 .roles-view.active { display: block; }
@@ -3574,29 +3619,29 @@ input, textarea { font-family: inherit; }
           </div>
         </div>
         <div class="kb-grid">
-          <div class="kb-card" onclick="showToast('打开法规库')">
+          <div class="kb-card" onclick="openAssetLibrary('law')">
             <div class="kb-card-icon" style="background:var(--purple-light);color:var(--purple)">⚖️</div>
             <div class="kb-card-title">法规库</div>
             <div class="kb-card-desc">国家法规、行业规范、内部制度</div>
-            <div class="kb-card-count">1,256 条</div>
+            <div class="kb-card-count">1,256 条 · 进入详情</div>
           </div>
-          <div class="kb-card" onclick="showToast('打开案例库')">
+          <div class="kb-card" onclick="openAssetLibrary('case')">
             <div class="kb-card-icon" style="background:var(--primary-light);color:var(--primary)">📚</div>
             <div class="kb-card-title">案例库</div>
             <div class="kb-card-desc">典型审计案例、违规案例分析</div>
-            <div class="kb-card-count">386 个</div>
+            <div class="kb-card-count">386 个 · 进入详情</div>
           </div>
-          <div class="kb-card" onclick="showToast('打开模板库')">
+          <div class="kb-card" onclick="openAssetLibrary('template')">
             <div class="kb-card-icon" style="background:var(--success-bg);color:var(--success)">📋</div>
             <div class="kb-card-title">模板库</div>
             <div class="kb-card-desc">底稿模板、报告模板、通知书模板</div>
-            <div class="kb-card-count">52 套</div>
+            <div class="kb-card-count">52 套 · 进入详情</div>
           </div>
-          <div class="kb-card" onclick="showToast('打开工具库')">
-            <div class="kb-card-icon" style="background:var(--warning-bg);color:var(--warning)">🔧</div>
-            <div class="kb-card-title">工具库</div>
-            <div class="kb-card-desc">审计工具、计算器、检查清单</div>
-            <div class="kb-card-count">28 个</div>
+          <div class="kb-card" onclick="openAssetLibrary('rule')">
+            <div class="kb-card-icon" style="background:var(--warning-bg);color:var(--warning)">⚙️</div>
+            <div class="kb-card-title">业务规则库</div>
+            <div class="kb-card-desc">审计规则、校验规则、预警规则</div>
+            <div class="kb-card-count">156 条 · 进入详情</div>
           </div>
         </div>
       </div>
@@ -3954,11 +3999,15 @@ input, textarea { font-family: inherit; }
         <div class="qa-kb-grid" id="assetOverviewGrid"></div>
       </div>
 
-      <div class="view admin-view" id="view-admin-asset-detail">
-        <div class="admin-header"><div><button class="table-action-btn" onclick="switchView('admin-kb')">← 返回全部知识资产</button><div class="admin-title" id="assetDetailTitle" style="margin-top:10px">知识资产详情</div><div class="admin-subtitle" id="assetDetailSubtitle">维护可供审计智能体检索与引用的资产条目</div></div><div class="admin-actions"><button class="topbar-btn" onclick="syncAssetLibrary()">同步发布</button><button class="topbar-btn primary" onclick="openAssetEntryForm()">新增条目</button></div></div>
-        <div class="qa-kb-summary" id="assetDetailSummary"></div>
-        <div class="qa-entry-toolbar"><div class="qa-kb-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="assetEntrySearch" type="search" placeholder="搜索条目名称、分类或来源" oninput="renderAssetLibraryDetail()"></div><select class="qa-entry-filter" id="assetEntryStatus" onchange="renderAssetLibraryDetail()"><option value="all">全部状态</option><option value="active">已启用</option><option value="pending">待审核</option><option value="disabled">已停用</option></select><button class="topbar-btn" onclick="resetAssetEntryFilter()">重置</button></div>
-        <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>资产条目</th><th>分类</th><th>知识来源</th><th>更新人</th><th>更新时间</th><th>状态</th><th>操作</th></tr></thead><tbody id="assetEntryTableBody"></tbody></table></div>
+      <div class="view admin-view asset-detail-view" id="view-admin-asset-detail">
+        <div class="asset-detail-topbar"><div class="asset-detail-breadcrumb"><button onclick="switchView('knowledge')">审计知识库</button><span>›</span><span id="assetDetailBreadcrumb">知识库详情</span></div><div class="admin-actions"><button class="topbar-btn" onclick="syncAssetLibrary()">同步发布</button><button class="topbar-btn primary" onclick="openAssetEntryForm()">新增条目</button></div></div>
+        <div class="admin-header"><div><div class="admin-title" id="assetDetailTitle">知识资产详情</div><div class="admin-subtitle" id="assetDetailSubtitle">维护可供审计智能体检索与引用的资产条目</div></div></div>
+        <div class="asset-detail-kpi" id="assetDetailKpi"></div>
+        <div class="asset-detail-search"><div class="qa-kb-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="assetEntrySearch" type="search" placeholder="搜索条目名称、分类或来源" oninput="renderAssetLibraryDetail()"></div><select class="qa-entry-filter" id="assetEntryStatus" onchange="renderAssetLibraryDetail()"><option value="all">全部状态</option><option value="active">已启用</option><option value="pending">待审核</option><option value="disabled">已停用</option></select><button class="topbar-btn" onclick="resetAssetEntryFilter()">重置</button></div>
+        <div class="asset-detail-hero" id="assetDetailHero"></div>
+        <div class="asset-detail-content"><section class="asset-detail-panel asset-detail-preview" id="assetDetailPreview"></section><aside class="asset-detail-panel" id="assetDetailSidePanel"></aside></div>
+        <div class="asset-detail-tabs" id="assetDetailTabs"></div>
+        <div class="admin-table-wrap asset-detail-table-wrap"><table class="admin-table"><thead><tr><th>资产条目</th><th>分类</th><th>知识来源</th><th>更新人</th><th>更新时间</th><th>状态</th><th>操作</th></tr></thead><tbody id="assetEntryTableBody"></tbody></table></div>
       </div>
 
       <!-- ===== Admin: Q&A Knowledge Management ===== -->
@@ -5986,13 +6035,13 @@ const kbData = {
 };
 
 const assetLibraryMeta = {
-  law: { name: '法规库', description: '国家法规、行业规范和内部制度，为审计定性与依据引用提供标准来源。', owner: '李管理员', references: '12,480', color: '#7C3AED' },
-  case: { name: '案例库', description: '典型审计案例、违规案例分析和处置经验，支撑问题研判与复核。', owner: '张审计', references: '8,346', color: '#D97706' },
-  template: { name: '模板库', description: '直接驱动审计底稿、报告和通知书生成的结构化模板资产。', owner: '赵审理', references: '6,924', color: '#12B76A' },
-  tool: { name: '工具库', description: '审计计算工具、检查清单和智能辅助工具的统一目录。', owner: '王主管', references: '4,568', color: '#0BA5EC' },
-  term: { name: '术语库', description: '审计专业术语、定义、适用边界和统一表述标准。', owner: '李管理员', references: '3,128', color: '#F04438' },
-  faq: { name: 'FAQ 问答库', description: '高频问题、操作指引与最佳实践，统一审计智能体的问答口径。', owner: '李管理员', references: '3,112', color: '#DB2777' },
-  rule: { name: '业务规则库', description: '审计规则、校验规则和预警规则，支撑自动识别与人工复核。', owner: '王主管', references: '9,742', color: '#6B7280' }
+  law: { name: '法规库', description: '国家法规、行业规范和内部制度，为审计定性与依据引用提供标准来源。', owner: '李管理员', references: '12,480', color: '#7C3AED', today: '36', lastUpdated: '2026-08-12', sample: '商业银行内部控制指引', code: '银监会令〔2014〕4号', level: '行业规范', effective: '2014-09-12', expires: '未废止', scope: '信贷、对公账户、财务凭证、资金划转', bodyTitle: '第一条  为促进商业银行建立和健全内部控制体系……', bodyText: '商业银行应当建立覆盖各项业务和管理活动的内部控制体系，明确授权审批、岗位分离、资金管理和风险预警要求。审计人员应重点核验制度版本、适用范围和执行留痕。', files: ['商业银行内部控制指引.pdf', '内控要求摘要.docx'], sideTitle: '原件附件', sideItems: ['审计依据：商业银行内部控制指引', '适用条线：资金结算与账户管理', '生效状态：现行有效'], tabs: ['资产列表', 'AI 调用日志', '版本管理', '标签分类', '访问权限', '数据看板'] },
+  case: { name: '案例库', description: '典型审计案例、违规案例分析和处置经验，支撑问题研判与复核。', owner: '张审计', references: '8,346', color: '#D97706', today: '18', lastUpdated: '2026-08-11', sample: '某支行对公账户异常资金往来核查', code: 'CASE-2026-0318', level: '高风险', effective: '2025-11-08', expires: '已闭环', scope: '资金划转、对公账户、交易对手异常', bodyTitle: '违规经过', bodyText: '2025年11月监测到多笔公转私交易与备用金支取存在时间集中、金额接近、交易对手关联等异常特征。经核验，相关审批资料与交易背景说明不完整，已形成整改闭环。', files: ['交易流水明细表.xlsx', '账户开户资料.pdf', '审批记录截图.png', '整改回执单.pdf'], sideTitle: '取证材料', sideItems: ['风险类型：异常资金往来', '责任部门：营业部', '处置状态：已闭环'], tabs: ['资产列表', '相似案例', 'AI 调用日志', '版本管理', '标签分类', '数据看板'] },
+  template: { name: '模板库', description: '直接驱动审计底稿、报告和通知书生成的结构化模板资产。', owner: '赵审理', references: '6,924', color: '#12B76A', today: '12', lastUpdated: '2026-08-12', sample: '审计工作底稿模板', code: 'TPL-AUDIT-001', level: '底稿类', effective: 'Word / PDF', expires: '已发布', scope: '专项审计、日常巡检、离任审计', bodyTitle: '模板内容编辑', bodyText: '审计项目名称：{{项目名称}}\n审计事项：{{审计事项}}\n风险等级：{{风险等级}}\n审计结论：{{审计结论}}\n整改建议：{{整改建议}}', files: ['审计工作底稿模板.docx', '审计报告引用示例.pdf'], sideTitle: '模板变量清单', sideItems: ['项目名称、审计事项、风险等级', '取证材料、取证结论、审计结论', '整改建议、复核人、复核时间'], tabs: ['资产列表', '生成记录', 'AI 调用日志', '版本管理', '标签分类', '数据看板'] },
+  tool: { name: '工具库', description: '审计计算工具、检查清单和智能辅助工具的统一目录。', owner: '王主管', references: '4,568', color: '#0BA5EC', today: '9', lastUpdated: '2026-08-08', sample: '财务比率分析检查表', code: 'TOOL-2026-008', level: '检查清单', effective: '实时计算', expires: '已启用', scope: '财务分析、异常核验、数据质量检查', bodyTitle: '工具说明', bodyText: '该工具用于对偿债、营运、盈利及现金流指标进行统一计算与异常识别。调用前应核验数据期间、会计口径和异常阈值，并保留计算过程。', files: ['财务比率分析检查表.xlsx', '使用说明.pdf'], sideTitle: '使用信息', sideItems: ['适用 Agent：现场实施助手', '调用方式：任务内一键引用', '人工复核：异常指标须复核'], tabs: ['资产列表', '调用日志', '版本管理', '标签分类', '数据看板'] },
+  term: { name: '术语库', description: '审计专业术语、定义、适用边界和统一表述标准。', owner: '李管理员', references: '3,128', color: '#F04438', today: '6', lastUpdated: '2026-08-05', sample: '审计重要性水平', code: 'TERM-001', level: '核心术语', effective: '统一口径', expires: '已启用', scope: '审计计划、风险评估、报告表述', bodyTitle: '术语定义', bodyText: '审计重要性水平是判断错报或违规事项是否足以影响审计结论的阈值。使用时应结合项目性质、金额、风险等级及法规要求，不能仅以金额单一判断。', files: ['审计术语口径说明.pdf'], sideTitle: '引用说明', sideItems: ['统一表述：审计重要性水平', '适用场景：计划与报告', '维护责任：术语委员会'], tabs: ['资产列表', '引用记录', '版本管理', '标签分类', '数据看板'] },
+  faq: { name: 'FAQ 问答库', description: '高频问题、操作指引与最佳实践，统一审计智能体的问答口径。', owner: '李管理员', references: '3,112', color: '#DB2777', today: '8', lastUpdated: '2026-08-12', sample: '如何生成一份完整的审计底稿？', code: 'FAQ-001', level: '操作指引', effective: '标准答案', expires: '已启用', scope: '底稿生成、材料核验、人工复核', bodyTitle: '标准答案', bodyText: '应先确认审计事项、审计目标、程序、证据来源、发现事实、涉及金额、法规依据、初步定性和处理建议。关键字段缺失时，系统应提示补录并保留人工复核节点。', files: ['底稿编制指引.pdf'], sideTitle: '问答口径', sideItems: ['适用 Agent：审计报告助手', '引用要求：保留知识来源', '质检规则：答案需定期复核'], tabs: ['资产列表', '引用记录', 'AI 调用日志', '版本管理', '数据看板'] },
+  rule: { name: '业务规则库', description: '审计规则、校验规则和预警规则，支撑自动识别与人工复核。', owner: '王主管', references: '9,742', color: '#6B7280', today: '78', lastUpdated: '2026-08-10', sample: '公转私交易异常识别', code: 'RULE-0086', level: '高风险', effective: '已启用', expires: '2026-06-02', scope: '资金划转异常、交易对手关联、频次识别', bodyTitle: '规则触发条件', bodyText: 'IF\n  交易类型 = 公转私\n  AND 7日交易次数 >= 5\n  AND 单笔金额 >= 50000\n  AND 对手方无工资代发标识\nTHEN 命中高风险', files: ['规则字段映射.xlsx', '异常样本说明.pdf'], sideTitle: '命中后处置', sideItems: ['风险提示：短时间内多笔大额公转私交易', '核查指引：核实交易背景、授权审批、合同依据', '关联法规：商业银行内部控制指引', '是否告警：是'], tabs: ['规则列表', '命中日志', '调试记录', '版本管理', '标签分类', '数据看板'] }
 };
 let activeAssetLibrary = 'law';
 
@@ -6029,18 +6078,25 @@ function openAssetLibrary(type) { activeAssetLibrary = type; switchView('admin-a
 function renderAssetLibraryDetail() {
   const meta = assetLibraryMeta[activeAssetLibrary];
   if (!meta) return;
-  const title = document.getElementById('assetDetailTitle'); const subtitle = document.getElementById('assetDetailSubtitle'); const summary = document.getElementById('assetDetailSummary'); const tbody = document.getElementById('assetEntryTableBody');
-  if (title) title.textContent = meta.name;
+  const title = document.getElementById('assetDetailTitle'); const subtitle = document.getElementById('assetDetailSubtitle'); const breadcrumb = document.getElementById('assetDetailBreadcrumb'); const kpi = document.getElementById('assetDetailKpi'); const hero = document.getElementById('assetDetailHero'); const preview = document.getElementById('assetDetailPreview'); const side = document.getElementById('assetDetailSidePanel'); const tabs = document.getElementById('assetDetailTabs'); const tbody = document.getElementById('assetEntryTableBody');
+  if (title) title.textContent = `${meta.name}详情`;
   if (subtitle) subtitle.textContent = meta.description;
+  if (breadcrumb) breadcrumb.textContent = `${meta.name}详情`;
   const allItems = kbData[activeAssetLibrary] || [];
   const enabled = allItems.filter(item => item.status === 'active').length;
-  if (summary) summary.innerHTML = `<div><span class="qa-summary-label">负责人</span><strong>${meta.owner}</strong></div><div><span class="qa-summary-label">资产条目</span><strong>${allItems.length} 条</strong></div><div><span class="qa-summary-label">累计引用</span><strong>${meta.references} 次</strong></div><div><span class="qa-summary-label">已发布</span><strong>${enabled} 条</strong></div><div><span class="qa-summary-label">同步状态</span>${getAssetStatusTag(enabled ? 'active' : 'disabled')}</div>`;
+  if (kpi) kpi.innerHTML = `<div class="asset-detail-kpi-item"><span class="asset-detail-kpi-label">${meta.name}资产总数</span><div class="asset-detail-kpi-value">${meta.references}</div></div><div class="asset-detail-kpi-item"><span class="asset-detail-kpi-label">今日引用</span><div class="asset-detail-kpi-value">${meta.today || enabled}</div></div><div class="asset-detail-kpi-item"><span class="asset-detail-kpi-label">已发布条目</span><div class="asset-detail-kpi-value">${enabled} 条</div></div><div class="asset-detail-kpi-item"><span class="asset-detail-kpi-label">最近更新</span><div class="asset-detail-kpi-value">${meta.lastUpdated || '2026-08-12'}</div></div>`;
+  if (hero) hero.innerHTML = `<div class="asset-detail-hero-grid"><div><div class="asset-detail-meta"><div class="asset-detail-meta-item"><span class="asset-detail-meta-label">${activeAssetLibrary === 'rule' ? '规则名称' : activeAssetLibrary === 'case' ? '案例名称' : activeAssetLibrary === 'template' ? '模板名称' : '资产名称'}</span><span class="asset-detail-meta-value">${meta.sample}</span></div><div class="asset-detail-meta-item"><span class="asset-detail-meta-label">编号</span><span class="asset-detail-meta-value">${meta.code}</span></div><div class="asset-detail-meta-item"><span class="asset-detail-meta-label">分类 / 风险等级</span><span class="asset-detail-meta-value">${meta.level}</span></div><div class="asset-detail-meta-item"><span class="asset-detail-meta-label">生效 / 输出状态</span><span class="asset-detail-meta-value">${meta.effective}</span></div><div class="asset-detail-meta-item"><span class="asset-detail-meta-label">状态 / 更新时间</span><span class="asset-detail-meta-value">${meta.expires}</span></div><div class="asset-detail-meta-item"><span class="asset-detail-meta-label">适用范围</span><span class="asset-detail-meta-value">${meta.scope}</span></div></div><div class="asset-detail-copy">${meta.description} 当前由 <strong>${meta.owner}</strong> 负责维护，发布后可供审计智能体任务编排、法规引用和人工复核使用。</div></div><aside class="asset-detail-panel"><div class="asset-detail-panel-title"><span>${meta.sideTitle}</span></div><div class="asset-file-list">${meta.files.map((file, index) => `<div class="asset-file"><span class="asset-file-icon">${index % 2 ? '▧' : '▤'}</span><span class="asset-file-name">${file}</span></div>`).join('')}</div></aside></div>`;
+  const previewText = escapeHtml(meta.bodyText).replace(/\n/g, '<br>');
+  if (preview) preview.innerHTML = `<div class="asset-detail-panel-title"><span>${meta.bodyTitle}</span></div>${activeAssetLibrary === 'rule' ? `<div class="asset-rule-code">${previewText}</div>` : `<div class="asset-doc-title">${meta.sample}</div><div class="asset-doc-section">${activeAssetLibrary === 'case' ? '风险事实与核验重点' : activeAssetLibrary === 'template' ? '可编辑字段与输出要求' : '正文摘要'}</div><div class="asset-doc-text">${previewText}</div>`}`;
+  if (side) side.innerHTML = `<div class="asset-detail-panel-title"><span>${activeAssetLibrary === 'case' ? '处置与关联信息' : activeAssetLibrary === 'template' ? '变量与使用说明' : activeAssetLibrary === 'rule' ? '命中后处置' : '资产说明'}</span></div><div class="asset-side-list">${meta.sideItems.map(item => `<div class="asset-side-item"><span class="asset-side-dot"></span><span>${item}</span></div>`).join('')}</div>`;
+  if (tabs) tabs.innerHTML = (meta.tabs || ['资产列表', '调用日志', '版本管理', '标签分类', '数据看板']).map((tab, index) => `<button class="asset-detail-tab${index === 0 ? ' active' : ''}" onclick="switchAssetDetailTab(this, '${tab}')">${tab}</button>`).join('');
   if (!tbody) return;
   const query = ((document.getElementById('assetEntrySearch') || {}).value || '').trim().toLowerCase();
   const status = ((document.getElementById('assetEntryStatus') || {}).value || 'all');
   const items = allItems.filter(item => (!query || [item.title, item.category, item.source, item.updater].join(' ').toLowerCase().includes(query)) && (status === 'all' || item.status === status));
   tbody.innerHTML = items.length ? items.map(item => `<tr><td><div class="qa-entry-question">${item.title}</div><div class="qa-entry-answer">用于审计智能体检索、任务编排和人工复核引用。</div></td><td><span class="qa-category-tag">${item.category}</span></td><td>${item.source}</td><td>${item.updater}</td><td>${item.date}</td><td>${getAssetStatusTag(item.status)}</td><td><div class="table-actions"><button class="table-action-btn" onclick="previewAssetEntry('${item.id || item.title}')">预览</button><button class="table-action-btn" onclick="openAssetEntryForm('${item.id || item.title}')">编辑</button><button class="table-action-btn" onclick="toggleAssetEntryStatus('${item.id || item.title}')">${item.status === 'active' ? '停用' : '启用'}</button><button class="table-action-btn danger" onclick="deleteAssetEntry('${item.id || item.title}')">删除</button></div></td></tr>`).join('') : '<tr><td colspan="7"><div class="qa-kb-empty">当前条件下没有资产条目。</div></td></tr>';
 }
+function switchAssetDetailTab(button, tab) { document.querySelectorAll('.asset-detail-tab').forEach(item => item.classList.remove('active')); button.classList.add('active'); showToast(`已切换至${tab}`); }
 
 function getAssetEntry(id) { return (kbData[activeAssetLibrary] || []).find(item => (item.id || item.title) === id); }
 function resetAssetEntryFilter() { const input = document.getElementById('assetEntrySearch'); const status = document.getElementById('assetEntryStatus'); if (input) input.value = ''; if (status) status.value = 'all'; renderAssetLibraryDetail(); }
