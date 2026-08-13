@@ -2176,6 +2176,69 @@ input, textarea { font-family: inherit; }
 .agent-log-time { color: var(--gray-400); font-size: 11px; font-weight: 400; white-space: nowrap; }
 .agent-log-detail { color: var(--gray-500); font-size: 12px; margin-top: 5px; line-height: 1.5; }
 
+/* ===== Agent Orchestration ===== */
+.orchestration-view { padding-bottom: 34px; }
+.orchestration-back { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px; color: var(--gray-500); border: 0; background: transparent; padding: 0; font-size: 12px; cursor: pointer; }
+.orchestration-back:hover { color: var(--primary); }
+.orchestration-mode-tabs { display: flex; gap: 4px; padding: 4px; width: fit-content; border: 1px solid var(--gray-200); border-radius: var(--radius); background: var(--gray-50); margin-bottom: 16px; }
+.orchestration-mode-tab { border: 0; padding: 8px 12px; border-radius: 6px; color: var(--gray-600); background: transparent; font-size: 12px; font-weight: 600; cursor: pointer; }
+.orchestration-mode-tab.active { color: var(--primary); background: var(--white); box-shadow: var(--shadow-xs); }
+.orchestration-notice { margin: 0 0 16px; padding: 10px 12px; border: 1px solid #FECACA; border-left: 3px solid var(--primary); border-radius: var(--radius-sm); background: #FFF7F7; color: var(--gray-600); font-size: 12px; line-height: 1.55; }
+.orchestration-layout { display: grid; grid-template-columns: minmax(220px, .82fr) minmax(440px, 1.8fr) minmax(250px, .92fr); gap: 14px; align-items: start; }
+.orchestration-panel { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow-xs); min-width: 0; }
+.orchestration-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; border-bottom: 1px solid var(--gray-100); }
+.orchestration-panel-title { color: var(--gray-900); font-size: 13px; font-weight: 700; }
+.orchestration-panel-subtitle { margin-top: 3px; color: var(--gray-400); font-size: 11px; line-height: 1.4; }
+.orchestration-panel-body { padding: 14px; }
+.orchestration-settings { display: grid; gap: 10px; }
+.orch-setting-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
+.orch-setting-item:last-child { border-bottom: 0; }
+.orch-setting-name { color: var(--gray-700); font-size: 12px; font-weight: 600; }
+.orch-setting-desc { margin-top: 3px; color: var(--gray-400); font-size: 11px; line-height: 1.4; }
+.orch-setting-link { border: 0; padding: 0; background: transparent; color: var(--primary); font-size: 11px; cursor: pointer; white-space: nowrap; }
+.orch-switch { width: 30px; height: 18px; border: 0; border-radius: 10px; background: var(--gray-300); padding: 2px; cursor: pointer; }
+.orch-switch.on { background: var(--primary); }
+.orch-switch::after { display: block; width: 14px; height: 14px; margin-left: 0; border-radius: 50%; background: white; content: ''; transition: .15s; }
+.orch-switch.on::after { margin-left: 12px; }
+.orch-variable-section { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--gray-100); }
+.orch-section-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; color: var(--gray-700); font-size: 12px; font-weight: 700; }
+.orch-variable { padding: 8px; margin-bottom: 7px; border: 1px solid var(--gray-100); border-radius: 6px; background: var(--gray-50); }
+.orch-variable-name { color: var(--gray-700); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 700; overflow-wrap: anywhere; }
+.orch-variable-meta { margin-top: 4px; color: var(--gray-400); font-size: 10px; line-height: 1.35; }
+.orch-variable-actions { display: flex; gap: 8px; margin-top: 6px; }
+.orch-variable-actions button { border: 0; padding: 0; background: transparent; color: var(--primary); font-size: 10px; cursor: pointer; }
+.orch-variable-actions button.danger { color: var(--accent-red); }
+.orchestration-canvas { min-height: 555px; padding: 16px; overflow: auto; background-color: #FCFCFD; background-image: radial-gradient(#D0D5DD 1px, transparent 1px); background-size: 16px 16px; }
+.orch-canvas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-bottom: 14px; }
+.orch-canvas-caption { color: var(--gray-500); font-size: 11px; line-height: 1.4; }
+.orch-canvas-flow { min-width: 470px; display: flex; align-items: center; gap: 10px; padding: 44px 10px 26px; }
+.orch-node { position: relative; width: 152px; min-height: 100px; flex: 0 0 152px; padding: 12px; border: 1px solid var(--gray-200); border-radius: 10px; background: var(--white); box-shadow: var(--shadow-sm); cursor: pointer; transition: .15s; }
+.orch-node:hover, .orch-node.selected { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+.orch-node.start { width: 90px; min-height: auto; padding: 10px; border-radius: 22px; text-align: center; color: var(--primary); background: #FFF6F6; }
+.orch-node.flow { border-style: dashed; }
+.orch-node-icon { display: flex; width: 27px; height: 27px; align-items: center; justify-content: center; border-radius: 7px; background: var(--primary-light); color: var(--primary); font-size: 13px; font-weight: 700; }
+.orch-node-name { margin-top: 8px; color: var(--gray-800); font-size: 12px; font-weight: 700; line-height: 1.35; }
+.orch-node-role { margin-top: 4px; color: var(--gray-500); font-size: 10px; line-height: 1.4; }
+.orch-node-status { display: inline-flex; margin-top: 7px; padding: 2px 5px; border-radius: 8px; background: var(--primary-light); color: var(--primary); font-size: 9px; font-weight: 700; }
+.orch-connector { width: 34px; height: 1px; flex: 0 0 34px; background: var(--primary); position: relative; }
+.orch-connector::after { position: absolute; top: -3px; right: -1px; border-top: 3px solid transparent; border-bottom: 3px solid transparent; border-left: 5px solid var(--primary); content: ''; }
+.orch-add-node { display: flex; width: 90px; height: 72px; flex: 0 0 90px; align-items: center; justify-content: center; border: 1px dashed var(--primary); border-radius: 10px; background: #FFF9F9; color: var(--primary); font-size: 11px; font-weight: 700; cursor: pointer; }
+.orch-add-node:hover { background: var(--primary-light); }
+.orch-node-detail { display: grid; gap: 11px; }
+.orch-node-detail label { display: block; margin-bottom: 5px; color: var(--gray-600); font-size: 11px; }
+.orch-node-detail input, .orch-node-detail textarea, .orch-node-detail select { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid var(--gray-200); border-radius: 6px; background: var(--white); color: var(--gray-700); font-size: 12px; outline: none; }
+.orch-node-detail textarea { min-height: 76px; line-height: 1.5; resize: vertical; }
+.orch-node-detail input:focus, .orch-node-detail textarea:focus, .orch-node-detail select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+.orch-debug { margin-top: 14px; padding: 12px; border: 1px solid var(--gray-100); border-radius: 8px; background: var(--gray-50); }
+.orch-debug-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; color: var(--gray-700); font-size: 11px; font-weight: 700; }
+.orch-debug-msg { margin-top: 9px; padding: 8px; border-radius: 6px; color: var(--gray-600); background: var(--white); font-size: 11px; line-height: 1.5; }
+.orch-debug-input { display: flex; gap: 6px; margin-top: 8px; }
+.orch-debug-input input { min-width: 0; flex: 1; padding: 7px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 11px; outline: none; }
+.orch-debug-input button { border: 0; padding: 0 9px; border-radius: 6px; color: white; background: var(--primary); font-size: 11px; cursor: pointer; }
+.orch-hidden { display: none; }
+@media (max-width: 1180px) { .orchestration-layout { grid-template-columns: minmax(220px, .9fr) minmax(430px, 1.5fr); } .orchestration-layout > .orchestration-panel:last-child { grid-column: 1 / -1; } }
+@media (max-width: 760px) { .orchestration-layout { grid-template-columns: 1fr; } .orchestration-layout > .orchestration-panel:last-child { grid-column: auto; } .orchestration-mode-tabs { width: 100%; overflow-x: auto; } .orchestration-mode-tab { white-space: nowrap; } .orchestration-canvas { min-height: 370px; } .agent-toolbar { grid-template-columns: 1fr; } }
+
 /* ===== Q&A Knowledge Management ===== */
 .qa-kb-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr) 160px auto; gap: 12px; align-items: center; margin-bottom: 16px; }
 .qa-kb-search, .qa-kb-filter, .qa-entry-filter { height: 36px; box-sizing: border-box; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); background: var(--white); color: var(--gray-700); font-size: 13px; }
@@ -4068,7 +4131,7 @@ input, textarea { font-family: inherit; }
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
               刷新列表
             </button>
-            <button class="topbar-btn primary" onclick="openCreateAgent()">
+            <button class="topbar-btn primary" onclick="openAgentOrchestration()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
               创建 Agent
             </button>
@@ -4104,6 +4167,41 @@ input, textarea { font-family: inherit; }
             </thead>
             <tbody id="agentTableBody"></tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- ===== Admin: Agent Orchestration ===== -->
+      <div class="view admin-view orchestration-view" id="view-admin-orchestration">
+        <button class="orchestration-back" onclick="switchView('admin-agents')">← 返回 Agent 管理</button>
+        <div class="admin-header">
+          <div>
+            <div class="admin-title" id="orchestrationTitle">创建审计智能体</div>
+            <div class="admin-subtitle" id="orchestrationSubtitle">默认采用对话型单 Agent 模式，可按业务复杂度切换协作方式</div>
+          </div>
+          <div class="admin-actions">
+            <button class="topbar-btn" onclick="openOrchestrationParams()">编辑参数</button>
+            <button class="topbar-btn primary" onclick="publishOrchestrationAgent()">发布智能体</button>
+          </div>
+        </div>
+        <div class="orchestration-mode-tabs">
+          <button class="orchestration-mode-tab active" data-orch-mode="single" onclick="switchOrchestrationMode('single')">对话型 · 单 Agent</button>
+          <button class="orchestration-mode-tab" data-orch-mode="multi" onclick="switchOrchestrationMode('multi')">对话型 · 多 Agents</button>
+          <button class="orchestration-mode-tab" data-orch-mode="flow" onclick="switchOrchestrationMode('flow')">对话流模式</button>
+        </div>
+        <div class="orchestration-notice" id="orchestrationNotice">单 Agent 模式适合职责明确的审计任务。全局配置将应用于当前智能体；可在画布中编辑默认 Agent 并直接调试。</div>
+        <div class="orchestration-layout">
+          <section class="orchestration-panel">
+            <div class="orchestration-panel-head"><div><div class="orchestration-panel-title">全局设置</div><div class="orchestration-panel-subtitle">对画布中的所有 Agent 生效</div></div></div>
+            <div class="orchestration-panel-body" id="orchestrationSettings"></div>
+          </section>
+          <section class="orchestration-panel">
+            <div class="orchestration-panel-head"><div><div class="orchestration-panel-title">智能体编排画布</div><div class="orchestration-panel-subtitle">开始节点已连接默认 Agent，可添加节点并配置转交条件</div></div><button class="topbar-btn" onclick="addOrchestrationNode()">+ 添加节点</button></div>
+            <div class="orchestration-canvas" id="orchestrationCanvas"></div>
+          </section>
+          <section class="orchestration-panel">
+            <div class="orchestration-panel-head"><div><div class="orchestration-panel-title">节点配置与调试</div><div class="orchestration-panel-subtitle">选择节点可调整职责，并与当前节点对话</div></div></div>
+            <div class="orchestration-panel-body" id="orchestrationInspector"></div>
+          </section>
         </div>
       </div>
 
@@ -4537,6 +4635,7 @@ const viewTitles = {
   'admin-qa-kb': 'FAQ 问答库',
   'admin-qa-kb-detail': 'FAQ 问答库详情',
   'admin-agents': 'Agent 管理',
+  'admin-orchestration': '智能体编排',
   'admin-metrics': '评测系统指标'
 };
 
@@ -5944,6 +6043,9 @@ function switchView(view) {
   if (view === 'admin-agents') {
     renderAgentList();
   }
+  if (view === 'admin-orchestration') {
+    renderAgentOrchestration();
+  }
 
   // Close sidebar on mobile after navigation
   if (window.innerWidth <= 768) {
@@ -6333,7 +6435,7 @@ function syncQaKnowledgeBase() {
 
 // ===== Agent Management =====
 const agentData = [
-  { id: 'agent-initiation', name: '审计立项助手', stage: '项目立项', capability: '项目立项校验、年度计划匹配与审批材料生成', knowledgeBase: '法规库 / 业务规则库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '今天 17:28', runs: 126, owner: '李管理员', reviewRule: '项目编号、审计范围和年度计划一致性需人工确认' },
+  { id: 'agent-initiation', name: '审计立项助手', stage: '项目立项', capability: '项目立项校验、年度计划匹配与审批材料生成', knowledgeBase: '法规库 / 业务规则库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '今天 17:28', runs: 126, owner: '李管理员', reviewRule: '项目编号、审计范围和年度计划一致性需人工确认', mode: 'single' },
   { id: 'agent-preaudit', name: '审前准备助手', stage: '审前准备', capability: '审计组配置、审前调查、方案与通知书生成', knowledgeBase: '模板库 / 法规库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'running', updated: '今天 17:12', runs: 208, owner: '张审计', reviewRule: '审计重点、人员权限和通知书签发前需组长复核' },
   { id: 'agent-fieldwork', name: '现场实施助手', stage: '现场实施', capability: '证据索引、底稿生成、问题识别与法规定性', knowledgeBase: '案例库 / 法规库 / 工具库', model: '审计推理模型 V4.0', status: 'review', runtime: 'running', updated: '今天 16:45', runs: 486, owner: '李审计', reviewRule: '大额异常、低置信度定性和证据链缺失必须人工复核' },
   { id: 'agent-report', name: '审计报告助手', stage: '审计报告', capability: '底稿汇总、报告起草、审理校验与版本比对', knowledgeBase: '模板库 / 法规库 / 术语库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '今天 15:30', runs: 172, owner: '赵审理', reviewRule: '报告定稿、审理结论和签发前必须保留人工审核节点' },
@@ -6382,7 +6484,7 @@ function renderAgentList(items) {
     const toggleLabel = agent.status === 'enabled' ? '停用' : '启用';
     const toggleClass = agent.status === 'enabled' ? 'danger' : '';
     return `<tr>
-      <td><div class="agent-name-cell"><div class="agent-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12h8M12 8v8"/></svg></div><div><div class="agent-name">${escapeHtml(agent.name)}</div><div class="agent-capability">${escapeHtml(agent.capability)}</div></div></div></td>
+      <td><div class="agent-name-cell"><div class="agent-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12h8M12 8v8"/></svg></div><div><div class="agent-name">${escapeHtml(agent.name)} ${agent.mode === 'multi' ? '<span class="agent-stage-tag" style="margin-left:4px;color:var(--primary);background:var(--primary-light)">多 Agents</span>' : ''}</div><div class="agent-capability">${escapeHtml(agent.capability)}</div></div></div></td>
       <td><span class="agent-stage-tag">${escapeHtml(agent.stage)}</span></td>
       <td>${escapeHtml(agent.knowledgeBase)}</td>
       <td>${escapeHtml(agent.model)}</td>
@@ -6464,17 +6566,119 @@ function createAgent() {
 }
 
 function openAgentConfig(id) {
-  const agent = getAgent(id);
-  if (!agent) return;
-  setModalContent(`${agent.name}配置`, `
-    <dl class="agent-config-list">
-      <dt>所属审计阶段</dt><dd>${escapeHtml(agent.stage)}</dd>
-      <dt>核心能力</dt><dd>${escapeHtml(agent.capability)}</dd>
-      <dt>关联知识库</dt><dd>${escapeHtml(agent.knowledgeBase)}</dd>
-      <dt>调用模型</dt><dd>${escapeHtml(agent.model)}</dd>
-      <dt>责任人</dt><dd>${escapeHtml(agent.owner)}</dd>
-      <dt>人工复核规则</dt><dd>${escapeHtml(agent.reviewRule)}</dd>
-    </dl>`, `<button class="topbar-btn" onclick="closeModal()">关闭</button><button class="topbar-btn primary" onclick="showToast('已进入 ${escapeHtml(agent.name)} 配置编辑'); closeModal()">编辑配置</button>`);
+  openAgentOrchestration(id);
+}
+
+// ===== Agent Orchestration =====
+let activeOrchestrationMode = 'single';
+let activeOrchestrationAgentId = null;
+let selectedOrchestrationNodeId = 'agent-main';
+let isAsyncOrchestration = false;
+const orchestrationNodes = [
+  { id: 'agent-main', name: '审计任务助手', role: '接收审计诉求，识别任务意图并输出专业结论', prompt: '你是审计数字员工。请基于已配置的审计规则、知识库和人工复核边界，输出结构清晰、可追溯的审计建议。', handoff: '默认处理全部任务' },
+  { id: 'agent-evidence', name: '证据分析助手', role: '核验材料完整性，识别异常证据并形成索引', prompt: '你负责审计证据核验，发现资料缺口、异常交易和证据链断点。', handoff: '当请求涉及凭证、流水、合同或取证时接管' }
+];
+const systemVariables = [
+  ['SYS_USERID', '当前对话用户 ID'], ['SYS_USERNAME', '当前对话用户名'], ['SYS_USER_CHANNEL', '当前用户来源'], ['SYS_CONVERSATION_ID', '当前会话 ID']
+];
+let userVariables = [
+  { id: 'var-language', name: 'language_preference', defaultValue: '中文', scope: '用户级', description: '用户语言偏好' },
+  { id: 'var-risk', name: 'risk_threshold', defaultValue: '中风险', scope: '会话级', description: '风险提示阈值' }
+];
+
+function modeLabel(mode) {
+  return { single: '对话型 · 单 Agent', multi: '对话型 · 多 Agents', flow: '对话流模式' }[mode] || '单 Agent';
+}
+function openAgentOrchestration(id) {
+  activeOrchestrationAgentId = id || null;
+  activeOrchestrationMode = getAgent(id)?.mode || 'single';
+  selectedOrchestrationNodeId = 'agent-main';
+  switchView('admin-orchestration');
+}
+function switchOrchestrationMode(mode) {
+  activeOrchestrationMode = mode;
+  if (mode === 'single') selectedOrchestrationNodeId = 'agent-main';
+  renderAgentOrchestration();
+}
+function renderAgentOrchestration() {
+  const existing = getAgent(activeOrchestrationAgentId);
+  const title = document.getElementById('orchestrationTitle');
+  const subtitle = document.getElementById('orchestrationSubtitle');
+  const notice = document.getElementById('orchestrationNotice');
+  if (!title) return;
+  title.textContent = existing ? `编排 · ${existing.name}` : '创建审计智能体';
+  subtitle.textContent = existing ? `当前采用${modeLabel(activeOrchestrationMode)}，修改后发布生效` : `默认采用${modeLabel(activeOrchestrationMode)}，可随时切换协作方式`;
+  const notices = {
+    single: '单 Agent 模式适合职责明确的审计任务。全局配置将应用于当前智能体；可在画布中编辑默认 Agent 并直接调试。',
+    multi: '多 Agents 模式支持通过不同的职责、提示词和转交条件完成复杂审计任务。全局设置对所有画布节点生效，正在对话的节点可随时切换。',
+    flow: '对话流模式下，每轮用户对话都严格进入预设工作流，以提升审计处理的一致性和可控性。技能、知识等能力需在流程节点内配置。'
+  };
+  notice.textContent = notices[activeOrchestrationMode];
+  document.querySelectorAll('[data-orch-mode]').forEach(tab => tab.classList.toggle('active', tab.dataset.orchMode === activeOrchestrationMode));
+  renderOrchestrationSettings();
+  renderOrchestrationCanvas();
+  renderOrchestrationInspector();
+}
+function renderOrchestrationSettings() {
+  const container = document.getElementById('orchestrationSettings');
+  if (!container) return;
+  const isFlow = activeOrchestrationMode === 'flow';
+  container.innerHTML = `
+    <div class="orchestration-settings">
+      <div class="orch-setting-item"><div><div class="orch-setting-name">基础信息</div><div class="orch-setting-desc">名称、审计阶段、模型与发布说明</div></div><button class="orch-setting-link" onclick="openOrchestrationParams()">编辑</button></div>
+      <div class="orch-setting-item"><div><div class="orch-setting-name">提示词与人工复核</div><div class="orch-setting-desc">统一约束输出口径和关键结论复核</div></div><button class="orch-setting-link" onclick="showToast('已定位全局提示词配置')">配置</button></div>
+      <div class="orch-setting-item"><div><div class="orch-setting-name">异步运行</div><div class="orch-setting-desc">耗时的检索、分析任务后台执行</div></div><button class="orch-switch ${isAsyncOrchestration ? 'on' : ''}" onclick="toggleAsyncOrchestration()" aria-label="切换异步运行"></button></div>
+      <div class="orch-setting-item ${isFlow ? 'orch-hidden' : ''}"><div><div class="orch-setting-name">知识与技能</div><div class="orch-setting-desc">法规库、案例库、模板库和审计工具</div></div><button class="orch-setting-link" onclick="showToast('已打开知识与技能配置')">配置</button></div>
+      <div class="orch-setting-item"><div><div class="orch-setting-name">开场白与反馈标签</div><div class="orch-setting-desc">统一用户对话体验与反馈归集</div></div><button class="orch-setting-link" onclick="showToast('已打开对话体验配置')">配置</button></div>
+    </div>
+    <div class="orch-variable-section"><div class="orch-section-label"><span>系统变量</span><span style="color:var(--gray-400);font-weight:400">可直接引用</span></div>${systemVariables.map(item => `<div class="orch-variable"><div class="orch-variable-name">${item[0]}</div><div class="orch-variable-meta">${item[1]}</div></div>`).join('')}</div>
+    <div class="orch-variable-section"><div class="orch-section-label"><span>用户变量</span><button class="orch-setting-link" onclick="openUserVariableModal()">+ 添加</button></div><div id="userVariableList">${renderUserVariables()}</div></div>`;
+}
+function renderUserVariables() {
+  if (!userVariables.length) return '<div class="orch-variable-meta">暂无用户变量，可添加个性化配置。</div>';
+  return userVariables.map(variable => `<div class="orch-variable"><div class="orch-variable-name">${escapeHtml(variable.name)}</div><div class="orch-variable-meta">默认值：${escapeHtml(variable.defaultValue)} · ${escapeHtml(variable.scope)}<br>${escapeHtml(variable.description)}</div><div class="orch-variable-actions"><button onclick="openUserVariableModal('${variable.id}')">编辑</button><button class="danger" onclick="deleteUserVariable('${variable.id}')">删除</button></div></div>`).join('');
+}
+function renderOrchestrationCanvas() {
+  const canvas = document.getElementById('orchestrationCanvas');
+  if (!canvas) return;
+  const nodes = activeOrchestrationMode === 'single' ? [orchestrationNodes[0]] : activeOrchestrationMode === 'flow' ? [
+    { id: 'flow-intent', name: '意图识别', role: '解析用户审计诉求并提取参数' }, { id: 'flow-retrieve', name: '知识检索', role: '检索法规、案例与项目资料' }, { id: 'flow-output', name: '审计结论', role: '按固定模板生成受控输出' }
+  ] : orchestrationNodes;
+  if (!nodes.some(node => node.id === selectedOrchestrationNodeId)) selectedOrchestrationNodeId = nodes[0].id;
+  const nodeCards = nodes.map((node, index) => `${index ? '<div class="orch-connector"></div>' : ''}<div class="orch-node ${activeOrchestrationMode === 'flow' ? 'flow' : ''} ${node.id === selectedOrchestrationNodeId ? 'selected' : ''}" onclick="selectOrchestrationNode('${node.id}')"><div class="orch-node-icon">${activeOrchestrationMode === 'flow' ? '◇' : 'AI'}</div><div class="orch-node-name">${escapeHtml(node.name)}</div><div class="orch-node-role">${escapeHtml(node.role)}</div>${node.id === selectedOrchestrationNodeId && activeOrchestrationMode !== 'flow' ? '<span class="orch-node-status">正在对话</span>' : ''}</div>`).join('');
+  const canAdd = activeOrchestrationMode === 'multi';
+  canvas.innerHTML = `<div class="orch-canvas-toolbar"><div class="orch-canvas-caption">${activeOrchestrationMode === 'multi' ? '点击节点后可设置职责与转交条件；连线表示满足条件后的任务移交。' : activeOrchestrationMode === 'flow' ? '所有对话均按从左到右的固定流程执行。' : '默认开始节点已连接审计任务助手。'}</div><button class="topbar-btn" onclick="showToast('已保存当前画布布局')">保存草稿</button></div><div class="orch-canvas-flow"><div class="orch-node start">开始</div><div class="orch-connector"></div>${nodeCards}${canAdd ? '<div class="orch-connector"></div><button class="orch-add-node" onclick="addOrchestrationNode()">+ 添加 Agent</button>' : ''}</div>`;
+}
+function selectOrchestrationNode(id) { selectedOrchestrationNodeId = id; renderOrchestrationCanvas(); renderOrchestrationInspector(); }
+function getOrchestrationNode(id) { return orchestrationNodes.find(node => node.id === id) || (activeOrchestrationMode === 'flow' ? { id, name: id === 'flow-intent' ? '意图识别' : id === 'flow-retrieve' ? '知识检索' : '审计结论', role: '固定对话流节点', prompt: '按照已定义的流程节点处理。', handoff: '流程顺序执行' } : orchestrationNodes[0]); }
+function renderOrchestrationInspector() {
+  const container = document.getElementById('orchestrationInspector');
+  if (!container) return;
+  const node = getOrchestrationNode(selectedOrchestrationNodeId);
+  const isFlow = activeOrchestrationMode === 'flow';
+  container.innerHTML = `<div class="orch-node-detail"><div><label>当前节点</label><input value="${escapeHtml(node.name)}" ${isFlow ? 'readonly' : ''} oninput="updateOrchestrationNode('name', this.value)"></div><div><label>${isFlow ? '节点处理说明' : '节点职责'}</label><textarea ${isFlow ? 'readonly' : ''} oninput="updateOrchestrationNode('role', this.value)">${escapeHtml(node.role)}</textarea></div><div><label>${isFlow ? '流程处理规则' : '提示词'}</label><textarea ${isFlow ? 'readonly' : ''} oninput="updateOrchestrationNode('prompt', this.value)">${escapeHtml(node.prompt || '按照审计流程处理输入。')}</textarea></div>${activeOrchestrationMode === 'multi' ? `<div><label>转交条件</label><input value="${escapeHtml(node.handoff || '')}" oninput="updateOrchestrationNode('handoff', this.value)"></div>` : ''}<button class="topbar-btn primary" onclick="debugOrchestrationNode('${node.id}')">与当前 Agent 对话</button></div><div class="orch-debug"><div class="orch-debug-head"><span>调试与预览</span><span style="color:var(--primary)">${escapeHtml(node.name)}</span></div><div class="orch-debug-msg" id="orchestrationDebugMsg">${isFlow ? '输入将严格按照对话流处理。' : '已接管对话：可向该节点发送一条模拟审计任务。'}</div><div class="orch-debug-input"><input id="orchestrationDebugInput" placeholder="例如：核验本项目的异常资金流水"><button onclick="sendOrchestrationDebug()">发送</button></div></div>`;
+}
+function updateOrchestrationNode(field, value) { const node = orchestrationNodes.find(item => item.id === selectedOrchestrationNodeId); if (node) { node[field] = value; renderOrchestrationCanvas(); } }
+function addOrchestrationNode() {
+  if (activeOrchestrationMode !== 'multi') { showToast('请切换为多 Agents 模式后添加协作节点'); return; }
+  const id = `agent-${Date.now()}`;
+  orchestrationNodes.push({ id, name: `协作 Agent ${orchestrationNodes.length}`, role: '待配置审计子任务职责', prompt: '请根据分配的审计子任务输出可追溯结论。', handoff: '由上游节点按任务意图转交' });
+  selectedOrchestrationNodeId = id;
+  renderAgentOrchestration();
+  showToast('已新增 Agent 节点，请配置职责与转交条件');
+}
+function debugOrchestrationNode(id) { selectedOrchestrationNodeId = id; renderAgentOrchestration(); showToast(`${getOrchestrationNode(id).name}正在接管对话`); }
+function sendOrchestrationDebug() { const input = document.getElementById('orchestrationDebugInput'); const message = document.getElementById('orchestrationDebugMsg'); if (!input?.value.trim()) { showToast('请输入一条模拟任务'); return; } message.textContent = `已由${getOrchestrationNode(selectedOrchestrationNodeId).name}接收：“${input.value.trim()}”。系统将按当前节点职责、变量及全局规则生成审计建议。`; input.value = ''; }
+function toggleAsyncOrchestration() { isAsyncOrchestration = !isAsyncOrchestration; renderOrchestrationSettings(); showToast(`异步运行已${isAsyncOrchestration ? '开启' : '关闭'}`); }
+function openOrchestrationParams() { const agent = getAgent(activeOrchestrationAgentId); setModalContent('编辑智能体参数', `<div class="agent-modal-grid"><div class="agent-modal-field"><label>智能体名称</label><input id="orchestrationName" value="${escapeHtml(agent?.name || '新建审计智能体')}"></div><div class="agent-modal-field"><label>所属审计阶段</label><select id="orchestrationStage"><option>${escapeHtml(agent?.stage || '现场实施')}</option><option>项目立项</option><option>审前准备</option><option>审计报告</option><option>整改跟踪</option><option>项目归档</option></select></div><div class="agent-modal-field full"><label>发布说明</label><textarea id="orchestrationCapability">${escapeHtml(agent?.capability || '通过全局审计配置和节点协作，为用户提供受控、可追溯的审计处理能力。')}</textarea></div></div>`, '<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="saveOrchestrationParams()">保存参数</button>'); }
+function saveOrchestrationParams() { const agent = getAgent(activeOrchestrationAgentId); if (agent) { agent.name = document.getElementById('orchestrationName').value.trim() || agent.name; agent.stage = document.getElementById('orchestrationStage').value; agent.capability = document.getElementById('orchestrationCapability').value.trim() || agent.capability; } closeModal(); renderAgentOrchestration(); showToast('智能体参数已保存'); }
+function openUserVariableModal(id) { const variable = userVariables.find(item => item.id === id); setModalContent(variable ? '编辑用户变量' : '新增用户变量', `<div class="agent-modal-grid"><div class="agent-modal-field"><label>变量名称</label><input id="userVarName" value="${escapeHtml(variable?.name || '')}" placeholder="例如：audit_preference"></div><div class="agent-modal-field"><label>作用范围</label><select id="userVarScope"><option ${variable?.scope === '用户级' ? 'selected' : ''}>用户级</option><option ${variable?.scope === '会话级' ? 'selected' : ''}>会话级</option></select></div><div class="agent-modal-field"><label>默认值</label><input id="userVarDefault" value="${escapeHtml(variable?.defaultValue || '')}" placeholder="默认值"></div><div class="agent-modal-field"><label>变量说明</label><input id="userVarDesc" value="${escapeHtml(variable?.description || '')}" placeholder="变量用途"></div></div>`, `<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="saveUserVariable('${id || ''}')">确定</button>`); }
+function saveUserVariable(id) { const name = document.getElementById('userVarName').value.trim(); if (!name) { showToast('请填写变量名称'); return; } const data = { name, scope: document.getElementById('userVarScope').value, defaultValue: document.getElementById('userVarDefault').value.trim() || '未设置', description: document.getElementById('userVarDesc').value.trim() || '用户个性化变量' }; const target = userVariables.find(item => item.id === id); if (target) Object.assign(target, data); else userVariables.push({ id: `var-${Date.now()}`, ...data }); closeModal(); renderOrchestrationSettings(); showToast(target ? '用户变量已更新，重新发布后变量值将重置为默认值' : '用户变量已添加'); }
+function deleteUserVariable(id) { const variable = userVariables.find(item => item.id === id); if (!variable) return; setModalContent('删除用户变量', `<p>确认删除变量“${escapeHtml(variable.name)}”吗？重新发布后该变量对应的用户数据将被删除。</p>`, `<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="confirmDeleteUserVariable('${id}')">确认删除</button>`); }
+function confirmDeleteUserVariable(id) { userVariables = userVariables.filter(item => item.id !== id); closeModal(); renderOrchestrationSettings(); showToast('用户变量已删除'); }
+function publishOrchestrationAgent() { const selected = getAgent(activeOrchestrationAgentId); if (selected) { selected.mode = activeOrchestrationMode; selected.updated = '刚刚'; selected.status = 'enabled'; } else { const agent = { id: `agent-${Date.now()}`, name: activeOrchestrationMode === 'multi' ? '多 Agents 审计协作助手' : activeOrchestrationMode === 'flow' ? '审计对话流助手' : '审计任务助手', stage: '现场实施', capability: activeOrchestrationMode === 'multi' ? '多 Agent 分工协作、条件转交与审计结论汇总' : activeOrchestrationMode === 'flow' ? '固定对话流处理、受控审计输出' : '审计任务识别、知识检索与专业结论输出', knowledgeBase: activeOrchestrationMode === 'flow' ? '在流程节点中配置' : '法规库 / 案例库 / 模板库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '刚刚', runs: 0, owner: currentUser.name, reviewRule: '关键审计结论需人工复核', mode: activeOrchestrationMode }; agentData.unshift(agent); activeOrchestrationAgentId = agent.id; }
+  renderAgentOrchestration();
+  showToast(`智能体已发布：${modeLabel(activeOrchestrationMode)}`);
 }
 
 function openAgentRunLogs(id) {
