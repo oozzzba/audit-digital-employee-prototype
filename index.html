@@ -67,6 +67,12 @@ input, textarea { font-family: inherit; }
 /* ===== Layout ===== */
 .app { display: flex; height: 100vh; }
 
+/* Topbar modules are independent functional pages: do not inherit the home workspace sidebar. */
+.app.module-mode .sidebar { display: none; }
+.app.module-mode .topbar-toggle { display: none; }
+.app.module-mode .main { width: 100%; }
+.app.module-mode .sidebar-backdrop { display: none !important; }
+
 /* ===== Dify-style Sidebar ===== */
 .sidebar {
   width: var(--sidebar-w);
@@ -324,6 +330,8 @@ input, textarea { font-family: inherit; }
   color: var(--white);
 }
 .topbar-btn.primary:hover { background: var(--primary-hover); }
+.module-home-btn { display: inline-flex; }
+.app.home-view .module-home-btn { display: none; }
 .topbar-icon-btn {
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
@@ -386,12 +394,12 @@ input, textarea { font-family: inherit; }
 .chat-main-column { display: flex; flex: 1; min-width: 0; min-height: 0; flex-direction: column; position: relative; }
 .chat-workspace .home-input-area { bottom: 0; left: 0; right: 0; }
 .working-paper-attachment { display: flex; align-items: center; gap: 10px; margin: 12px 0; padding: 10px 12px; border: 1px solid #D8E6F6; border-radius: 7px; background: #F7FBFF; }
-.working-paper-attachment-icon { width: 32px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; background: #E3F2FD; color: #1565C0; font-size: 10px; font-weight: 750; flex-shrink: 0; }
+.working-paper-attachment-icon { width: 32px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; background: var(--primary-light); color: var(--primary); font-size: 10px; font-weight: 750; flex-shrink: 0; }
 .working-paper-attachment-info { min-width: 0; flex: 1; }
 .working-paper-attachment-name { overflow: hidden; color: var(--gray-800); font-size: 12px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .working-paper-attachment-meta { margin-top: 3px; color: var(--gray-400); font-size: 11px; }
-.working-paper-download-btn { min-height: 28px; padding: 0 10px; border: 1px solid #BFD6EF; border-radius: 5px; background: var(--white); color: #1565C0; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; }
-.working-paper-download-btn:hover { border-color: #1565C0; background: #EAF4FF; }
+.working-paper-download-btn { min-height: 28px; padding: 0 10px; border: 1px solid #F1B8BD; border-radius: 5px; background: var(--white); color: var(--primary); font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.working-paper-download-btn:hover { border-color: var(--primary); background: var(--primary-lighter); }
 .card-btn.output-confirmed { border-color: #B7DFC1; background: #EEF8F0; color: #2E7D32; }
 @media (max-width: 480px) { .working-paper-attachment { align-items: flex-start; flex-wrap: wrap; } .working-paper-attachment-info { min-width: calc(100% - 44px); } .working-paper-download-btn { margin-left: 42px; } }
 
@@ -580,11 +588,11 @@ input, textarea { font-family: inherit; }
 .law-card .chat-card-icon { background: var(--purple-light); color: var(--purple); }
 
 /* Template-generated document card */
-.template-output-card { border-left: 3px solid #1565C0; }
-.template-output-card .chat-card-icon { background: #E3F2FD; color: #1565C0; }
+.template-output-card { border-left: 3px solid var(--primary); }
+.template-output-card .chat-card-icon { background: var(--primary-light); color: var(--primary); }
 .template-output-note { margin: 2px 0 10px; color: var(--gray-500); font-size: 12px; line-height: 1.6; }
 .template-output-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-.template-output-meta span { padding: 3px 7px; border-radius: 4px; background: #E3F2FD; color: #1565C0; font-size: 11px; }
+.template-output-meta span { padding: 3px 7px; border-radius: 4px; background: var(--primary-light); color: var(--primary); font-size: 11px; }
 .template-document { border: 1px solid var(--gray-200); border-radius: 6px; background: var(--white); overflow: hidden; }
 .template-document-title { padding: 9px 12px; background: var(--gray-50); border-bottom: 1px solid var(--gray-100); color: var(--gray-700); font-size: 13px; font-weight: 600; }
 .template-document-section { padding: 8px 12px; border-bottom: 1px solid var(--gray-100); }
@@ -593,8 +601,8 @@ input, textarea { font-family: inherit; }
 .template-document-value { color: var(--gray-700); font-size: 12px; line-height: 1.65; }
 
 /* Template generation data collection */
-.template-input-card { border-left: 3px solid #1565C0; }
-.template-input-card .chat-card-icon { background: #E3F2FD; color: #1565C0; }
+.template-input-card { border-left: 3px solid var(--primary); }
+.template-input-card .chat-card-icon { background: var(--primary-light); color: var(--primary); }
 .template-input-note { margin: 3px 0 10px; color: var(--gray-500); font-size: 12px; line-height: 1.65; }
 .template-input-group { margin-top: 10px; }
 .template-input-group-title { margin-bottom: 6px; color: var(--gray-700); font-size: 12px; font-weight: 600; }
@@ -663,8 +671,8 @@ input, textarea { font-family: inherit; }
 .trace-control { margin-top: 10px; padding: 8px 10px; border-radius: 6px; background: var(--warning-bg); color: var(--warning); font-size: 11px; line-height: 1.55; }
 
 /* Business workflow state card */
-.workflow-card { border-left: 3px solid #1565C0; }
-.workflow-card .chat-card-icon { background: #E3F2FD; color: #1565C0; }
+.workflow-card { border-left: 3px solid var(--primary); }
+.workflow-card .chat-card-icon { background: var(--primary-light); color: var(--primary); }
 .workflow-meta { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 10px; }
 .workflow-meta span { padding: 3px 7px; border-radius: 4px; background: var(--gray-50); color: var(--gray-600); border: 1px solid var(--gray-100); font-size: 11px; }
 .workflow-meta .workflow-status { background: var(--primary-light); color: var(--primary); border-color: #FFCDD2; }
@@ -680,17 +688,17 @@ input, textarea { font-family: inherit; }
 .workflow-lane-title { margin: 12px 0 7px; color: var(--gray-700); font-size: 12px; font-weight: 600; }
 .workflow-lanes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .workflow-lane { padding: 8px; border: 1px solid var(--gray-100); border-radius: 6px; background: var(--white); }
-.workflow-lane-role { display: block; margin-bottom: 3px; color: #1565C0; font-size: 11px; font-weight: 700; }
+.workflow-lane-role { display: block; margin-bottom: 3px; color: var(--primary); font-size: 11px; font-weight: 700; }
 .workflow-lane-action { display: block; color: var(--gray-600); font-size: 11px; line-height: 1.5; }
 .workflow-lane-output { display: block; margin-top: 4px; color: var(--gray-400); font-size: 10px; line-height: 1.45; }
 
 /* Generated-output explanation: deliberately unframed, not a second result card. */
 .output-process { margin: 4px 0 0; padding: 0; border: 0; background: transparent; }
-.output-process-summary { display: flex; align-items: center; gap: 8px; padding: 6px 0; color: #526DFF; font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; }
+.output-process-summary { display: flex; align-items: center; gap: 8px; padding: 6px 0; color: var(--primary); font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; }
 .output-process-summary::-webkit-details-marker { display: none; }
 .output-process-summary::after { content: ''; width: 7px; height: 7px; margin-left: 2px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .15s ease; }
 .output-process[open] .output-process-summary::after { transform: rotate(225deg) translateY(-2px); }
-.output-process-summary-icon { display: inline-flex; width: 17px; height: 17px; align-items: center; justify-content: center; border: 1px solid #8EA1FF; border-radius: 50%; font-size: 11px; line-height: 1; }
+.output-process-summary-icon { display: inline-flex; width: 17px; height: 17px; align-items: center; justify-content: center; border: 1px solid #F1B8BD; border-radius: 50%; font-size: 11px; line-height: 1; }
 .output-process-summary-meta { color: var(--gray-400); font-size: 11px; font-weight: 400; }
 .output-process-body { margin-top: 5px; padding: 12px 0 0 14px; border-left: 1px solid var(--gray-200); }
 .output-process-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
@@ -713,7 +721,7 @@ input, textarea { font-family: inherit; }
 .output-process-node.done .output-process-node-state { color: #2E7D32; }
 .output-process-node.pending .output-process-node-state { color: #E65100; }
 .output-process-node.alert .output-process-node-state { color: var(--primary); }
-.output-process-note { margin: 0; padding-left: 10px; border-left: 2px solid #1565C0; color: var(--gray-600); font-size: 11px; line-height: 1.65; }
+.output-process-note { margin: 0; padding-left: 10px; border-left: 2px solid var(--primary); color: var(--gray-600); font-size: 11px; line-height: 1.65; }
 .generated-result-actions { display: flex; align-items: center; justify-content: flex-end; gap: 2px; margin-top: 8px; }
 .generated-result-action { width: 30px; height: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 4px; background: transparent; color: var(--gray-400); cursor: pointer; }
 .generated-result-action:hover { background: var(--gray-50); color: var(--primary); }
@@ -1689,7 +1697,7 @@ input, textarea { font-family: inherit; }
 }
 .materials-file-icon.pdf { background: #FFEBEE; color: #D32F2F; }
 .materials-file-icon.excel { background: #E8F5E9; color: #2E7D32; }
-.materials-file-icon.word { background: #E3F2FD; color: #1565C0; }
+.materials-file-icon.word { background: var(--primary-light); color: var(--primary); }
 .materials-file-icon.img { background: #FFF3E0; color: #E65100; }
 .materials-file-icon.zip { background: #F3E5F5; color: #7B1FA2; }
 .materials-file-icon.other { background: var(--gray-100); color: var(--gray-500); }
@@ -1781,10 +1789,10 @@ input, textarea { font-family: inherit; }
 .materials-detail-actions button:hover { border-color: var(--primary); color: var(--primary); }
 .materials-detail-note { margin-top: 12px; padding: 8px; border-radius: 4px; background: #FFF8E9; color: #88601D; font-size: 10px; line-height: 1.55; }
 
-.project-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; max-width: 1080px; margin-left: auto; margin-right: auto; }
+.project-stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; max-width: 1280px; margin-left: auto; margin-right: auto; }
 .project-stat-card {
   background: var(--white); border: 1px solid var(--gray-200);
-  border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow-xs);
+  border-radius: var(--radius-sm); padding: 12px 14px; box-shadow: var(--shadow-xs);
   transition: box-shadow 0.2s; cursor: pointer;
 }
 .project-stat-card:hover { box-shadow: var(--shadow-sm); }
@@ -1794,8 +1802,8 @@ input, textarea { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 10px; font-size: 18px;
 }
-.project-stat-value { font-size: 28px; font-weight: 700; color: var(--gray-900); line-height: 1; }
-.project-stat-label { font-size: 12px; color: var(--gray-500); margin-top: 6px; }
+.project-stat-value { font-size: 24px; font-weight: 700; color: var(--gray-900); line-height: 1; }
+.project-stat-label { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
 
 .project-dashboard-tools { position: relative; display: flex; align-items: center; gap: 8px; }
 .project-quick-search { width: 216px; height: 34px; border: 1px solid var(--gray-200); border-radius: 6px; padding: 0 10px; color: var(--gray-700); background: var(--white); font-size: 12px; outline: none; }
@@ -1864,7 +1872,7 @@ input, textarea { font-family: inherit; }
 .project-phase-tag.pending { background: var(--gray-100); color: var(--gray-500); }
 .project-phase-tag.plan { background: var(--warning-bg); color: var(--warning); }
 .project-phase-tag.init { background: var(--gray-100); color: var(--gray-500); }
-.project-phase-tag.report { background: #E3F2FD; color: #1976D2; }
+.project-phase-tag.report { background: var(--primary-light); color: var(--primary); }
 .project-phase-tag.rectify { background: #F3E5F5; color: #7B1FA2; }
 
 /* Project detail modal */
@@ -2167,6 +2175,49 @@ input, textarea { font-family: inherit; }
 .agent-modal-field textarea { min-height: 68px; resize: vertical; }
 .agent-modal-field input:focus, .agent-modal-field select:focus, .agent-modal-field textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
 .agent-modal-field.full { grid-column: 1 / -1; }
+
+/* ===== Create Audit Application ===== */
+.modal-overlay.create-agent-modal-open .modal {
+  width: 680px;
+  max-width: calc(100vw - 32px);
+  max-height: min(760px, calc(100vh - 36px));
+}
+.create-agent-modal { display: flex; flex-direction: column; gap: 18px; }
+.create-agent-intro { margin: -2px 0 0; color: var(--gray-500); font-size: 12px; line-height: 1.65; }
+.create-agent-section-label { color: var(--gray-700); font-size: 12px; font-weight: 700; }
+.create-agent-type-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.create-agent-type {
+  position: relative; min-height: 100px; padding: 14px 9px 11px; border: 1px solid var(--gray-200);
+  border-radius: 8px; background: var(--white); color: var(--gray-700); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  transition: border-color .16s, background .16s, box-shadow .16s, transform .16s;
+}
+.create-agent-type:hover { border-color: #E6A0A0; background: var(--primary-lighter); transform: translateY(-1px); }
+.create-agent-type.selected { border-color: var(--primary); background: #FFF8F8; box-shadow: 0 0 0 2px rgba(211,47,47,.10); }
+.create-agent-type-icon { width: 29px; height: 29px; display: flex; align-items: center; justify-content: center; color: var(--primary); }
+.create-agent-type-icon svg { width: 27px; height: 27px; }
+.create-agent-type-name { color: var(--gray-800); font-size: 12px; font-weight: 650; text-align: center; line-height: 1.25; }
+.create-agent-type-tag { position: absolute; top: -8px; right: -5px; border-radius: 8px; padding: 2px 5px; background: var(--primary); color: var(--white); font-size: 8px; font-weight: 700; letter-spacing: .2px; }
+.create-agent-form { display: grid; gap: 12px; }
+.create-agent-field { display: grid; gap: 7px; }
+.create-agent-field label { color: var(--gray-700); font-size: 12px; font-weight: 650; }
+.create-agent-field input, .create-agent-field textarea {
+  width: 100%; box-sizing: border-box; border: 1px solid var(--gray-200); border-radius: 7px;
+  background: var(--gray-50); color: var(--gray-800); font-size: 13px; outline: none; padding: 10px 11px;
+}
+.create-agent-field textarea { min-height: 76px; resize: vertical; line-height: 1.55; }
+.create-agent-field input:focus, .create-agent-field textarea:focus { border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 3px var(--primary-light); }
+.create-agent-hint { display: flex; align-items: flex-start; gap: 7px; border: 1px solid #F1D0D0; border-radius: 7px; padding: 9px 10px; background: var(--primary-lighter); color: var(--gray-600); font-size: 11px; line-height: 1.55; }
+.create-agent-hint strong { color: var(--primary); }
+.create-agent-footer-note { margin-right: auto; align-self: center; color: var(--gray-400); font-size: 11px; }
+#createAgentSubmit[disabled] { opacity: .45; cursor: not-allowed; box-shadow: none; }
+@media (max-width: 560px) {
+  .modal-overlay.create-agent-modal-open { padding: 12px; align-items: center; }
+  .modal-overlay.create-agent-modal-open .modal { width: 100%; max-width: 100%; max-height: calc(100vh - 24px); border-radius: 12px; }
+  .create-agent-type-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .create-agent-type { min-height: 86px; }
+  .create-agent-footer-note { display: none; }
+}
 .agent-config-list { display: grid; grid-template-columns: 128px 1fr; gap: 10px 14px; font-size: 13px; }
 .agent-config-list dt { color: var(--gray-500); }
 .agent-config-list dd { margin: 0; color: var(--gray-800); font-weight: 500; line-height: 1.5; }
@@ -2184,8 +2235,11 @@ input, textarea { font-family: inherit; }
 .orchestration-mode-tab { border: 0; padding: 8px 12px; border-radius: 6px; color: var(--gray-600); background: transparent; font-size: 12px; font-weight: 600; cursor: pointer; }
 .orchestration-mode-tab.active { color: var(--primary); background: var(--white); box-shadow: var(--shadow-xs); }
 .orchestration-notice { margin: 0 0 16px; padding: 10px 12px; border: 1px solid #FECACA; border-left: 3px solid var(--primary); border-radius: var(--radius-sm); background: #FFF7F7; color: var(--gray-600); font-size: 12px; line-height: 1.55; }
-.orchestration-layout { display: grid; grid-template-columns: minmax(220px, .82fr) minmax(440px, 1.8fr) minmax(250px, .92fr); gap: 14px; align-items: start; }
+.orchestration-layout { display: grid; grid-template-columns: minmax(310px, 1fr) minmax(310px, .95fr); gap: 14px; align-items: start; }
 .orchestration-panel { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow-xs); min-width: 0; }
+.orchestration-layout > .orchestration-panel:nth-child(2) { grid-column: 1 / -1; grid-row: 1; }
+.orchestration-layout > .orchestration-panel:first-child { grid-column: 1; grid-row: 2; }
+.orchestration-layout > .orchestration-panel:last-child { grid-column: 2; grid-row: 2; }
 .orchestration-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; border-bottom: 1px solid var(--gray-100); }
 .orchestration-panel-title { color: var(--gray-900); font-size: 13px; font-weight: 700; }
 .orchestration-panel-subtitle { margin-top: 3px; color: var(--gray-400); font-size: 11px; line-height: 1.4; }
@@ -2208,21 +2262,34 @@ input, textarea { font-family: inherit; }
 .orch-variable-actions { display: flex; gap: 8px; margin-top: 6px; }
 .orch-variable-actions button { border: 0; padding: 0; background: transparent; color: var(--primary); font-size: 10px; cursor: pointer; }
 .orch-variable-actions button.danger { color: var(--accent-red); }
-.orchestration-canvas { min-height: 555px; padding: 16px; overflow: auto; background-color: #FCFCFD; background-image: radial-gradient(#D0D5DD 1px, transparent 1px); background-size: 16px 16px; }
-.orch-canvas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-bottom: 14px; }
+.orchestration-canvas { min-height: 590px; padding: 0; overflow: auto; background-color: #FBFCFE; background-image: radial-gradient(#D8DEE9 1px, transparent 1px); background-size: 14px 14px; }
+.orch-canvas-toolbar { display: flex; position: sticky; z-index: 4; top: 0; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 16px; border-bottom: 1px solid rgba(208, 213, 221, .72); background: rgba(255,255,255,.9); backdrop-filter: blur(8px); }
 .orch-canvas-caption { color: var(--gray-500); font-size: 11px; line-height: 1.4; }
-.orch-canvas-flow { min-width: 470px; display: flex; align-items: center; gap: 10px; padding: 44px 10px 26px; }
-.orch-node { position: relative; width: 152px; min-height: 100px; flex: 0 0 152px; padding: 12px; border: 1px solid var(--gray-200); border-radius: 10px; background: var(--white); box-shadow: var(--shadow-sm); cursor: pointer; transition: .15s; }
-.orch-node:hover, .orch-node.selected { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
-.orch-node.start { width: 90px; min-height: auto; padding: 10px; border-radius: 22px; text-align: center; color: var(--primary); background: #FFF6F6; }
-.orch-node.flow { border-style: dashed; }
-.orch-node-icon { display: flex; width: 27px; height: 27px; align-items: center; justify-content: center; border-radius: 7px; background: var(--primary-light); color: var(--primary); font-size: 13px; font-weight: 700; }
-.orch-node-name { margin-top: 8px; color: var(--gray-800); font-size: 12px; font-weight: 700; line-height: 1.35; }
-.orch-node-role { margin-top: 4px; color: var(--gray-500); font-size: 10px; line-height: 1.4; }
+.orch-workflow-board { position: relative; width: 1240px; height: 530px; margin: 0 auto; }
+.orch-workflow-svg { position: absolute; inset: 0; z-index: 1; width: 1240px; height: 530px; overflow: visible; pointer-events: none; }
+.orch-workflow-line { fill: none; stroke: #B8C7E2; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.orch-workflow-line.active { stroke: var(--primary); }
+.orch-workflow-dot { fill: var(--primary); stroke: #FFF; stroke-width: 3; }
+.orch-workflow-label { fill: #667085; font-size: 10px; font-family: inherit; }
+.orch-node { position: absolute; z-index: 2; box-sizing: border-box; width: 158px; min-height: 90px; padding: 11px; border: 1px solid #E3E8F0; border-radius: 9px; background: var(--white); box-shadow: 0 5px 13px rgba(16,24,40,.07); cursor: pointer; transition: .15s; }
+.orch-node:hover, .orch-node.selected { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light), 0 6px 15px rgba(16,24,40,.08); }
+.orch-node.start { width: 138px; min-height: 108px; padding: 11px; border-color: #DDE7FF; background: #FFF; }
+.orch-node.branch { width: 145px; min-height: 76px; }
+.orch-node.end { width: 128px; min-height: 70px; }
+.orch-node-icon { display: flex; width: 23px; height: 23px; align-items: center; justify-content: center; border-radius: 6px; background: var(--primary-light); color: var(--primary); font-size: 11px; font-weight: 800; }
+.orch-node-icon.blue { background: #EEF4FF; color: #2E6DFF; }
+.orch-node-icon.teal { background: #E7F8F2; color: #0D9B73; }
+.orch-node-icon.purple { background: #F2EEFF; color: #7454D9; }
+.orch-node-icon.orange { background: #FFF1E7; color: #E67A16; }
+.orch-node-head { display: flex; align-items: center; gap: 7px; color: var(--gray-800); font-size: 11px; font-weight: 800; }
+.orch-node-name { margin: 0; color: var(--gray-800); font-size: 11px; font-weight: 800; line-height: 1.35; }
+.orch-node-role { margin-top: 7px; overflow: hidden; color: var(--gray-500); font-size: 10px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.orch-node-meta { display: flex; align-items: center; gap: 5px; min-width: 0; margin-top: 8px; padding: 5px 6px; border-radius: 5px; background: #F7F8FA; color: var(--gray-500); font-size: 9px; line-height: 1.2; }
+.orch-node-meta span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .orch-node-status { display: inline-flex; margin-top: 7px; padding: 2px 5px; border-radius: 8px; background: var(--primary-light); color: var(--primary); font-size: 9px; font-weight: 700; }
-.orch-connector { width: 34px; height: 1px; flex: 0 0 34px; background: var(--primary); position: relative; }
-.orch-connector::after { position: absolute; top: -3px; right: -1px; border-top: 3px solid transparent; border-bottom: 3px solid transparent; border-left: 5px solid var(--primary); content: ''; }
-.orch-add-node { display: flex; width: 90px; height: 72px; flex: 0 0 90px; align-items: center; justify-content: center; border: 1px dashed var(--primary); border-radius: 10px; background: #FFF9F9; color: var(--primary); font-size: 11px; font-weight: 700; cursor: pointer; }
+.orch-node-port { position: absolute; top: 50%; width: 8px; height: 8px; border: 2px solid #8CB0FB; border-radius: 50%; background: #FFF; transform: translateY(-50%); }
+.orch-node-port.left { left: -6px; }.orch-node-port.right { right: -6px; }.orch-node-port.top { top: -6px; left: 50%; transform: translateX(-50%); }.orch-node-port.bottom { top: auto; bottom: -6px; left: 50%; transform: translateX(-50%); }
+.orch-add-node { position: absolute; z-index: 2; display: flex; width: 122px; height: 52px; align-items: center; justify-content: center; border: 1px dashed var(--primary); border-radius: 9px; background: #FFF9F9; color: var(--primary); font-size: 11px; font-weight: 700; cursor: pointer; }
 .orch-add-node:hover { background: var(--primary-light); }
 .orch-node-detail { display: grid; gap: 11px; }
 .orch-node-detail label { display: block; margin-bottom: 5px; color: var(--gray-600); font-size: 11px; }
@@ -2236,8 +2303,58 @@ input, textarea { font-family: inherit; }
 .orch-debug-input input { min-width: 0; flex: 1; padding: 7px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 11px; outline: none; }
 .orch-debug-input button { border: 0; padding: 0 9px; border-radius: 6px; color: white; background: var(--primary); font-size: 11px; cursor: pointer; }
 .orch-hidden { display: none; }
-@media (max-width: 1180px) { .orchestration-layout { grid-template-columns: minmax(220px, .9fr) minmax(430px, 1.5fr); } .orchestration-layout > .orchestration-panel:last-child { grid-column: 1 / -1; } }
-@media (max-width: 760px) { .orchestration-layout { grid-template-columns: 1fr; } .orchestration-layout > .orchestration-panel:last-child { grid-column: auto; } .orchestration-mode-tabs { width: 100%; overflow-x: auto; } .orchestration-mode-tab { white-space: nowrap; } .orchestration-canvas { min-height: 370px; } .agent-toolbar { grid-template-columns: 1fr; } }
+.orch-config-card { margin-top: 14px; padding: 11px; border: 1px solid var(--primary-light); border-radius: 8px; background: #FFF9F9; }
+.orch-config-card + .orch-config-card { margin-top: 9px; }
+.orch-config-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--gray-800); font-size: 11px; font-weight: 700; }
+.orch-config-card-summary { margin-top: 6px; color: var(--gray-500); font-size: 10px; line-height: 1.55; }
+.orch-config-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.orch-config-tag { display: inline-flex; max-width: 100%; padding: 3px 6px; overflow: hidden; border: 1px solid var(--gray-100); border-radius: 4px; color: var(--gray-600); background: var(--white); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.orch-modal-section { margin-bottom: 16px; }
+.orch-modal-section:last-child { margin-bottom: 0; }
+.orch-modal-section-title { margin-bottom: 8px; color: var(--gray-800); font-size: 13px; font-weight: 700; }
+.orch-modal-section-desc { margin: -3px 0 10px; color: var(--gray-500); font-size: 12px; line-height: 1.55; }
+.orch-prompt-preview { padding: 12px; border: 1px solid var(--gray-100); border-radius: 8px; color: var(--gray-700); background: var(--gray-50); font-size: 12px; line-height: 1.65; white-space: pre-line; }
+.orch-tool-list { display: grid; gap: 8px; }
+.orch-tool-item { display: flex; align-items: flex-start; gap: 9px; padding: 10px; border: 1px solid var(--gray-100); border-radius: 8px; background: var(--gray-50); }
+.orch-tool-item input { width: auto; margin-top: 2px; accent-color: var(--primary); }
+.orch-tool-name { color: var(--gray-800); font-size: 12px; font-weight: 700; }
+.orch-tool-desc { margin-top: 3px; color: var(--gray-500); font-size: 11px; line-height: 1.5; }
+.orch-io-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.orch-io-box { padding: 11px; border: 1px solid var(--gray-100); border-radius: 8px; background: var(--gray-50); }
+.orch-io-box-title { color: var(--gray-700); font-size: 12px; font-weight: 700; }
+.orch-io-box ul { margin: 8px 0 0; padding-left: 16px; color: var(--gray-500); font-size: 11px; line-height: 1.7; }
+/* Six-stage audit Agent build workspace */
+.agent-build-summary { display: grid; grid-template-columns: 1.1fr .9fr; gap: 10px; margin-top: 12px; }
+.agent-build-summary-card { min-width: 0; padding: 11px; border: 1px solid var(--gray-100); border-radius: 8px; background: var(--gray-50); }
+.agent-build-summary-title { color: var(--gray-700); font-size: 11px; font-weight: 700; }
+.agent-build-summary-text { margin-top: 5px; color: var(--gray-500); font-size: 10px; line-height: 1.55; }
+.agent-build-stepper { display: grid; gap: 8px; margin-top: 10px; }
+.agent-build-step { position: relative; display: grid; grid-template-columns: 22px 1fr; gap: 8px; min-width: 0; padding: 9px; border: 1px solid var(--gray-100); border-radius: 7px; background: var(--white); }
+.agent-build-step:not(:last-child)::after { position: absolute; left: 19px; top: 31px; height: 11px; border-left: 1px dashed var(--gray-300); content: ''; }
+.agent-build-step-index { display: flex; width: 22px; height: 22px; align-items: center; justify-content: center; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-size: 10px; font-weight: 700; }
+.agent-build-step-title { color: var(--gray-700); font-size: 11px; font-weight: 700; }
+.agent-build-step-desc { margin-top: 3px; color: var(--gray-400); font-size: 10px; line-height: 1.4; }
+.agent-build-modal { display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 16px; }
+.agent-build-nav { display: grid; align-content: start; gap: 5px; padding: 8px; border: 1px solid var(--gray-100); border-radius: 9px; background: var(--gray-50); }
+.agent-build-nav-item { width: 100%; border: 0; padding: 9px 8px; border-radius: 6px; background: transparent; color: var(--gray-600); font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; }
+.agent-build-nav-item:hover, .agent-build-nav-item.active { background: var(--white); color: var(--primary); box-shadow: var(--shadow-xs); }
+.agent-build-pane { min-width: 0; }
+.agent-build-pane[hidden] { display: none; }
+.agent-build-pane-title { color: var(--gray-900); font-size: 14px; font-weight: 700; }
+.agent-build-pane-desc { margin: 5px 0 12px; color: var(--gray-500); font-size: 12px; line-height: 1.55; }
+.agent-build-asset-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.agent-build-asset { display: flex; gap: 8px; min-width: 0; padding: 10px; border: 1px solid var(--gray-100); border-radius: 8px; background: var(--gray-50); }
+.agent-build-asset input { width: auto; margin-top: 2px; accent-color: var(--primary); }
+.agent-build-asset-name { color: var(--gray-800); font-size: 12px; font-weight: 700; }
+.agent-build-asset-desc { margin-top: 3px; color: var(--gray-500); font-size: 10px; line-height: 1.45; }
+.agent-build-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.agent-build-stat { padding: 10px; border: 1px solid var(--gray-100); border-radius: 7px; background: var(--gray-50); }
+.agent-build-stat-label { color: var(--gray-500); font-size: 10px; }
+.agent-build-stat-value { margin-top: 4px; color: var(--gray-800); font-size: 13px; font-weight: 700; }
+.agent-build-review { padding: 11px; border: 1px solid #FECACA; border-left: 3px solid var(--primary); border-radius: 8px; background: #FFF7F7; color: var(--gray-600); font-size: 12px; line-height: 1.55; }
+@media (max-width: 1180px) { .orchestration-layout { grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr); } }
+@media (max-width: 560px) { .orch-io-grid, .agent-build-summary, .agent-build-field-grid, .agent-build-asset-grid { grid-template-columns: 1fr; } .agent-build-modal { grid-template-columns: 1fr; } .agent-build-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .orchestration-layout { grid-template-columns: 1fr; } .orchestration-layout > .orchestration-panel:nth-child(2), .orchestration-layout > .orchestration-panel:first-child, .orchestration-layout > .orchestration-panel:last-child { grid-column: 1; grid-row: auto; } .orchestration-mode-tabs { width: 100%; overflow-x: auto; } .orchestration-mode-tab { white-space: nowrap; } .orchestration-canvas { min-height: 440px; } .orch-workflow-board { width: 1240px; height: 390px; margin: 0; transform: scale(.72); transform-origin: top left; } .orch-canvas-toolbar { position: relative; } .agent-toolbar { grid-template-columns: 1fr; } }
 
 /* ===== Q&A Knowledge Management ===== */
 .qa-kb-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr) 160px auto; gap: 12px; align-items: center; margin-bottom: 16px; }
@@ -2848,6 +2965,7 @@ input, textarea { font-family: inherit; }
 }
 .login-btn:hover { background: var(--primary-hover); }
 .login-btn:active { transform: scale(0.98); }
+.login-admin-note { margin-top: 14px; padding: 10px 12px; border-radius: var(--radius-sm); background: var(--primary-lighter); color: var(--primary); font-size: 12px; line-height: 1.55; text-align: center; }
 
 .login-divider {
   display: flex;
@@ -3031,6 +3149,38 @@ input, textarea { font-family: inherit; }
   .message-bubble { font-size: 13px; }
   .home-input-area { bottom: 20px; padding: 10px 12px 14px; }
 }
+.conversation-execution {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 8px 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #F5C2C7;
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  background: var(--primary-lighter);
+  color: var(--gray-700);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.conversation-execution-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 18px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+}
+.conversation-execution-title { display: block; color: var(--primary); font-weight: 700; }
+.conversation-execution-meta { display: block; margin-top: 2px; color: var(--gray-500); }
+.execution-status-generating { border-left-color: #E65100; background: #FFF8E1; }
+.execution-status-generating .conversation-execution-icon { background: #FFF3E0; color: #E65100; }
+.execution-status-complete { border-left-color: var(--primary); }
 </style>
 </head>
 <body>
@@ -3060,12 +3210,12 @@ input, textarea { font-family: inherit; }
   </div>
   <div class="login-form-panel">
     <div class="login-form-header">
-      <div class="login-form-title">欢迎登录</div>
-      <div class="login-form-desc">请输入您的账号信息以进入系统</div>
+      <div class="login-form-title">管理员登录</div>
+      <div class="login-form-desc">当前原型默认以系统管理员身份进入平台</div>
     </div>
     <div class="login-field">
       <label class="login-field-label">用户名</label>
-      <input type="text" class="login-field-input" id="loginUsername" placeholder="请输入用户名" value="admin">
+      <input type="text" class="login-field-input" id="loginUsername" placeholder="请输入用户名" value="admin" readonly>
     </div>
     <div class="login-field">
       <label class="login-field-label">密码</label>
@@ -3075,18 +3225,13 @@ input, textarea { font-family: inherit; }
       <label class="login-remember"><input type="checkbox" checked>记住我</label>
       <span class="login-forgot">忘记密码？</span>
     </div>
-    <button class="login-btn" onclick="handleLogin()">登 录</button>
-    <div class="login-divider">
-      <div class="login-divider-line"></div>
-      <span class="login-divider-text">快捷登录（选择角色直接进入）</span>
-      <div class="login-divider-line"></div>
-    </div>
-    <div class="login-roles" id="loginRoles"></div>
+    <button class="login-btn" onclick="handleLogin()">以管理员身份进入</button>
+    <div class="login-admin-note">当前为原型预览环境，进入后将展示系统管理员权限范围。</div>
     <div class="login-footer">© 2026 审计数字员工平台 · 内部系统</div>
   </div>
 </div>
 
-<div class="app">
+<div class="app home-view">
   <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebarMobile()"></div>
   <!-- ===== Sidebar ===== -->
   <aside class="sidebar" id="sidebar">
@@ -3129,6 +3274,10 @@ input, textarea { font-family: inherit; }
         <span class="breadcrumb-item active">审计任务工作台</span>
       </div>
       <div class="topbar-right">
+        <button class="topbar-btn module-home-btn" onclick="returnToHomeWorkspace()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+          返回首页
+        </button>
         <div class="topbar-admin-wrap" id="topbarAdminWrap" style="display:none">
           <button class="topbar-admin-btn" id="topbarAdminBtn" onclick="toggleAdminDropdown(event)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
@@ -3868,7 +4017,7 @@ input, textarea { font-family: inherit; }
               <div class="project-filter-panel-head"><span class="project-filter-panel-title">高级筛选</span><span class="project-filter-result" id="projectFilterResult">当前显示 12 个项目</span></div>
               <div class="project-filter-grid">
                 <label class="project-filter-field wide"><span class="project-filter-label">项目检索</span><input id="filterKeyword" class="project-filter-control" placeholder="项目名称、编号、负责人、被审计单位" oninput="syncProjectFilterDraft()"></label>
-                <label class="project-filter-field"><span class="project-filter-label">项目名称</span><select id="filterPhase" class="project-filter-control" onchange="syncProjectFilterDraft()"><option value="">全部阶段</option><option value="init">项目立项</option><option value="plan">审前准备</option><option value="active">现场实施</option><option value="report">审计报告</option><option value="rectify">整改跟踪</option><option value="done">项目归档</option></select></label>
+                <label class="project-filter-field"><span class="project-filter-label">项目阶段</span><select id="filterPhase" class="project-filter-control" onchange="syncProjectFilterDraft()"><option value="">全部阶段</option><option value="init">项目立项</option><option value="plan">审前准备</option><option value="active">现场实施</option><option value="report">审计报告</option><option value="rectify">整改跟踪</option><option value="done">项目归档</option></select></label>
                 <label class="project-filter-field"><span class="project-filter-label">项目编号</span><input id="filterCode" class="project-filter-control" placeholder="如 SJ-2026" oninput="syncProjectFilterDraft()"></label>
                 <label class="project-filter-field"><span class="project-filter-label">负责人</span><select id="filterLeader" class="project-filter-control" onchange="syncProjectFilterDraft()"><option value="">全部负责人</option><option>张审计</option><option>李审计</option><option>王审计</option></select></label>
                 <label class="project-filter-field"><span class="project-filter-label">被审单位</span><select id="filterAuditedUnit" class="project-filter-control" onchange="syncProjectFilterDraft()"><option value="">全部被审计单位</option><option>信息中心</option><option>采购管理部</option><option>法务部</option><option>财务部</option><option>工程建设部</option><option>数字化办公室</option></select></label>
@@ -3900,7 +4049,7 @@ input, textarea { font-family: inherit; }
             <div class="project-stat-label">现场实施</div>
           </div>
           <div class="project-stat-card" onclick="filterProjects('report')">
-            <div class="project-stat-icon" style="background:#E3F2FD;color:#1976D2">📝</div>
+            <div class="project-stat-icon" style="background:var(--primary-light);color:var(--primary)">📝</div>
             <div class="project-stat-value" id="statReport">2</div>
             <div class="project-stat-label">审计报告</div>
           </div>
@@ -4131,7 +4280,7 @@ input, textarea { font-family: inherit; }
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
               刷新列表
             </button>
-            <button class="topbar-btn primary" onclick="openAgentOrchestration()">
+            <button class="topbar-btn primary" onclick="openCreateAgent()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
               创建 Agent
             </button>
@@ -4489,7 +4638,6 @@ input, textarea { font-family: inherit; }
             <div class="materials-context">当前任务：<strong id="materialsProjectContext">2026年度经济责任审计</strong></div>
           </div>
           <div class="materials-header-actions">
-            <button class="topbar-btn" onclick="showToast('可将资料批量上传至当前项目目录')">上传资料</button>
             <button class="topbar-btn primary" onclick="showToast('已打开当前任务资料上传入口')">上传资料</button>
           </div>
         </div>
@@ -4934,21 +5082,25 @@ function renderPresetConversation(session) {
 
 function renderSidebar() {
   const container = document.getElementById('navSection');
+  if (!container) return;
   let html = '';
 
-  navConfig.common.forEach(item => {
+  const renderNavItem = (item, extra = '') => {
     const action = item.action || `switchView('${item.view}')`;
     const badgeHtml = item.badge ? `<span class="nav-badge" style="background:var(--primary);color:white">${item.badge}</span>` : '';
-    html += `
-      <div class="nav-item" data-view="${item.view}" onclick="${action}">
+    return `
+      <div class="nav-item" data-view="${item.view}" ${extra} onclick="${action}">
         <div class="nav-icon">${item.icon}</div>
         <span class="nav-label">${item.label}</span>
         ${badgeHtml}
       </div>
     `;
+  };
+
+  navConfig.common.forEach(item => {
+    html += renderNavItem(item);
   });
 
-  // Admin nav moved to topbar dropdown; update visibility
   const adminWrap = document.getElementById('topbarAdminWrap');
   if (adminWrap) adminWrap.style.display = (currentUser.role === 'admin') ? '' : 'none';
 
@@ -5284,7 +5436,7 @@ function renderProjectCards() {
     init: 'background:var(--gray-100);color:var(--gray-500)',
     plan: 'background:var(--warning-bg);color:var(--warning)',
     active: 'background:var(--primary-light);color:var(--primary)',
-    report: 'background:#E3F2FD;color:#1976D2',
+    report: 'background:var(--primary-light);color:var(--primary)',
     rectify: 'background:#F3E5F5;color:#7B1FA2',
     done: 'background:var(--success-bg);color:var(--success)'
   };
@@ -5415,7 +5567,7 @@ const phaseColors = {
   '项目立项': '#9E9E9E',
   '审前准备': '#F79009',
   '现场实施': '#D32F2F',
-  '审计报告': '#1565C0',
+  '审计报告': 'var(--primary)',
   '整改跟踪': '#7B1FA2',
   '项目归档': '#2E7D32'
 };
@@ -5991,6 +6143,18 @@ function switchRole(roleKey) {
 }
 
 function switchView(view) {
+  const moduleViews = new Set([
+    'todo', 'manual', 'admin-users', 'admin-kb', 'admin-asset-detail',
+    'admin-qa-kb', 'admin-qa-kb-detail', 'admin-agents',
+    'admin-orchestration', 'admin-metrics'
+  ]);
+  const app = document.querySelector('.app');
+  if (app) {
+    app.classList.toggle('module-mode', moduleViews.has(view));
+    app.classList.toggle('home-view', view === 'chat');
+  }
+  if (moduleViews.has(view)) closeSidebarMobile();
+
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   const target = document.getElementById('view-' + view);
   if (target) target.classList.add('active');
@@ -6051,6 +6215,12 @@ function switchView(view) {
   if (window.innerWidth <= 768) {
     closeSidebarMobile();
   }
+}
+
+function returnToHomeWorkspace() {
+  closeAdminDropdown();
+  switchView('chat');
+  goHome();
 }
 
 function toggleSidebar() {
@@ -6435,12 +6605,12 @@ function syncQaKnowledgeBase() {
 
 // ===== Agent Management =====
 const agentData = [
-  { id: 'agent-initiation', name: '审计立项助手', stage: '项目立项', capability: '项目立项校验、年度计划匹配与审批材料生成', knowledgeBase: '法规库 / 业务规则库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '今天 17:28', runs: 126, owner: '李管理员', reviewRule: '项目编号、审计范围和年度计划一致性需人工确认', mode: 'single' },
+  { id: 'agent-initiation', name: '立项助手', stage: '项目立项', capability: '项目立项校验、年度计划匹配与审批材料生成', knowledgeBase: '法规库 / 业务规则库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '今天 17:28', runs: 126, owner: '李管理员', reviewRule: '项目编号、审计范围和年度计划一致性需人工确认', mode: 'single' },
   { id: 'agent-preaudit', name: '审前准备助手', stage: '审前准备', capability: '审计组配置、审前调查、方案与通知书生成', knowledgeBase: '模板库 / 法规库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'running', updated: '今天 17:12', runs: 208, owner: '张审计', reviewRule: '审计重点、人员权限和通知书签发前需组长复核' },
   { id: 'agent-fieldwork', name: '现场实施助手', stage: '现场实施', capability: '证据索引、底稿生成、问题识别与法规定性', knowledgeBase: '案例库 / 法规库 / 工具库', model: '审计推理模型 V4.0', status: 'review', runtime: 'running', updated: '今天 16:45', runs: 486, owner: '李审计', reviewRule: '大额异常、低置信度定性和证据链缺失必须人工复核' },
-  { id: 'agent-report', name: '审计报告助手', stage: '审计报告', capability: '底稿汇总、报告起草、审理校验与版本比对', knowledgeBase: '模板库 / 法规库 / 术语库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '今天 15:30', runs: 172, owner: '赵审理', reviewRule: '报告定稿、审理结论和签发前必须保留人工审核节点' },
+  { id: 'agent-report', name: '报告编制助手', stage: '审计报告', capability: '底稿汇总、报告起草、审理校验与版本比对', knowledgeBase: '模板库 / 法规库 / 术语库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '今天 15:30', runs: 172, owner: '赵审理', reviewRule: '报告定稿、审理结论和签发前必须保留人工审核节点' },
   { id: 'agent-rectification', name: '整改督办助手', stage: '整改跟踪', capability: '整改计划生成、进度监测、逾期督办和销号校验', knowledgeBase: '业务规则库 / 案例库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '今天 14:08', runs: 154, owner: '王主管', reviewRule: '不同意审核须填写意见，复核通过后方可销号' },
-  { id: 'agent-archive', name: '项目归档助手', stage: '项目归档', capability: '归档清单生成、资料完整性校验与项目终结核验', knowledgeBase: '模板库 / 业务规则库', model: '审计通用模型 V3.5', status: 'disabled', runtime: 'idle', updated: '2026-08-11 18:20', runs: 64, owner: '李管理员', reviewRule: '报告签发、归档审核和整改闭环完成后才允许项目终结' }
+  { id: 'agent-archive', name: '归档助手', stage: '项目归档', capability: '归档清单生成、资料完整性校验与项目终结核验', knowledgeBase: '模板库 / 业务规则库', model: '审计通用模型 V3.5', status: 'disabled', runtime: 'idle', updated: '2026-08-11 18:20', runs: 64, owner: '李管理员', reviewRule: '报告签发、归档审核和整改闭环完成后才允许项目终结' }
 ];
 
 const agentStatusMeta = {
@@ -6533,36 +6703,81 @@ function setModalContent(title, body, footer) {
   document.getElementById('modalOverlay').classList.add('show');
 }
 
+const createAgentTypes = {
+  assistant: { label: '审计助手', stage: '现场实施', name: '', capability: '面向单一审计任务，基于知识库和工具输出可追溯的专业结论。', knowledgeBase: '法规库 / 业务规则库', model: '审计推理模型 V4.0', reviewRule: '关键审计结论、金额和风险等级需人工复核' },
+  workflow: { label: '审计工作流', stage: '现场实施', name: '', capability: '通过固定的检索、校验、生成和复核节点处理标准化审计作业。', knowledgeBase: '法规库 / 模板库 / 业务规则库', model: '审计推理模型 V4.0', reviewRule: '工作流中的成果输出和异常分支需人工确认', mode: 'flow' },
+  multi: { label: '多 Agent 协作', stage: '现场实施', name: '', capability: '由多个审计角色分工处理证据分析、法规匹配与成果汇总。', knowledgeBase: '法规库 / 案例库 / 工具库', model: '审计推理模型 V4.0', reviewRule: '跨 Agent 转交后的重大结论需人工复核', mode: 'multi' },
+  fromTemplate: { label: '从阶段模板创建', stage: '项目立项', name: '立项助手副本', capability: '项目立项校验、年度计划匹配与审批材料生成。', knowledgeBase: '年度审计计划库 / 立项审批规则库', model: '审计推理模型 V4.0', reviewRule: '项目编号、审计范围和年度计划一致性需人工确认' }
+};
+let selectedCreateAgentType = 'assistant';
+
+function getCreateAgentTypeCard(type, icon, tag = '') {
+  const item = createAgentTypes[type];
+  return `<button type="button" class="create-agent-type ${type === selectedCreateAgentType ? 'selected' : ''}" data-create-agent-type="${type}" onclick="selectCreateAgentType('${type}')">${tag ? `<span class="create-agent-type-tag">${tag}</span>` : ''}<span class="create-agent-type-icon">${icon}</span><span class="create-agent-type-name">${item.label}</span></button>`;
+}
+
 function openCreateAgent() {
-  setModalContent('创建审计 Agent', `
-    <div class="agent-modal-grid">
-      <div class="agent-modal-field"><label>Agent 名称</label><input id="newAgentName" placeholder="例如：资金核验助手"></div>
-      <div class="agent-modal-field"><label>所属审计阶段</label><select id="newAgentStage"><option>项目立项</option><option>审前准备</option><option>现场实施</option><option>审计报告</option><option>整改跟踪</option><option>项目归档</option></select></div>
-      <div class="agent-modal-field"><label>关联知识库</label><input id="newAgentKb" value="法规库 / 业务规则库"></div>
-      <div class="agent-modal-field"><label>调用模型</label><select id="newAgentModel"><option>审计推理模型 V4.0</option><option>审计通用模型 V3.5</option></select></div>
-      <div class="agent-modal-field full"><label>核心能力说明</label><textarea id="newAgentCapability" placeholder="描述该 Agent 的审计任务、输入资料和输出结果"></textarea></div>
-      <div class="agent-modal-field full"><label>人工复核规则</label><textarea id="newAgentReview" placeholder="说明哪些结论、金额或状态必须人工确认"></textarea></div>
-    </div>`, '<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="createAgent()">创建并启用</button>');
+  selectedCreateAgentType = 'assistant';
+  document.getElementById('modalOverlay').classList.add('create-agent-modal-open');
+  setModalContent('创建审计应用', `
+    <div class="create-agent-modal">
+      <p class="create-agent-intro">选择创建方式后，将进入可视化编排页继续配置提示词、知识资产、工具调用、工作流和人工审核边界。</p>
+      <div>
+        <div class="create-agent-section-label">选择应用类型</div>
+        <div class="create-agent-type-grid" id="createAgentTypeGrid">
+          ${getCreateAgentTypeCard('assistant', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 9h6M9 13h6M12 17h.01"/></svg>')}
+          ${getCreateAgentTypeCard('workflow', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="12" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8.5 7.5l7 3M8.5 16.5l7-3"/></svg>')}
+          ${getCreateAgentTypeCard('multi', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="6" r="3"/><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M10.5 8.6L7.5 14M13.5 8.6l3 5.4M9 17h6"/></svg>', '协作')}
+          ${getCreateAgentTypeCard('fromTemplate', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 12h6M9 16h5"/></svg>')}
+        </div>
+      </div>
+      <div class="create-agent-form">
+        <div class="create-agent-field"><label>图标与名称</label><input id="newAgentName" placeholder="给你的审计应用起个名称" oninput="syncCreateAgentSubmit()"></div>
+        <div class="create-agent-field"><label>描述 <span style="font-weight:400;color:var(--gray-400)">（可选）</span></label><textarea id="newAgentCapability" placeholder="例如：协助识别采购流程中的合规风险，输出法规依据和人工复核建议。" oninput="syncCreateAgentSubmit()"></textarea></div>
+      </div>
+      <div class="create-agent-hint"><span>✦</span><span><strong id="createAgentHintTitle">审计助手</strong><span id="createAgentHintText"> 适合单项审计任务，将在下一步配置知识库、模型、工具及人工审核边界。</span></span></div>
+    </div>`, '<span class="create-agent-footer-note">创建后可在编排页继续完善配置</span><button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" id="createAgentSubmit" onclick="createAgent()" disabled>创建</button>');
+  syncCreateAgentSubmit();
+}
+
+function selectCreateAgentType(type) {
+  if (!createAgentTypes[type]) return;
+  selectedCreateAgentType = type;
+  document.querySelectorAll('[data-create-agent-type]').forEach(item => item.classList.toggle('selected', item.dataset.createAgentType === type));
+  const preset = createAgentTypes[type];
+  const hintTitle = document.getElementById('createAgentHintTitle');
+  const hintText = document.getElementById('createAgentHintText');
+  if (hintTitle) hintTitle.textContent = preset.label;
+  if (hintText) hintText.textContent = type === 'workflow' ? ' 将以受控节点搭建审计工作流。' : type === 'multi' ? ' 将进入多 Agent 协作编排画布。' : type === 'fromTemplate' ? ' 将预装六阶段审计模板配置，可继续调整。' : ' 适合单项审计任务，将在下一步配置知识库、模型、工具及人工审核边界。';
+  const name = document.getElementById('newAgentName');
+  const capability = document.getElementById('newAgentCapability');
+  if (name && !name.value.trim() && preset.name) name.value = preset.name;
+  if (capability && !capability.value.trim() && preset.capability) capability.value = preset.capability;
+  syncCreateAgentSubmit();
+}
+
+function syncCreateAgentSubmit() {
+  const button = document.getElementById('createAgentSubmit');
+  const name = document.getElementById('newAgentName')?.value.trim();
+  if (button) button.disabled = !name;
 }
 
 function createAgent() {
   const name = document.getElementById('newAgentName')?.value.trim();
-  const capability = document.getElementById('newAgentCapability')?.value.trim();
-  if (!name || !capability) {
-    showToast('请填写 Agent 名称和核心能力说明');
-    return;
-  }
-  const stage = document.getElementById('newAgentStage').value;
-  agentData.unshift({
-    id: `agent-${Date.now()}`, name, stage, capability,
-    knowledgeBase: document.getElementById('newAgentKb').value.trim() || '未配置知识库',
-    model: document.getElementById('newAgentModel').value,
+  if (!name) { showToast('请填写审计应用名称'); return; }
+  const preset = createAgentTypes[selectedCreateAgentType] || createAgentTypes.assistant;
+  const capability = document.getElementById('newAgentCapability')?.value.trim() || preset.capability;
+  const agent = {
+    id: `agent-${Date.now()}`, name, stage: preset.stage, capability,
+    knowledgeBase: preset.knowledgeBase, model: preset.model,
     status: 'enabled', runtime: 'idle', updated: '刚刚', runs: 0, owner: currentUser.name,
-    reviewRule: document.getElementById('newAgentReview').value.trim() || '关键审计结论需人工复核'
-  });
+    reviewRule: preset.reviewRule, mode: preset.mode || 'single'
+  };
+  agentData.unshift(agent);
   closeModal();
-  resetAgentFilters();
-  showToast('Agent 已创建并启用');
+  activeOrchestrationMode = agent.mode;
+  openAgentOrchestration(agent.id);
+  showToast(`已创建${name}，请继续完成编排配置`);
 }
 
 function openAgentConfig(id) {
@@ -6589,9 +6804,32 @@ let userVariables = [
 function modeLabel(mode) {
   return { single: '对话型 · 单 Agent', multi: '对话型 · 多 Agents', flow: '对话流模式' }[mode] || '单 Agent';
 }
+const agentBuildProfiles = {
+  '项目立项': { role: '核验立项依据、年度计划匹配关系及审批材料完整性', prompt: '你是立项助手。围绕项目立项请求，核验年度计划、审计范围、项目编号与审批链路的一致性。仅基于已获取资料形成可追溯结论；缺少依据时列入待补录清单，涉及立项范围调整时提示人工复核。', tools: ['年度计划检索', '立项规则校验', '项目台账查询'], inputs: ['年度审计计划', '项目基本信息', '立项申请及审批材料'], outputs: ['立项校验结论', '审批材料清单', '待补录项与人工复核提示'], knowledgeAssets: ['年度审计计划库', '立项审批规则库', '项目台账与历史立项'], processing: 'PDF / Word / Excel 解析；按项目编号、年度和审批单元建立元数据索引', chunking: '按“项目—立项依据—审批节点”分段，保留原件页码', retrieval: { strategy: '混合检索 + 规则过滤', topK: 6, threshold: '0.78', rerank: true }, flow: ['接收立项申请', '核验计划与项目台账', '匹配审批规则', '生成校验结论', '人工确认立项范围'], review: '项目编号、审计范围、年度计划不一致或涉及计划外立项时，必须由项目负责人确认。' },
+  '审前准备': { role: '完成审计组配置、审前调查、方案和通知书准备', prompt: '你是审前准备助手。根据项目计划和调查材料，生成可执行的审前准备清单，明确审计重点、人员分工、资料需求和通知书要点。不得直接确认人员权限、审计重点或签发结果，相关事项需提交组长复核。', tools: ['审计组配置查询', '审前调查问卷', '审计方案模板', '通知书模板'], inputs: ['项目立项资料', '被审计单位基础信息', '历史审计问题'], outputs: ['审前调查摘要', '审计方案要点', '审计通知书草稿'], knowledgeAssets: ['审前调查问卷库', '审计方案与通知书模板', '历史项目问题库', '审计人员能力台账'], processing: '对调查问卷、历史问题和单位资料提取主体、业务领域、风险事项标签', chunking: '按“单位—业务领域—风险事项”分段，问卷答案与来源材料双向关联', retrieval: { strategy: '语义检索 + 同类项目召回', topK: 8, threshold: '0.72', rerank: true }, flow: ['读取已立项资料', '匹配审计组与回避规则', '生成审前风险画像', '编排审计方案', '生成通知书草稿', '组长复核'], review: '审计重点、人员权限、回避关系与通知书签发信息必须由审计组长复核。' },
+  '现场实施': { role: '索引审计证据、识别异常、形成问题定性与审计底稿', prompt: '你是现场实施助手。对凭证、流水、合同和访谈纪要进行证据索引与交叉核验，识别异常交易和证据链断点。生成的问题定性必须引用法规依据和证据编号；大额异常、低置信度结论或证据缺口必须标注人工复核。', tools: ['证据索引工具', '交易流水分析', '异常规则引擎', '法规条文检索', '审计底稿模板'], inputs: ['业务凭证与合同', '交易流水与账务数据', '访谈纪要及取证材料'], outputs: ['证据索引清单', '异常事项与定性依据', '审计问题底稿'], knowledgeAssets: ['审计法规库', '问题案例与定性库', '审计底稿模板库', '证据与业务数据索引'], processing: 'OCR 识别附件；合同、凭证、流水按证据编号关联；敏感字段脱敏后入库', chunking: '按“事项—证据编号—交易链路”分段，保留金额、日期、主体等结构化字段', retrieval: { strategy: '证据链检索 + 法规精确召回', topK: 10, threshold: '0.82', rerank: true }, flow: ['资料入库与证据编号', '流水规则筛查', '穿透关联合同凭证', '检索法规与案例', '形成问题定性', '生成审计问题底稿', '人工复核'], review: '大额异常、低置信度定性、证据链缺失或拟作出处理建议的事项，必须由现场主审人工复核。' },
+  '审计报告': { role: '汇总底稿、校验审理意见并生成审计报告初稿', prompt: '你是报告编制助手。基于已确认的审计底稿和审理意见汇总问题，按照报告模板生成结构完整、措辞审慎的审计报告初稿。不得新增未在底稿中确认的问题；对重大事项、审理分歧和签发结论必须提示人工审核。', tools: ['底稿汇总工具', '审计报告模板', '术语库', '版本比对工具', '法规检索'], inputs: ['已确认审计底稿', '审理意见', '整改责任单位信息'], outputs: ['问题汇总表', '审计报告初稿', '审理校验与版本差异说明'], knowledgeAssets: ['已确认审计底稿库', '审计报告模板库', '审理意见库', '审计术语与法规库'], processing: '仅接收已确认底稿；对问题编号、责任单位、法规引用和审理意见进行结构化抽取', chunking: '按“报告章节—问题编号—审理意见”分段，支持版本差异追踪', retrieval: { strategy: '底稿引用检索 + 版本比对', topK: 12, threshold: '0.85', rerank: false }, flow: ['汇总已确认底稿', '问题归并与排序', '核验审理意见', '套用报告模板', '生成报告初稿', '审理校验与签发审核'], review: '报告定稿、重大事项表述、审理分歧及签发结论必须经过人工审核，禁止从未确认材料新增问题。' },
+  '整改跟踪': { role: '跟踪整改计划、预警逾期事项并校验销号条件', prompt: '你是整改督办助手。依据问题台账、整改计划和佐证资料监测进度，识别逾期、未完成及复发风险。仅在整改证据和复核意见完整时建议销号；不同意审核或逾期事项应输出明确督办意见。', tools: ['整改台账查询', '逾期预警规则', '销号条件校验', '案例库检索'], inputs: ['审计问题台账', '整改计划与进度', '整改佐证材料'], outputs: ['整改进度看板', '逾期督办清单', '销号校验结论'], knowledgeAssets: ['审计问题与整改台账', '整改销号规则库', '督办案例库', '整改佐证材料库'], processing: '从台账和佐证材料提取问题编号、责任单位、时限、完成状态与复核结论', chunking: '按“问题编号—责任单位—整改节点”分段，状态变更自动留痕', retrieval: { strategy: '台账精确匹配 + 时限规则筛选', topK: 8, threshold: '0.80', rerank: false }, flow: ['读取整改台账', '校验计划与时限', '比对佐证材料', '识别逾期与复发风险', '生成督办意见', '销号条件复核'], review: '销号、延期、不同意审核及高风险逾期事项必须由整改督办负责人复核后生效。' },
+  '项目归档': { role: '校验归档材料完整性并完成项目终结核验', prompt: '你是归档助手。根据归档目录校验项目材料的完整性、版本一致性和留痕情况，形成归档清单。只有报告签发、归档审核及整改闭环材料齐备后，才可建议项目终结；缺件必须明确列出。', tools: ['归档目录校验', '文件完整性检查', '版本一致性比对', '项目终结规则'], inputs: ['审计项目全套材料', '报告签发记录', '整改闭环与归档审核记录'], outputs: ['归档完整性清单', '缺失材料清单', '项目终结核验结论'], knowledgeAssets: ['审计项目归档目录', '文书版本与签发记录库', '整改闭环材料库', '项目终结规则库'], processing: '识别文件格式、签章、版本、归档目录层级和留痕信息；重复件进行版本聚合', chunking: '按“归档目录—材料类型—版本号”分段，保留文件指纹与签发状态', retrieval: { strategy: '目录规则校验 + 文件元数据比对', topK: 6, threshold: '0.90', rerank: false }, flow: ['扫描项目材料', '匹配归档目录', '检查文件完整性', '比对签发与版本', '核验整改闭环', '输出终结建议', '归档审核'], review: '报告签发、归档审核、整改闭环任一材料缺失时不得项目终结；终结建议须由档案管理员确认。' }
+};
+function getAgentBuildProfile(agent) {
+  const base = agentBuildProfiles[agent?.stage] || { role: '识别审计任务并输出专业、可追溯的处理建议', prompt: '你是审计数字员工，请基于已配置规则和资料处理审计请求。', tools: ['法规库检索', '业务规则校验'], inputs: ['用户任务描述', '项目资料'], outputs: ['审计处理建议', '复核提示'] };
+  return agent?.buildConfig ? { ...base, ...agent.buildConfig } : { ...base };
+}
+function ensureAgentBuildConfig(agent) {
+  if (!agent) return getAgentBuildProfile(null);
+  if (!agent.buildConfig) agent.buildConfig = getAgentBuildProfile(agent);
+  return agent.buildConfig;
+}
+function applyAgentBuildConfig(agent) {
+  const config = ensureAgentBuildConfig(agent);
+  orchestrationNodes[0] = { ...orchestrationNodes[0], name: agent?.name || '审计任务助手', role: config.role, prompt: config.prompt, tools: config.tools, inputs: config.inputs, outputs: config.outputs };
+}
 function openAgentOrchestration(id) {
   activeOrchestrationAgentId = id || null;
-  activeOrchestrationMode = getAgent(id)?.mode || 'single';
+  const agent = getAgent(id);
+  activeOrchestrationMode = agent?.mode || 'single';
+  applyAgentBuildConfig(agent);
   selectedOrchestrationNodeId = 'agent-main';
   switchView('admin-orchestration');
 }
@@ -6623,14 +6861,22 @@ function renderOrchestrationSettings() {
   const container = document.getElementById('orchestrationSettings');
   if (!container) return;
   const isFlow = activeOrchestrationMode === 'flow';
+  const agent = getAgent(activeOrchestrationAgentId);
+  const config = ensureAgentBuildConfig(agent);
+  const buildingTitle = agent ? `${escapeHtml(agent.name)}搭建逻辑` : '智能体搭建逻辑';
+  const flowSteps = (config.flow || []).slice(0, 4);
   container.innerHTML = `
     <div class="orchestration-settings">
       <div class="orch-setting-item"><div><div class="orch-setting-name">基础信息</div><div class="orch-setting-desc">名称、审计阶段、模型与发布说明</div></div><button class="orch-setting-link" onclick="openOrchestrationParams()">编辑</button></div>
-      <div class="orch-setting-item"><div><div class="orch-setting-name">提示词与人工复核</div><div class="orch-setting-desc">统一约束输出口径和关键结论复核</div></div><button class="orch-setting-link" onclick="showToast('已定位全局提示词配置')">配置</button></div>
-      <div class="orch-setting-item"><div><div class="orch-setting-name">异步运行</div><div class="orch-setting-desc">耗时的检索、分析任务后台执行</div></div><button class="orch-switch ${isAsyncOrchestration ? 'on' : ''}" onclick="toggleAsyncOrchestration()" aria-label="切换异步运行"></button></div>
-      <div class="orch-setting-item ${isFlow ? 'orch-hidden' : ''}"><div><div class="orch-setting-name">知识与技能</div><div class="orch-setting-desc">法规库、案例库、模板库和审计工具</div></div><button class="orch-setting-link" onclick="showToast('已打开知识与技能配置')">配置</button></div>
+      <div class="orch-setting-item"><div><div class="orch-setting-name">六阶段搭建页</div><div class="orch-setting-desc">提示词、知识处理、检索、工具、变量与人工审核</div></div><button class="orch-setting-link" onclick="openAgentBuildConfigModal('overview')">进入</button></div>
+      <div class="orch-setting-item"><div><div><div class="orch-setting-name">异步运行</div><div class="orch-setting-desc">耗时的检索、分析任务后台执行</div></div></div><button class="orch-switch ${isAsyncOrchestration ? 'on' : ''}" onclick="toggleAsyncOrchestration()" aria-label="切换异步运行"></button></div>
+      <div class="orch-setting-item ${isFlow ? 'orch-hidden' : ''}"><div><div class="orch-setting-name">知识与技能</div><div class="orch-setting-desc">${escapeHtml((config.knowledgeAssets || []).slice(0, 2).join(' / ') || '法规库、案例库、模板库和审计工具')}</div></div><button class="orch-setting-link" onclick="openAgentBuildConfigModal('knowledge')">配置</button></div>
       <div class="orch-setting-item"><div><div class="orch-setting-name">开场白与反馈标签</div><div class="orch-setting-desc">统一用户对话体验与反馈归集</div></div><button class="orch-setting-link" onclick="showToast('已打开对话体验配置')">配置</button></div>
     </div>
+    <div class="orch-config-card"><div class="orch-config-card-head"><span>${buildingTitle}</span><button class="orch-setting-link" onclick="openAgentBuildConfigModal('overview')">编辑搭建逻辑</button></div><div class="orch-config-card-summary">${escapeHtml(config.role)}</div><div class="orch-config-tags">${config.tools.map(tool => `<span class="orch-config-tag">${escapeHtml(tool)}</span>`).join('')}</div></div>
+    <div class="agent-build-summary"><div class="agent-build-summary-card"><div class="agent-build-summary-title">检索策略</div><div class="agent-build-summary-text">${escapeHtml(config.retrieval?.strategy || '混合检索')} · Top ${escapeHtml(config.retrieval?.topK || '6')} · 阈值 ${escapeHtml(config.retrieval?.threshold || '0.75')}</div></div><div class="agent-build-summary-card"><div class="agent-build-summary-title">人工审核</div><div class="agent-build-summary-text">${escapeHtml(config.review || agent?.reviewRule || '关键审计结论需人工复核')}</div></div></div>
+    <div class="agent-build-stepper">${flowSteps.map((step, index) => `<div class="agent-build-step"><div class="agent-build-step-index">${index + 1}</div><div><div class="agent-build-step-title">${escapeHtml(step)}</div><div class="agent-build-step-desc">当前阶段工作流节点，支持在搭建页调整。</div></div></div>`).join('')}</div>
+    <div class="orch-config-card"><div class="orch-config-card-head"><span>参数输入 / 输出</span><button class="orch-setting-link" onclick="openAgentBuildConfigModal('io')">编辑</button></div><div class="orch-config-tags">${config.inputs.map(item => `<span class="orch-config-tag">输入 · ${escapeHtml(item)}</span>`).join('')}${config.outputs.map(item => `<span class="orch-config-tag">输出 · ${escapeHtml(item)}</span>`).join('')}</div></div>
     <div class="orch-variable-section"><div class="orch-section-label"><span>系统变量</span><span style="color:var(--gray-400);font-weight:400">可直接引用</span></div>${systemVariables.map(item => `<div class="orch-variable"><div class="orch-variable-name">${item[0]}</div><div class="orch-variable-meta">${item[1]}</div></div>`).join('')}</div>
     <div class="orch-variable-section"><div class="orch-section-label"><span>用户变量</span><button class="orch-setting-link" onclick="openUserVariableModal()">+ 添加</button></div><div id="userVariableList">${renderUserVariables()}</div></div>`;
 }
@@ -6638,19 +6884,50 @@ function renderUserVariables() {
   if (!userVariables.length) return '<div class="orch-variable-meta">暂无用户变量，可添加个性化配置。</div>';
   return userVariables.map(variable => `<div class="orch-variable"><div class="orch-variable-name">${escapeHtml(variable.name)}</div><div class="orch-variable-meta">默认值：${escapeHtml(variable.defaultValue)} · ${escapeHtml(variable.scope)}<br>${escapeHtml(variable.description)}</div><div class="orch-variable-actions"><button onclick="openUserVariableModal('${variable.id}')">编辑</button><button class="danger" onclick="deleteUserVariable('${variable.id}')">删除</button></div></div>`).join('');
 }
+function getWorkflowCanvasNodes() {
+  const agent = getAgent(activeOrchestrationAgentId);
+  const config = ensureAgentBuildConfig(agent);
+  const main = orchestrationNodes[0];
+  const mainName = agent?.name || main.name;
+  const outputName = (config.outputs || []).includes('审计问题底稿') ? '审计问题底稿' : (config.outputs || []).includes('审计报告初稿') ? '审计报告初稿' : (config.outputs || [])[0] || '审计处理结论';
+  const isMulti = activeOrchestrationMode === 'multi';
+  return [
+    { id: 'flow-start', type: 'start', icon: '▣', iconClass: 'blue', name: '开始', role: '接收用户任务与项目上下文', meta: 'subject · email · 项目资料', x: 28, y: 190 },
+    { id: 'flow-branch', type: 'branch', icon: '⌁', iconClass: 'blue', name: '条件分支', role: '识别任务类型与资料完整度', meta: 'IF 审计资料已齐备', x: 205, y: 230 },
+    { id: isMulti ? 'agent-main' : 'flow-model', type: 'model', icon: 'AI', iconClass: 'blue', name: isMulti ? mainName : '审计任务解析', role: isMulti ? main.role : '提取任务、范围与关键审计要素', meta: isMulti ? '审计推理模型 V4.0' : '审计推理模型 V4.0', x: 390, y: 175 },
+    { id: 'flow-knowledge', type: 'knowledge', icon: '▤', iconClass: 'teal', name: '知识检索', role: '检索法规、案例、底稿与项目材料', meta: (config.knowledgeAssets || ['审计知识库'])[0], x: 590, y: 175 },
+    { id: 'flow-template', type: 'template', icon: '▦', iconClass: 'blue', name: '模板与规则校验', role: '套用模板并校验业务规则', meta: (config.tools || ['业务规则校验'])[0], x: 790, y: 175 },
+    { id: 'flow-output', type: 'output', icon: 'AI', iconClass: 'blue', name: '成果生成', role: `生成${outputName}并附引用依据`, meta: '审计推理模型 V4.0', x: 990, y: 175 },
+    { id: 'flow-review', type: 'review', icon: '✓', iconClass: 'purple', name: '人工复核', role: '重大结论、金额与风险等级复核', meta: '人工审核边界', x: 990, y: 345 },
+    { id: 'flow-end', type: 'end', icon: '↓', iconClass: 'orange', name: '结束', role: '输出受控审计成果', meta: outputName, x: 1120, y: 260 },
+    { id: 'flow-fallback', type: 'fallback', icon: '↓', iconClass: 'orange', name: '资料补充', role: '资料不足时提示补充项', meta: '待补充清单', x: 390, y: 370 }
+  ];
+}
 function renderOrchestrationCanvas() {
   const canvas = document.getElementById('orchestrationCanvas');
   if (!canvas) return;
-  const nodes = activeOrchestrationMode === 'single' ? [orchestrationNodes[0]] : activeOrchestrationMode === 'flow' ? [
-    { id: 'flow-intent', name: '意图识别', role: '解析用户审计诉求并提取参数' }, { id: 'flow-retrieve', name: '知识检索', role: '检索法规、案例与项目资料' }, { id: 'flow-output', name: '审计结论', role: '按固定模板生成受控输出' }
-  ] : orchestrationNodes;
-  if (!nodes.some(node => node.id === selectedOrchestrationNodeId)) selectedOrchestrationNodeId = nodes[0].id;
-  const nodeCards = nodes.map((node, index) => `${index ? '<div class="orch-connector"></div>' : ''}<div class="orch-node ${activeOrchestrationMode === 'flow' ? 'flow' : ''} ${node.id === selectedOrchestrationNodeId ? 'selected' : ''}" onclick="selectOrchestrationNode('${node.id}')"><div class="orch-node-icon">${activeOrchestrationMode === 'flow' ? '◇' : 'AI'}</div><div class="orch-node-name">${escapeHtml(node.name)}</div><div class="orch-node-role">${escapeHtml(node.role)}</div>${node.id === selectedOrchestrationNodeId && activeOrchestrationMode !== 'flow' ? '<span class="orch-node-status">正在对话</span>' : ''}</div>`).join('');
-  const canAdd = activeOrchestrationMode === 'multi';
-  canvas.innerHTML = `<div class="orch-canvas-toolbar"><div class="orch-canvas-caption">${activeOrchestrationMode === 'multi' ? '点击节点后可设置职责与转交条件；连线表示满足条件后的任务移交。' : activeOrchestrationMode === 'flow' ? '所有对话均按从左到右的固定流程执行。' : '默认开始节点已连接审计任务助手。'}</div><button class="topbar-btn" onclick="showToast('已保存当前画布布局')">保存草稿</button></div><div class="orch-canvas-flow"><div class="orch-node start">开始</div><div class="orch-connector"></div>${nodeCards}${canAdd ? '<div class="orch-connector"></div><button class="orch-add-node" onclick="addOrchestrationNode()">+ 添加 Agent</button>' : ''}</div>`;
+  const nodes = getWorkflowCanvasNodes();
+  const selectable = nodes.filter(node => !['flow-start', 'flow-end', 'flow-fallback'].includes(node.id));
+  if (!selectable.some(node => node.id === selectedOrchestrationNodeId)) selectedOrchestrationNodeId = activeOrchestrationMode === 'multi' ? 'agent-main' : 'flow-model';
+  const caption = activeOrchestrationMode === 'multi' ? '节点之间通过任务条件进行协作转交；可选择节点配置职责与转交规则。' : activeOrchestrationMode === 'flow' ? '全部对话沿受控审计流程执行；条件分支将资料不足的任务转入补充处理。' : '每个审计 Agent 均采用可解释的节点编排：解析、检索、规则校验、成果生成与人工复核。';
+  const lines = [
+    ['M166 244 H205', true], ['M350 268 C370 268 370 225 390 225', true], ['M350 268 C370 268 370 420 390 420', false], ['M548 225 H590', true], ['M748 225 H790', true], ['M948 225 H990', true], ['M1069 266 V345', false], ['M1148 395 C1180 395 1180 295 1120 295', true], ['M1148 295 H1120', true], ['M274 230 V198', false]
+  ];
+  const lineMarkup = lines.map(([path, active]) => `<path class="orch-workflow-line ${active ? 'active' : ''}" d="${path}"/>`).join('');
+  const cards = nodes.map(node => {
+    const selected = node.id === selectedOrchestrationNodeId;
+    const isTerminal = ['flow-start', 'flow-end', 'flow-fallback'].includes(node.id);
+    return `<button type="button" class="orch-node ${node.type} ${selected ? 'selected' : ''}" style="left:${node.x}px;top:${node.y}px" ${isTerminal ? 'onclick="showToast(\'该节点由流程自动执行\')"' : `onclick="selectOrchestrationNode('${node.id}')"`}><span class="orch-node-port left"></span><span class="orch-node-port right"></span><div class="orch-node-head"><span class="orch-node-icon ${node.iconClass}">${node.icon}</span><span class="orch-node-name">${escapeHtml(node.name)}</span></div><div class="orch-node-role">${escapeHtml(node.role)}</div><div class="orch-node-meta"><span>◫</span><span>${escapeHtml(node.meta)}</span></div>${selected ? '<span class="orch-node-status">已选中</span>' : ''}</button>`;
+  }).join('');
+  const addNode = activeOrchestrationMode === 'multi' ? '<button class="orch-add-node" style="left:590px;top:360px" onclick="addOrchestrationNode()">+ 添加协作 Agent</button>' : '';
+  canvas.innerHTML = `<div class="orch-canvas-toolbar"><div class="orch-canvas-caption">${caption}</div><button class="topbar-btn" onclick="showToast('已保存当前画布布局')">保存草稿</button></div><div class="orch-workflow-board"><svg class="orch-workflow-svg" viewBox="0 0 1240 530" aria-hidden="true">${lineMarkup}<circle class="orch-workflow-dot" cx="274" cy="198" r="5"/><text class="orch-workflow-label" x="280" y="191">资料完整</text><text class="orch-workflow-label" x="356" y="345">否则</text></svg>${cards}${addNode}</div>`;
 }
 function selectOrchestrationNode(id) { selectedOrchestrationNodeId = id; renderOrchestrationCanvas(); renderOrchestrationInspector(); }
-function getOrchestrationNode(id) { return orchestrationNodes.find(node => node.id === id) || (activeOrchestrationMode === 'flow' ? { id, name: id === 'flow-intent' ? '意图识别' : id === 'flow-retrieve' ? '知识检索' : '审计结论', role: '固定对话流节点', prompt: '按照已定义的流程节点处理。', handoff: '流程顺序执行' } : orchestrationNodes[0]); }
+function getOrchestrationNode(id) {
+  const canvasNode = getWorkflowCanvasNodes().find(node => node.id === id);
+  if (canvasNode) return { ...canvasNode, prompt: canvasNode.type === 'knowledge' ? '检索受控知识资产并返回来源定位。' : canvasNode.type === 'review' ? '对重大结论执行人工审核边界校验。' : '按照已定义的审计流程节点处理。', handoff: '按流程与条件自动转交' };
+  return orchestrationNodes.find(node => node.id === id) || orchestrationNodes[0];
+}
 function renderOrchestrationInspector() {
   const container = document.getElementById('orchestrationInspector');
   if (!container) return;
@@ -6672,6 +6949,49 @@ function sendOrchestrationDebug() { const input = document.getElementById('orche
 function toggleAsyncOrchestration() { isAsyncOrchestration = !isAsyncOrchestration; renderOrchestrationSettings(); showToast(`异步运行已${isAsyncOrchestration ? '开启' : '关闭'}`); }
 function openOrchestrationParams() { const agent = getAgent(activeOrchestrationAgentId); setModalContent('编辑智能体参数', `<div class="agent-modal-grid"><div class="agent-modal-field"><label>智能体名称</label><input id="orchestrationName" value="${escapeHtml(agent?.name || '新建审计智能体')}"></div><div class="agent-modal-field"><label>所属审计阶段</label><select id="orchestrationStage"><option>${escapeHtml(agent?.stage || '现场实施')}</option><option>项目立项</option><option>审前准备</option><option>审计报告</option><option>整改跟踪</option><option>项目归档</option></select></div><div class="agent-modal-field full"><label>发布说明</label><textarea id="orchestrationCapability">${escapeHtml(agent?.capability || '通过全局审计配置和节点协作，为用户提供受控、可追溯的审计处理能力。')}</textarea></div></div>`, '<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="saveOrchestrationParams()">保存参数</button>'); }
 function saveOrchestrationParams() { const agent = getAgent(activeOrchestrationAgentId); if (agent) { agent.name = document.getElementById('orchestrationName').value.trim() || agent.name; agent.stage = document.getElementById('orchestrationStage').value; agent.capability = document.getElementById('orchestrationCapability').value.trim() || agent.capability; } closeModal(); renderAgentOrchestration(); showToast('智能体参数已保存'); }
+const auditKnowledgeAssets = ['年度审计计划库', '立项审批规则库', '项目台账与历史立项', '审前调查问卷库', '审计方案与通知书模板', '历史项目问题库', '审计人员能力台账', '审计法规库', '问题案例与定性库', '审计底稿模板库', '证据与业务数据索引', '已确认审计底稿库', '审计报告模板库', '审理意见库', '审计术语与法规库', '审计问题与整改台账', '整改销号规则库', '督办案例库', '整改佐证材料库', '审计项目归档目录', '文书版本与签发记录库', '整改闭环材料库', '项目终结规则库'];
+const auditBuildTools = ['年度计划检索', '立项规则校验', '项目台账查询', '审计组配置查询', '审前调查问卷', '审计方案模板', '通知书模板', '证据索引工具', '交易流水分析', '异常规则引擎', '法规条文检索', '审计底稿模板', '底稿汇总工具', '审计报告模板', '术语库', '版本比对工具', '法规检索', '整改台账查询', '逾期预警规则', '销号条件校验', '案例库检索', '归档目录校验', '文件完整性检查', '版本一致性比对', '项目终结规则'];
+function openAgentBuildConfigModal(activeSection = 'overview') {
+  const agent = getAgent(activeOrchestrationAgentId);
+  const config = ensureAgentBuildConfig(agent);
+  const currentAssets = config.knowledgeAssets || [];
+  const toolList = [...new Set([...config.tools, ...auditBuildTools])];
+  const assetList = [...new Set([...currentAssets, ...auditKnowledgeAssets])];
+  const pane = (id, title, desc, content) => `<section class="agent-build-pane" data-build-pane="${id}" ${activeSection === id ? '' : 'hidden'}><div class="agent-build-pane-title">${title}</div><div class="agent-build-pane-desc">${desc}</div>${content}</section>`;
+  const nav = [['overview', '1. 职责与提示词'], ['knowledge', '2. 知识与处理'], ['retrieval', '3. 检索策略'], ['tools', '4. 工具与调用'], ['io', '5. 输入与输出'], ['workflow', '6. 工作流与审核']];
+  const overview = `<div class="agent-modal-grid"><div class="agent-modal-field full"><label>Agent 职责</label><textarea id="buildConfigRole">${escapeHtml(config.role)}</textarea></div><div class="agent-modal-field full"><label>系统提示词</label><textarea id="buildConfigPrompt" style="min-height:150px">${escapeHtml(config.prompt)}</textarea></div></div><div class="agent-build-review" style="margin-top:12px">提示词需明确审计依据、来源引用、不可越过的人工审核边界，以及资料缺失时的处理方式。</div>`;
+  const knowledge = `<div class="agent-build-asset-grid">${assetList.map(asset => `<label class="agent-build-asset"><input type="checkbox" name="buildAsset" value="${escapeHtml(asset)}" ${currentAssets.includes(asset) ? 'checked' : ''}><div><div class="agent-build-asset-name">${escapeHtml(asset)}</div><div class="agent-build-asset-desc">可作为 ${escapeHtml(agent?.name || '当前 Agent')} 的受控检索来源</div></div></label>`).join('')}</div><div class="agent-modal-grid" style="margin-top:14px"><div class="agent-modal-field full"><label>文档接入与解析策略</label><textarea id="buildConfigProcessing">${escapeHtml(config.processing || '')}</textarea></div><div class="agent-modal-field full"><label>分段 / 字段索引策略</label><textarea id="buildConfigChunking">${escapeHtml(config.chunking || '')}</textarea></div></div>`;
+  const retrieval = `<div class="agent-build-field-grid"><div class="agent-modal-field"><label>召回策略</label><select id="buildConfigRetrievalStrategy"><option ${config.retrieval?.strategy === '混合检索 + 规则过滤' ? 'selected' : ''}>混合检索 + 规则过滤</option><option ${config.retrieval?.strategy === '语义检索 + 同类项目召回' ? 'selected' : ''}>语义检索 + 同类项目召回</option><option ${config.retrieval?.strategy === '证据链检索 + 法规精确召回' ? 'selected' : ''}>证据链检索 + 法规精确召回</option><option ${config.retrieval?.strategy === '底稿引用检索 + 版本比对' ? 'selected' : ''}>底稿引用检索 + 版本比对</option><option ${config.retrieval?.strategy === '台账精确匹配 + 时限规则筛选' ? 'selected' : ''}>台账精确匹配 + 时限规则筛选</option><option ${config.retrieval?.strategy === '目录规则校验 + 文件元数据比对' ? 'selected' : ''}>目录规则校验 + 文件元数据比对</option></select></div><div class="agent-modal-field"><label>召回数量 Top K</label><input id="buildConfigTopK" type="number" min="1" max="30" value="${escapeHtml(config.retrieval?.topK || '6')}"></div><div class="agent-modal-field"><label>相似度阈值</label><input id="buildConfigThreshold" type="number" min="0" max="1" step="0.01" value="${escapeHtml(config.retrieval?.threshold || '0.75')}"></div><div class="agent-modal-field"><label>重排序</label><select id="buildConfigRerank"><option value="true" ${config.retrieval?.rerank ? 'selected' : ''}>启用重排序</option><option value="false" ${!config.retrieval?.rerank ? 'selected' : ''}>不启用</option></select></div></div><div class="agent-build-review" style="margin-top:12px">检索结果需携带知识来源与定位信息；无有效召回时不得虚构法规、底稿或事实依据。</div>`;
+  const tools = `<div class="orch-tool-list">${toolList.map(tool => `<label class="orch-tool-item"><input type="checkbox" name="buildTool" value="${escapeHtml(tool)}" ${config.tools.includes(tool) ? 'checked' : ''}><div><div class="orch-tool-name">${escapeHtml(tool)}</div><div class="orch-tool-desc">${tool.includes('法规') ? '检索适用法规与监管要求' : tool.includes('模板') ? '读取标准审计文档结构并受控生成' : tool.includes('规则') || tool.includes('校验') ? '按预设规则完成审计校验与异常留痕' : '支撑当前阶段取数、分析和结果输出'}</div></div></label>`).join('')}</div>`;
+  const io = `<div class="orch-io-grid"><div class="agent-modal-field"><label>输入参数 / 材料（每行一个）</label><textarea id="buildConfigInputs" style="min-height:180px">${escapeHtml(config.inputs.join('\n'))}</textarea></div><div class="agent-modal-field"><label>输出变量 / 成果（每行一个）</label><textarea id="buildConfigOutputs" style="min-height:180px">${escapeHtml(config.outputs.join('\n'))}</textarea></div></div><div class="agent-build-review" style="margin-top:12px">将输入材料映射为可追溯变量；输出必须标明成果类型、引用范围与是否需要人工确认。</div>`;
+  const workflow = `<div class="agent-modal-field"><label>工作流节点（每行一个，按执行顺序）</label><textarea id="buildConfigFlow" style="min-height:170px">${escapeHtml((config.flow || []).join('\n'))}</textarea></div><div class="agent-build-review" style="margin-top:12px"><strong>人工审核与异常分支</strong><br><textarea id="buildConfigReview" style="width:100%;box-sizing:border-box;margin-top:8px;min-height:90px;border:1px solid var(--gray-200);border-radius:6px;padding:8px;color:var(--gray-700);font-size:12px;resize:vertical">${escapeHtml(config.review || agent?.reviewRule || '')}</textarea></div>`;
+  setModalContent(`${agent?.name || '审计智能体'} · 阶段搭建页`, `<div class="agent-build-modal"><nav class="agent-build-nav">${nav.map(([id, label]) => `<button class="agent-build-nav-item ${activeSection === id ? 'active' : ''}" data-build-nav="${id}" onclick="switchAgentBuildSection('${id}')">${label}</button>`).join('')}</nav><div class="agent-build-pane-wrap">${pane('overview', '职责与提示词', '定义该阶段的角色边界、依据引用和输出规范。', overview)}${pane('knowledge', '知识资产与数据处理', '选择该 Agent 专属知识来源，并配置文档解析、元数据和分段规则。', knowledge)}${pane('retrieval', '检索与召回配置', '设置受控检索方式、召回数量、阈值与重排序，减少无关上下文。', retrieval)}${pane('tools', '工具与调用能力', '仅启用当前阶段必要的取数、校验、模板和留痕能力。', tools)}${pane('io', '输入、输出与数据映射', '明确任务开始前的材料范围，以及可交付、可引用的结果。', io)}${pane('workflow', '工作流与人工审核', '将阶段任务拆为可控节点，并明确异常处理和人工审核出口。', workflow)}</div></div>`, '<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="saveAgentBuildConfig()">保存阶段搭建配置</button>');
+}
+function switchAgentBuildSection(section) { document.querySelectorAll('[data-build-pane]').forEach(pane => { pane.hidden = pane.dataset.buildPane !== section; }); document.querySelectorAll('[data-build-nav]').forEach(item => item.classList.toggle('active', item.dataset.buildNav === section)); }
+function parseBuildConfigLines(value) { return String(value || '').split('\n').map(item => item.trim()).filter(Boolean); }
+function saveAgentBuildConfig() {
+  const agent = getAgent(activeOrchestrationAgentId);
+  const target = agent ? ensureAgentBuildConfig(agent) : orchestrationNodes[0];
+  const tools = Array.from(document.querySelectorAll('input[name="buildTool"]:checked')).map(input => input.value);
+  const knowledgeAssets = Array.from(document.querySelectorAll('input[name="buildAsset"]:checked')).map(input => input.value);
+  const role = document.getElementById('buildConfigRole')?.value.trim();
+  const prompt = document.getElementById('buildConfigPrompt')?.value.trim();
+  const inputs = parseBuildConfigLines(document.getElementById('buildConfigInputs')?.value);
+  const outputs = parseBuildConfigLines(document.getElementById('buildConfigOutputs')?.value);
+  const flow = parseBuildConfigLines(document.getElementById('buildConfigFlow')?.value);
+  const processing = document.getElementById('buildConfigProcessing')?.value.trim();
+  const chunking = document.getElementById('buildConfigChunking')?.value.trim();
+  const review = document.getElementById('buildConfigReview')?.value.trim();
+  const topK = document.getElementById('buildConfigTopK')?.value.trim();
+  const threshold = document.getElementById('buildConfigThreshold')?.value.trim();
+  if (!role || !prompt || !tools.length || !knowledgeAssets.length || !inputs.length || !outputs.length || !flow.length || !processing || !chunking || !review || !topK || !threshold) { showToast('请完整配置提示词、知识处理、检索、工具、输入输出及人工审核'); return; }
+  Object.assign(target, { role, prompt, tools, knowledgeAssets, processing, chunking, inputs, outputs, flow, review, retrieval: { strategy: document.getElementById('buildConfigRetrievalStrategy')?.value || '混合检索 + 规则过滤', topK, threshold, rerank: document.getElementById('buildConfigRerank')?.value === 'true' } });
+  if (agent) { agent.reviewRule = review; agent.knowledgeBase = knowledgeAssets.slice(0, 3).join(' / '); agent.updated = '刚刚'; }
+  applyAgentBuildConfig(agent);
+  closeModal();
+  renderAgentOrchestration();
+  showToast('六阶段 Agent 搭建配置已保存');
+}
 function openUserVariableModal(id) { const variable = userVariables.find(item => item.id === id); setModalContent(variable ? '编辑用户变量' : '新增用户变量', `<div class="agent-modal-grid"><div class="agent-modal-field"><label>变量名称</label><input id="userVarName" value="${escapeHtml(variable?.name || '')}" placeholder="例如：audit_preference"></div><div class="agent-modal-field"><label>作用范围</label><select id="userVarScope"><option ${variable?.scope === '用户级' ? 'selected' : ''}>用户级</option><option ${variable?.scope === '会话级' ? 'selected' : ''}>会话级</option></select></div><div class="agent-modal-field"><label>默认值</label><input id="userVarDefault" value="${escapeHtml(variable?.defaultValue || '')}" placeholder="默认值"></div><div class="agent-modal-field"><label>变量说明</label><input id="userVarDesc" value="${escapeHtml(variable?.description || '')}" placeholder="变量用途"></div></div>`, `<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="saveUserVariable('${id || ''}')">确定</button>`); }
 function saveUserVariable(id) { const name = document.getElementById('userVarName').value.trim(); if (!name) { showToast('请填写变量名称'); return; } const data = { name, scope: document.getElementById('userVarScope').value, defaultValue: document.getElementById('userVarDefault').value.trim() || '未设置', description: document.getElementById('userVarDesc').value.trim() || '用户个性化变量' }; const target = userVariables.find(item => item.id === id); if (target) Object.assign(target, data); else userVariables.push({ id: `var-${Date.now()}`, ...data }); closeModal(); renderOrchestrationSettings(); showToast(target ? '用户变量已更新，重新发布后变量值将重置为默认值' : '用户变量已添加'); }
 function deleteUserVariable(id) { const variable = userVariables.find(item => item.id === id); if (!variable) return; setModalContent('删除用户变量', `<p>确认删除变量“${escapeHtml(variable.name)}”吗？重新发布后该变量对应的用户数据将被删除。</p>`, `<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="confirmDeleteUserVariable('${id}')">确认删除</button>`); }
@@ -8980,6 +9300,35 @@ function addTemplateGeneratedDocument(data) {
   scrollToBottom();
 }
 
+function renderDocumentGenerationProcess(taskKey, data) {
+  const isWorkingPaper = taskKey === 'generate_draft';
+  const steps = isWorkingPaper
+    ? [
+        ['任务与范围解析', '已完成', 'done'],
+        ['调取合同、招投标及付款凭证', '已完成 · 3类材料', 'done'],
+        ['证据编号关联与交叉核验', '已完成 · 8项证据', 'done'],
+        ['异常筛查与法规精确匹配', '已完成 · 2项问题', 'done'],
+        ['按底稿模板填充字段', '已完成', 'done'],
+        ['主审复核与签认附件校验', '待处理', 'pending']
+      ]
+    : [
+        ['报告范围与版本解析', '已完成', 'done'],
+        ['归集已审核底稿与问题清单', '已完成 · 2份底稿', 'done'],
+        ['问题归并、排序与影响分析', '已完成 · 5项问题', 'done'],
+        ['法规引用与审理意见比对', '已完成 · 2项提示', 'alert'],
+        ['套用报告模板并生成初稿', '已完成', 'done'],
+        ['组长、项目负责人及审理复核', '待处理', 'pending']
+      ];
+  const title = isWorkingPaper ? '审计底稿生成执行过程' : '审计报告撰写执行过程';
+  const context = isWorkingPaper
+    ? ['现场实施助手', data.project || '当前审计项目', '合同、招投标、付款与取证材料']
+    : ['报告编制助手', data.project || '当前审计项目', '已审核底稿、问题清单与审理意见'];
+  const note = isWorkingPaper
+    ? '已对合同、招投标文件和付款凭证建立证据索引；法规匹配和模板填充已完成。底稿需经主审复核，并补充被审计单位盖章确认附件后，方可推送问题清单。'
+    : '仅引用已审核底稿和已确认问题；系统未新增底稿外问题。初稿已完成法规引用和版本检查，诊断提示及报告内容仍须经组长、项目负责人和审理人员复核。';
+  return `<details class="output-process document-generation-process" open aria-label="${title}"><summary class="output-process-summary"><span class="output-process-summary-icon">✦</span>执行过程 <span class="output-process-summary-meta">检索、核验、生成与复核已留痕</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${title}</span><span class="output-process-subtitle">已完成 ${steps.filter(step => step[2] === 'done').length} / ${steps.length} 个步骤</span></div><div class="output-process-context">${context.map(item => `<span>${item}</span>`).join('')}</div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node ${step[2]}"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note"><strong>执行说明：</strong>${note}</p></div></details>`;
+}
+
 function addWorkingPaperDemo(data, taskKey = 'generate_draft') {
   const inner = document.getElementById('chatInner');
   if (!inner || !data) return;
@@ -8993,6 +9342,8 @@ function addWorkingPaperDemo(data, taskKey = 'generate_draft') {
     <div class="message-content">
       <div class="message-name">${assistant.name}</div>
       <div class="message-bubble" style="background:transparent;border:none;padding:0;">
+        ${renderDocumentGenerationProcess(taskKey, data)}
+        <div class="task-response-section-title">成果生成</div>
         <div class="chat-card working-paper-card" data-word-file-name="审计问题底稿-${(activeConversation && activeConversation.number) || 'SJ-2026-001'}.docx">
           <div class="chat-card-header"><div class="chat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span class="chat-card-title">审计问题底稿</span><div class="chat-card-actions"><button class="card-btn primary" type="button" onclick="confirmWorkingPaperOutput(this)">确认输出</button></div></div>
           <div class="generated-result-body"><div class="working-paper-note">已按标准模板自动填充项目、事实、证据、定性和处理意见。</div><div class="template-output-meta"><span>模板：${data.template}</span><span>现场实施</span><span>问题底稿</span></div><div class="working-paper-attachment"><span class="working-paper-attachment-icon">DOCX</span><div class="working-paper-attachment-info"><div class="working-paper-attachment-name">审计问题底稿-${(activeConversation && activeConversation.number) || 'SJ-2026-001'}.docx</div><div class="working-paper-attachment-meta">已挂载 · 标准审计工作底稿模板 · 可下载</div></div><button class="working-paper-download-btn" type="button" onclick="downloadWorkingPaperWord(this)">下载 Word</button></div><div class="working-paper-document"><div class="working-paper-document-head"><div class="working-paper-document-kicker">审计工作底稿</div><div class="working-paper-document-title">${paper.issue}</div></div><div class="working-paper-document-meta"><div class="working-paper-document-meta-item"><span class="working-paper-document-meta-label">项目名称</span><span class="working-paper-document-meta-value">${data.project}</span></div><div class="working-paper-document-meta-item"><span class="working-paper-document-meta-label">被审计单位</span><span class="working-paper-document-meta-value">${data.auditedUnit}</span></div><div class="working-paper-document-meta-item"><span class="working-paper-document-meta-label">审计期间 / 编制人</span><span class="working-paper-document-meta-value">${data.auditPeriod} / ${data.preparedBy}</span></div></div>${[['底稿编号', paper.number], ['审计依据', paper.basis], ['审计事实', paper.fact], ['审计证据', paper.evidence], ['问题定性与金额', paper.conclusion], ['处理意见', paper.opinion]].map(field => `<div class="working-paper-section"><span class="working-paper-section-label">${field[0]}</span><div class="working-paper-section-value">${field[1]}</div></div>`).join('')}</div><div class="ai-tag">AI已完成模板填充，需补充被审计单位盖章确认附件后方可推送问题清单</div></div>
@@ -9018,6 +9369,8 @@ function addAuditReportDemo(data, taskKey = 'write_report') {
     <div class="message-content">
       <div class="message-name">${assistant.name}</div>
       <div class="message-bubble" style="background:transparent;border:none;padding:0;">
+        ${renderDocumentGenerationProcess(taskKey, data)}
+        <div class="task-response-section-title">成果生成</div>
         <div class="chat-card report-output-card audit-report-card" data-word-file-name="${fileName}">
           <div class="chat-card-header"><div class="chat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span class="chat-card-title">审计报告初稿</span><div class="chat-card-actions"><button class="card-btn primary" type="button" onclick="confirmAuditReportOutput(this)">确认输出</button></div></div>
           <div class="generated-result-body"><div class="report-output-note">已按通用审计报告模板自动归集已审核底稿、确认问题和法规依据。</div><div class="template-output-meta"><span>模板：${data.template}</span><span>审计报告</span><span>${data.documentType}</span></div><div class="working-paper-attachment"><span class="working-paper-attachment-icon">DOCX</span><div class="working-paper-attachment-info"><div class="working-paper-attachment-name">${fileName}</div><div class="working-paper-attachment-meta">已挂载 · 通用审计报告初稿模板 · 可下载</div></div><button class="working-paper-download-btn" type="button" onclick="downloadAuditReportWord(this)">下载 Word</button></div><div class="report-document"><div class="report-document-head"><div class="report-document-kicker">审计报告（初稿）</div><div class="report-document-title">${data.project}</div><div class="report-document-number">${data.reportNumber}</div></div><div class="report-document-meta"><div class="report-document-meta-item"><span class="report-document-meta-label">被审计单位</span><span class="report-document-meta-value">${data.auditedUnit}</span></div><div class="report-document-meta-item"><span class="report-document-meta-label">审计期间</span><span class="report-document-meta-value">${data.auditPeriod}</span></div><div class="report-document-meta-item"><span class="report-document-meta-label">编制人</span><span class="report-document-meta-value">${data.preparedBy}</span></div></div>${data.sections.map(section => `<div class="report-section"><div class="report-section-title">${section.title}</div><div class="report-section-content">${section.content}</div></div>`).join('')}</div><div class="ai-tag">报告内容已按模板生成，须经主审、组长及项目负责人审核后方可进入审理流程</div></div>
@@ -9250,7 +9603,8 @@ function confirmSubmit(action) {
 }
 
 function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('show');
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.remove('show', 'create-agent-modal-open');
 }
 
 // ===== Toast =====
@@ -9272,18 +9626,6 @@ function selectRole(el, role) {
 }
 
 // ===== Login =====
-function renderLoginRoles() {
-  const container = document.getElementById('loginRoles');
-  if (!container) return;
-  container.innerHTML = availableUsers.map(u => `
-    <div class="login-role-btn" onclick="quickLogin('${u.role}')">
-      <div class="login-role-avatar">${u.avatar}</div>
-      <div class="login-role-name">${u.name}</div>
-      <div class="login-role-title">${u.roleName}</div>
-    </div>
-  `).join('');
-}
-
 function handleLogin() {
   const username = document.getElementById('loginUsername').value.trim();
   const password = document.getElementById('loginPassword').value.trim();
@@ -9294,10 +9636,6 @@ function handleLogin() {
   // Prototype: any non-empty username/password is accepted
   // Default to admin role for username/password login
   doLogin('admin');
-}
-
-function quickLogin(roleKey) {
-  doLogin(roleKey);
 }
 
 function doLogin(roleKey) {
@@ -9339,7 +9677,6 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Initialize on load
-renderLoginRoles();
 renderSidebar();
 renderRoleSwitcher();
 renderTodoList('all');
@@ -9354,6 +9691,276 @@ document.addEventListener('click', function(e) {
     switcher.classList.remove('show');
   }
 });
+
+/* ===== 审计会话闭环：结构化事件、任务执行与成果恢复 ===== */
+const legacyAddMessage = addMessage;
+const legacyScheduleTaskOutput = scheduleTaskOutput;
+const legacyAddWorkingPaperDemo = addWorkingPaperDemo;
+const legacyAddAuditReportDemo = addAuditReportDemo;
+const legacyConfirmWorkingPaperOutput = confirmWorkingPaperOutput;
+const legacyConfirmAuditReportOutput = confirmAuditReportOutput;
+const legacySubmitGeneratedResultFeedback = submitGeneratedResultFeedback;
+
+function getTaskMeta(taskKey) {
+  for (const category of taskCategories) {
+    const task = category.subItems.find(item => item.key === taskKey);
+    if (task) return { category, task };
+  }
+  return { category: null, task: null };
+}
+
+getTaskAssistantMeta = function(taskKey) {
+  const meta = getTaskMeta(taskKey);
+  if (meta.category) return { name: meta.category.homeName || `${meta.category.name}助手`, icon: meta.category.icon || '✦' };
+  return { name: '审计智能助手', icon: '✦' };
+};
+
+detectTaskIntent = function(text) {
+  const normalized = (text || '').replace(/\s+/g, '');
+  const contextWords = ['继续', '刚才', '重新生成', '重新', '补充证据', '补充', '按模板修改', '根据审理意见', '调整报告', '优化结果', '修改'];
+  if (currentSubTaskKey && contextWords.some(word => normalized.includes(word))) return currentSubTaskKey;
+  for (const [taskKey, keywords] of Object.entries(taskKeywordMap)) {
+    if (keywords.some(keyword => normalized.includes(keyword.replace(/\s+/g, '')))) return taskKey;
+  }
+  return null;
+};
+
+function updateConversationSummary(text) {
+  if (!activeConversation) return;
+  activeConversation.summary = text;
+  activeConversation.updated = '刚刚';
+  renderSidebar();
+}
+
+function addConversationExecution(taskKey, title, detail, state = 'generating') {
+  const inner = document.getElementById('chatInner');
+  if (!inner) return null;
+  const id = `execution-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  const item = { kind: 'execution', id, taskKey, title, detail, state };
+  if (activeConversation && !isRestoringPresetConversation) {
+    activeConversation.messages.push(item);
+    activeConversation.updated = '刚刚';
+  }
+  const node = document.createElement('div');
+  node.className = `conversation-execution execution-status-${state}`;
+  node.dataset.eventId = id;
+  node.innerHTML = `<span class="conversation-execution-icon">${state === 'generating' ? '…' : '✓'}</span><div><span class="conversation-execution-title">${title}</span><span class="conversation-execution-meta">${detail}</span></div>`;
+  inner.appendChild(node);
+  scrollToBottom();
+  return id;
+}
+
+function markConversationExecutionComplete(eventId, detail) {
+  const node = document.querySelector(`.conversation-execution[data-event-id="${eventId}"]`);
+  if (node) {
+    node.className = 'conversation-execution execution-status-complete';
+    const icon = node.querySelector('.conversation-execution-icon');
+    const meta = node.querySelector('.conversation-execution-meta');
+    if (icon) icon.textContent = '✓';
+    if (meta) meta.textContent = detail;
+  }
+  if (activeConversation) {
+    const event = activeConversation.messages.find(item => item.kind === 'execution' && item.id === eventId);
+    if (event) { event.state = 'complete'; event.detail = detail; }
+  }
+}
+
+function captureGeneratedResult(type, taskKey) {
+  if (!activeConversation || isRestoringPresetConversation) return;
+  const inner = document.getElementById('chatInner');
+  const node = inner && inner.lastElementChild;
+  if (!node || !node.classList.contains('message')) return;
+  let result = activeConversation.messages.find(item => item.kind === 'result' && item.nodeKey === node.dataset.conversationResultKey);
+  if (!result) {
+    const id = `result-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    node.dataset.conversationResultKey = id;
+    node.classList.add('conversation-result');
+    result = { kind: 'result', id, nodeKey: id, type, taskKey, html: node.outerHTML, feedback: '', confirmed: false };
+    activeConversation.messages.push(result);
+  } else {
+    result.html = node.outerHTML;
+  }
+  activeConversation.status = '待人工复核';
+  activeConversation.statusTone = 'warning';
+  updateConversationSummary(`已生成${getTaskDisplayName(taskKey).task}成果，待人工复核`);
+}
+
+function syncGeneratedResult(trigger) {
+  const node = trigger && trigger.closest('.conversation-result');
+  if (!node || !activeConversation) return;
+  const id = node.dataset.conversationResultKey;
+  const result = activeConversation.messages.find(item => item.kind === 'result' && item.id === id);
+  if (result) result.html = node.outerHTML;
+  activeConversation.updated = '刚刚';
+  renderSidebar();
+}
+
+function renderConversationExecution(item) {
+  const inner = document.getElementById('chatInner');
+  if (!inner) return;
+  const node = document.createElement('div');
+  node.className = `conversation-execution execution-status-${item.state || 'complete'}`;
+  node.dataset.eventId = item.id || '';
+  node.innerHTML = `<span class="conversation-execution-icon">${item.state === 'generating' ? '…' : '✓'}</span><div><span class="conversation-execution-title">${item.title}</span><span class="conversation-execution-meta">${item.detail}</span></div>`;
+  inner.appendChild(node);
+}
+
+function renderConversationResult(item) {
+  const inner = document.getElementById('chatInner');
+  if (!inner || !item.html) return;
+  const holder = document.createElement('div');
+  holder.innerHTML = item.html;
+  const node = holder.firstElementChild;
+  if (node) {
+    node.classList.add('conversation-result');
+    node.dataset.conversationResultKey = item.id;
+    inner.appendChild(node);
+  }
+}
+
+renderPresetConversation = function(session) {
+  const inner = document.getElementById('chatInner');
+  if (!inner || !session) return;
+  inner.innerHTML = '';
+  session.messages.forEach(item => {
+    if (item.kind === 'material') renderConversationMaterialCard(item);
+    else if (item.kind === 'note') renderConversationNote(item);
+    else if (item.kind === 'execution') renderConversationExecution(item);
+    else if (item.kind === 'result') renderConversationResult(item);
+    else legacyAddMessage(item.role, item.text, item.taskKey);
+  });
+  scrollToBottom();
+};
+
+openConversation = function(conversationId) {
+  const session = getConversation(conversationId);
+  if (!session) return;
+  activeConversationId = session.id;
+  activeConversation = session;
+  currentSubTaskKey = session.taskKey || null;
+  const display = getTaskDisplayName(currentSubTaskKey);
+  switchView('chat');
+  setConversationMode();
+  updateTaskWorkspaceState();
+  refreshTaskSkillToolbar(currentSubTaskKey);
+  updateProjectChatHeader(session, display.category || session.phase, display.task || '审计组作业对话');
+  isRestoringPresetConversation = true;
+  renderPresetConversation(session);
+  isRestoringPresetConversation = false;
+  renderSidebar();
+  showToast(`已恢复 ${session.project} 的${display.task || '审计作业'}会话`);
+};
+
+function enrichExecutionProcess(taskKey, title) {
+  const last = document.querySelector('#chatInner .message.ai:last-of-type .output-process');
+  if (!last || last.dataset.auditEnriched === 'true') return;
+  last.dataset.auditEnriched = 'true';
+  const trace = taskTraceability[taskKey] || taskTraceability.default;
+  const summary = last.querySelector('.output-process-summary');
+  if (summary) summary.innerHTML = `<span class="output-process-summary-icon">✦</span>执行过程 <span class="output-process-summary-meta">检索、调用、生成与复核已留痕</span>`;
+  const body = last.querySelector('.output-process-body');
+  if (body) {
+    const explain = document.createElement('div');
+    explain.className = 'output-process-context';
+    explain.innerHTML = `<span>检索依据：${trace.sources[0]}</span><span>工具调用：审计规则匹配与证据核验</span><span>成果生成：${title}</span><span>人工复核：${trace.control.replace('人工复核点：', '')}</span>`;
+    body.insertBefore(explain, body.querySelector('.output-process-flow'));
+  }
+}
+
+scheduleTaskOutput = function(taskKey, sim, title, resultData, includeActions = true) {
+  legacyScheduleTaskOutput(taskKey, sim, title, resultData, includeActions);
+  window.setTimeout(() => {
+    enrichExecutionProcess(taskKey, title);
+    captureGeneratedResult('task-output', taskKey);
+  }, 240);
+};
+
+addWorkingPaperDemo = function(data, taskKey = 'generate_draft') {
+  legacyAddWorkingPaperDemo(data, taskKey);
+  captureGeneratedResult('working-paper', taskKey);
+};
+
+addAuditReportDemo = function(data, taskKey = 'write_report') {
+  legacyAddAuditReportDemo(data, taskKey);
+  captureGeneratedResult('audit-report', taskKey);
+};
+
+function executeAuditInstruction(text, taskKey, source = '对话指令') {
+  const resolvedTaskKey = taskKey || currentSubTaskKey || detectTaskIntent(text);
+  if (!resolvedTaskKey || !taskSimulations[resolvedTaskKey]) return;
+  currentSubTaskKey = resolvedTaskKey;
+  addMessage('user', text, resolvedTaskKey);
+  const display = getTaskDisplayName(resolvedTaskKey);
+  const executionId = addConversationExecution(resolvedTaskKey, `${source}：${display.task}`, '正在检索审计依据、调用任务工具并生成可复核成果', 'generating');
+  updateConversationSummary(`正在执行${display.task}：检索依据与工具调用已启动`);
+  showTyping(resolvedTaskKey);
+  window.setTimeout(() => {
+    removeTyping();
+    markConversationExecutionComplete(executionId, '已完成检索依据、工具调用、成果生成；请结合人工复核提示确认输出。');
+    if (resolvedTaskKey === 'generate_draft' || resolvedTaskKey === 'write_report') {
+      runTemplateGeneration(resolvedTaskKey, getAutoDraftGenerationData(resolvedTaskKey));
+    } else {
+      scheduleTaskOutput(resolvedTaskKey, taskSimulations[resolvedTaskKey], `${display.category} · ${display.task}`);
+    }
+  }, 520);
+}
+
+useTaskSkill = function(taskKey, skillIndex) {
+  const skill = taskSkillCatalog[taskKey] && taskSkillCatalog[taskKey][skillIndex];
+  if (!requireActiveAuditTask() || taskKey !== getCurrentTaskSkillKey() || !skill) return;
+  executeAuditInstruction(skill[1], taskKey, `调用技能「${skill[0]}」`);
+};
+
+useFollowUpSuggestion = function(trigger) {
+  const text = trigger && trigger.textContent.trim();
+  if (!text || !requireActiveAuditTask()) return;
+  executeAuditInstruction(text, currentSubTaskKey, '连续追问');
+};
+
+sendMessage = function() {
+  if (!requireActiveAuditTask()) return;
+  const input = document.getElementById('homeChatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = '28px';
+  if (pendingTemplateGeneration) {
+    addMessage('user', text, currentSubTaskKey);
+    handlePendingTemplateGeneration(text);
+    return;
+  }
+  executeAuditInstruction(text, detectTaskIntent(text) || currentSubTaskKey, '审计指令');
+};
+
+confirmWorkingPaperOutput = function(trigger) {
+  legacyConfirmWorkingPaperOutput(trigger);
+  const result = trigger.closest('.conversation-result');
+  if (result && activeConversation) {
+    const event = activeConversation.messages.find(item => item.kind === 'result' && item.id === result.dataset.conversationResultKey);
+    if (event) event.confirmed = true;
+  }
+  syncGeneratedResult(trigger);
+};
+
+confirmAuditReportOutput = function(trigger) {
+  legacyConfirmAuditReportOutput(trigger);
+  const result = trigger.closest('.conversation-result');
+  if (result && activeConversation) {
+    const event = activeConversation.messages.find(item => item.kind === 'result' && item.id === result.dataset.conversationResultKey);
+    if (event) event.confirmed = true;
+  }
+  syncGeneratedResult(trigger);
+};
+
+submitGeneratedResultFeedback = function(trigger, feedback) {
+  legacySubmitGeneratedResultFeedback(trigger, feedback);
+  const result = trigger.closest('.conversation-result');
+  if (result && activeConversation) {
+    const event = activeConversation.messages.find(item => item.kind === 'result' && item.id === result.dataset.conversationResultKey);
+    if (event) event.feedback = feedback;
+  }
+  syncGeneratedResult(trigger);
+};
 </script>
 </body>
 </html>
