@@ -2235,11 +2235,12 @@ input, textarea { font-family: inherit; }
 .orchestration-mode-tab { border: 0; padding: 8px 12px; border-radius: 6px; color: var(--gray-600); background: transparent; font-size: 12px; font-weight: 600; cursor: pointer; }
 .orchestration-mode-tab.active { color: var(--primary); background: var(--white); box-shadow: var(--shadow-xs); }
 .orchestration-notice { margin: 0 0 16px; padding: 10px 12px; border: 1px solid #FECACA; border-left: 3px solid var(--primary); border-radius: var(--radius-sm); background: #FFF7F7; color: var(--gray-600); font-size: 12px; line-height: 1.55; }
-.orchestration-layout { display: grid; grid-template-columns: minmax(310px, 1fr) minmax(310px, .95fr); gap: 14px; align-items: start; }
+.orchestration-layout { display: grid; grid-template-columns: minmax(250px, .8fr) minmax(480px, 1.6fr) minmax(270px, .9fr); gap: 14px; align-items: start; }
 .orchestration-panel { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow-xs); min-width: 0; }
-.orchestration-layout > .orchestration-panel:nth-child(2) { grid-column: 1 / -1; grid-row: 1; }
-.orchestration-layout > .orchestration-panel:first-child { grid-column: 1; grid-row: 2; }
-.orchestration-layout > .orchestration-panel:last-child { grid-column: 2; grid-row: 2; }
+.orchestration-layout > .orchestration-panel { min-height: 590px; }
+.orchestration-layout > .orchestration-panel:nth-child(2) { overflow: hidden; }
+.orchestration-layout > .orchestration-panel:first-child .orchestration-panel-body,
+.orchestration-layout > .orchestration-panel:last-child .orchestration-panel-body { max-height: 676px; overflow-y: auto; }
 .orchestration-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; border-bottom: 1px solid var(--gray-100); }
 .orchestration-panel-title { color: var(--gray-900); font-size: 13px; font-weight: 700; }
 .orchestration-panel-subtitle { margin-top: 3px; color: var(--gray-400); font-size: 11px; line-height: 1.4; }
@@ -2352,9 +2353,9 @@ input, textarea { font-family: inherit; }
 .agent-build-stat-label { color: var(--gray-500); font-size: 10px; }
 .agent-build-stat-value { margin-top: 4px; color: var(--gray-800); font-size: 13px; font-weight: 700; }
 .agent-build-review { padding: 11px; border: 1px solid #FECACA; border-left: 3px solid var(--primary); border-radius: 8px; background: #FFF7F7; color: var(--gray-600); font-size: 12px; line-height: 1.55; }
-@media (max-width: 1180px) { .orchestration-layout { grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr); } }
+@media (max-width: 1180px) { .orchestration-layout { grid-template-columns: minmax(250px, .85fr) minmax(440px, 1.45fr); } .orchestration-layout > .orchestration-panel:last-child { grid-column: 1 / -1; min-height: auto; } .orchestration-layout > .orchestration-panel:last-child .orchestration-panel-body { max-height: none; } }
 @media (max-width: 560px) { .orch-io-grid, .agent-build-summary, .agent-build-field-grid, .agent-build-asset-grid { grid-template-columns: 1fr; } .agent-build-modal { grid-template-columns: 1fr; } .agent-build-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 760px) { .orchestration-layout { grid-template-columns: 1fr; } .orchestration-layout > .orchestration-panel:nth-child(2), .orchestration-layout > .orchestration-panel:first-child, .orchestration-layout > .orchestration-panel:last-child { grid-column: 1; grid-row: auto; } .orchestration-mode-tabs { width: 100%; overflow-x: auto; } .orchestration-mode-tab { white-space: nowrap; } .orchestration-canvas { min-height: 440px; } .orch-workflow-board { width: 1240px; height: 390px; margin: 0; transform: scale(.72); transform-origin: top left; } .orch-canvas-toolbar { position: relative; } .agent-toolbar { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .orchestration-layout { grid-template-columns: 1fr; } .orchestration-layout > .orchestration-panel, .orchestration-layout > .orchestration-panel:last-child { grid-column: 1; min-height: auto; } .orchestration-layout > .orchestration-panel:first-child .orchestration-panel-body, .orchestration-layout > .orchestration-panel:last-child .orchestration-panel-body { max-height: none; overflow: visible; } .orchestration-mode-tabs { width: 100%; overflow-x: auto; } .orchestration-mode-tab { white-space: nowrap; } .orchestration-canvas { min-height: 440px; } .orch-workflow-board { width: 1240px; height: 390px; margin: 0; transform: scale(.72); transform-origin: top left; } .orch-canvas-toolbar { position: relative; } .agent-toolbar { grid-template-columns: 1fr; } }
 
 /* ===== Q&A Knowledge Management ===== */
 .qa-kb-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr) 160px auto; gap: 12px; align-items: center; margin-bottom: 16px; }
@@ -9326,7 +9327,7 @@ function renderDocumentGenerationProcess(taskKey, data) {
   const note = isWorkingPaper
     ? '已对合同、招投标文件和付款凭证建立证据索引；法规匹配和模板填充已完成。底稿需经主审复核，并补充被审计单位盖章确认附件后，方可推送问题清单。'
     : '仅引用已审核底稿和已确认问题；系统未新增底稿外问题。初稿已完成法规引用和版本检查，诊断提示及报告内容仍须经组长、项目负责人和审理人员复核。';
-  return `<details class="output-process document-generation-process" open aria-label="${title}"><summary class="output-process-summary"><span class="output-process-summary-icon">✦</span>执行过程 <span class="output-process-summary-meta">检索、核验、生成与复核已留痕</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${title}</span><span class="output-process-subtitle">已完成 ${steps.filter(step => step[2] === 'done').length} / ${steps.length} 个步骤</span></div><div class="output-process-context">${context.map(item => `<span>${item}</span>`).join('')}</div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node ${step[2]}"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note"><strong>执行说明：</strong>${note}</p></div></details>`;
+  return `<details class="output-process document-generation-process" aria-label="${title}"><summary class="output-process-summary"><span class="output-process-summary-icon">✦</span>执行过程 <span class="output-process-summary-meta">检索、核验、生成与复核已留痕</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${title}</span><span class="output-process-subtitle">已完成 ${steps.filter(step => step[2] === 'done').length} / ${steps.length} 个步骤</span></div><div class="output-process-context">${context.map(item => `<span>${item}</span>`).join('')}</div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node ${step[2]}"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note"><strong>执行说明：</strong>${note}</p></div></details>`;
 }
 
 function addWorkingPaperDemo(data, taskKey = 'generate_draft') {
