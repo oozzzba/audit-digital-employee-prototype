@@ -1069,10 +1069,10 @@ input, textarea { font-family: inherit; }
 }
 .task-skill-action svg { width: 16px; height: 16px; }
 .task-skill-action:hover, .task-skill-action:focus-visible { background: var(--primary-lighter); color: var(--primary); outline: none; }
+.task-skill-action.is-selected { color: var(--primary); background: #FFF; box-shadow: inset 0 0 0 2px var(--primary); }
+.task-skill-action.is-selected svg { stroke-width: 2.4; }
 .task-skill-action:disabled, .home-input-action:disabled { color: var(--gray-300); background: transparent; cursor: not-allowed; }
 .task-skill-action:disabled:hover, .home-input-action:disabled:hover { color: var(--gray-300); background: transparent; }
-.task-skill-action.is-primary { color: var(--primary); }
-.task-skill-action.is-primary svg { stroke-width: 2.4; }
 .task-skill-context { margin-left: auto; padding: 0 6px; flex: 0 0 auto; color: var(--gray-400); font-size: 11px; white-space: nowrap; }
 .task-skill-empty { padding: 0 6px; color: var(--gray-400); font-size: 12px; }
 .task-skill-locked { display: inline-flex; align-items: center; gap: 6px; padding: 0 6px; color: var(--gray-500); font-size: 12px; }
@@ -4927,6 +4927,7 @@ function beginTaskConversation(category, task) {
     updated: '刚刚',
     taskKey: task.key,
     summary: `已进入${task.name}作业任务`,
+    usedSkills: [],
     messages: []
   };
   recentConversations.unshift(session);
@@ -5686,6 +5687,7 @@ const materialSpecialPanels = {
 let currentMaterialLocation = { type: 'all', projectId: null, folder: null, taskKey: null };
 let currentMatFilter = { keyword: '' };
 let selectedMaterialFileId = null;
+const expandedMaterialProjectIds = new Set();
 
 const taskOutputResources = [
   { id: 'ai-wp-001', projectId: 1, taskKey: 'generate_draft', name: 'AI生成审计问题底稿-采购合规.docx', type: 'word', size: '268 KB', uploader: '审计数字员工', date: '2026-08-12', phase: '现场实施', resourceType: 'AI生成底稿' },
@@ -5788,21 +5790,18 @@ function renderMaterialsTree(allFiles) {
   const currentTaskNode = taskContext ? `<div class="material-tree-section"><button class="material-tree-item ${active.type === 'task' ? 'active' : ''}" onclick="selectMaterialLocation('task', ${taskContext.projectId}, null, '${taskContext.taskKey}')"><span>当前任务专属素材库</span><span class="tree-count">${taskFiles.length}</span></button></div>` : `<div class="material-tree-section"><button class="material-tree-item" onclick="showToast('请先进入具体审计任务后查看任务专属素材库')"><span>当前任务专属素材库</span><span class="tree-count">锁定</span></button></div>`;
   const projectNodes = projectData.filter(project => materialsData[project.id]).map(project => {
     const projectFiles = allFiles.filter(file => file.projectId === project.id);
+    const isExpanded = expandedMaterialProjectIds.has(project.id);
     const childNodes = materialFolders.map(folder => `<button class="material-tree-item level-2 ${active.projectId === project.id && active.folder === folder.id ? 'active' : ''}" onclick="selectMaterialLocation('project', ${project.id}, '${folder.id}')">${folder.title}<span class="tree-count">${projectFiles.filter(file => getMaterialFolder(file) === folder.id).length}</span></button>`).join('');
-    return `<div class="material-tree-section"><button class="material-tree-item ${active.type === 'project' && active.projectId === project.id && !active.folder ? 'active' : ''}" onclick="toggleMaterialProject(${project.id})">${project.name}<span class="tree-count">${projectFiles.length}</span><span class="tree-arrow" id="projectTreeArrow-${project.id}">›</span></button><div class="materials-tree-children hidden" id="projectTreeChildren-${project.id}">${childNodes}</div></div>`;
+    return `<div class="material-tree-section"><button class="material-tree-item ${active.type === 'project' && active.projectId === project.id && !active.folder ? 'active' : ''}" onclick="toggleMaterialProject(${project.id})">${project.name}<span class="tree-count">${projectFiles.length}</span><span class="tree-arrow" id="projectTreeArrow-${project.id}">${isExpanded ? '⌄' : '›'}</span></button><div class="materials-tree-children ${isExpanded ? '' : 'hidden'}" id="projectTreeChildren-${project.id}">${childNodes}</div></div>`;
   }).join('');
   tree.innerHTML = `${currentTaskNode}${root('all', '全部项目资料', allFiles.length, "selectMaterialLocation('all')")}<div class="material-tree-section"><button class="material-tree-item ${active.type === 'project-root' ? 'active' : ''}" onclick="selectMaterialLocation('project-root')">按审计项目分类<span class="tree-count">${projectData.filter(project => materialsData[project.id]).length}</span></button><div class="materials-tree-children">${projectNodes}</div></div>${root('knowledge', '公共审计知识库', 4, "selectMaterialLocation('knowledge')")}${root('queue', 'AI 文件任务队列', 4, "selectMaterialLocation('queue')")}${root('recycle', '资料回收站', 2, "selectMaterialLocation('recycle')")}${root('permission', '资料权限设置', 3, "selectMaterialLocation('permission')")}`;
-  if (active.type === 'project' && active.projectId) toggleMaterialProject(active.projectId, true);
 }
 
-function toggleMaterialProject(projectId, forceOpen) {
-  const children = document.getElementById('projectTreeChildren-' + projectId);
-  const arrow = document.getElementById('projectTreeArrow-' + projectId);
-  if (!children) return;
-  const open = typeof forceOpen === 'boolean' ? forceOpen : children.classList.contains('hidden');
-  children.classList.toggle('hidden', !open);
-  if (arrow) arrow.textContent = open ? '⌄' : '›';
-  if (!forceOpen) selectMaterialLocation('project', projectId, null);
+function toggleMaterialProject(projectId) {
+  const isExpanded = expandedMaterialProjectIds.has(projectId);
+  if (isExpanded) expandedMaterialProjectIds.delete(projectId);
+  else expandedMaterialProjectIds.add(projectId);
+  selectMaterialLocation('project', projectId, null);
 }
 
 function selectMaterialLocation(type, projectId, folder, taskKey) {
@@ -7270,6 +7269,26 @@ function getCurrentTaskSkillKey() {
   return (activeConversation && activeConversation.taskKey) || currentSubTaskKey || null;
 }
 
+function getUsedTaskSkills(taskKey) {
+  if (!activeConversation || activeConversation.taskKey !== taskKey) return [];
+  return Array.isArray(activeConversation.usedSkills) ? activeConversation.usedSkills : [];
+}
+
+function markTaskSkillsUsed(taskKey, labels) {
+  if (!activeConversation || activeConversation.taskKey !== taskKey) return;
+  const validLabels = new Set((taskSkillCatalog[taskKey] || []).map(([label]) => label));
+  const existing = new Set(getUsedTaskSkills(taskKey));
+  (labels || []).forEach(label => {
+    if (validLabels.has(label)) existing.add(label);
+  });
+  activeConversation.usedSkills = [...existing];
+  refreshTaskSkillToolbar(taskKey);
+}
+
+function markAllTaskSkillsUsed(taskKey) {
+  markTaskSkillsUsed(taskKey, (taskSkillCatalog[taskKey] || []).map(([label]) => label));
+}
+
 function renderTaskSkillToolbar(taskKey) {
   const toolbar = document.getElementById('taskSkillToolbar');
   if (!toolbar) return;
@@ -7279,12 +7298,13 @@ function renderTaskSkillToolbar(taskKey) {
     return;
   }
   const display = getTaskDisplayName(taskKey);
+  const usedSkills = new Set(getUsedTaskSkills(taskKey));
   toolbar.innerHTML = `
     <button class="home-input-action" id="taskSkillUploadBtn" title="上传资料" onclick="toggleUploadDropdown(event)" aria-label="上传资料">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>
     </button>
     <span class="task-skill-divider"></span>
-    ${skills.map(([label, prompt], index) => `<button class="task-skill-action ${index === 0 ? 'is-primary' : ''}" type="button" onclick="useTaskSkill('${taskKey}', ${index})" title="${prompt}">${getTaskSkillIcon(label)}<span>${label}</span></button>`).join('')}
+    ${skills.map(([label, prompt], index) => `<button class="task-skill-action ${usedSkills.has(label) ? 'is-selected' : ''}" type="button" onclick="useTaskSkill('${taskKey}', ${index})" title="${prompt}">${getTaskSkillIcon(label)}<span>${label}</span></button>`).join('')}
     <span class="task-skill-context">当前任务：${display.task}</span>
   `;
 }
@@ -8445,6 +8465,7 @@ function runTemplateGeneration(taskKey, inputData) {
   const display = getTaskDisplayName(taskKey);
   const sim = taskSimulations[taskKey];
   currentSubTaskKey = taskKey;
+  markAllTaskSkillsUsed(taskKey);
   pendingTemplateGeneration = null;
   const data = taskKey === 'generate_draft'
     ? (inputData && inputData.workingPaper ? inputData : getAutoDraftGenerationData(taskKey))
@@ -8580,6 +8601,7 @@ function enterSubTask(categoryKey, subItemKey) {
   setConversationMode();
   beginTaskConversation(cat, sub);
   currentSubTaskKey = subItemKey;
+  markAllTaskSkillsUsed(subItemKey);
   refreshTaskSkillToolbar(subItemKey);
   document.getElementById('chatInner').innerHTML = '';
 
@@ -9888,10 +9910,12 @@ addAuditReportDemo = function(data, taskKey = 'write_report') {
   captureGeneratedResult('audit-report', taskKey);
 };
 
-function executeAuditInstruction(text, taskKey, source = '对话指令') {
+function executeAuditInstruction(text, taskKey, source = '对话指令', usedSkillLabel = null) {
   const resolvedTaskKey = taskKey || currentSubTaskKey || detectTaskIntent(text);
   if (!resolvedTaskKey || !taskSimulations[resolvedTaskKey]) return;
   currentSubTaskKey = resolvedTaskKey;
+  if (usedSkillLabel) markTaskSkillsUsed(resolvedTaskKey, [usedSkillLabel]);
+  else markAllTaskSkillsUsed(resolvedTaskKey);
   addMessage('user', text, resolvedTaskKey);
   const display = getTaskDisplayName(resolvedTaskKey);
   const executionId = addConversationExecution(resolvedTaskKey, `${source}：${display.task}`, '正在检索审计依据、调用任务工具并生成可复核成果', 'generating');
@@ -9911,7 +9935,7 @@ function executeAuditInstruction(text, taskKey, source = '对话指令') {
 useTaskSkill = function(taskKey, skillIndex) {
   const skill = taskSkillCatalog[taskKey] && taskSkillCatalog[taskKey][skillIndex];
   if (!requireActiveAuditTask() || taskKey !== getCurrentTaskSkillKey() || !skill) return;
-  executeAuditInstruction(skill[1], taskKey, `调用技能「${skill[0]}」`);
+  executeAuditInstruction(skill[1], taskKey, `调用技能「${skill[0]}」`, skill[0]);
 };
 
 useFollowUpSuggestion = function(trigger) {
