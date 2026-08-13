@@ -769,6 +769,27 @@ input, textarea { font-family: inherit; }
 .trend-analysis-formula-item { padding: 8px 9px; border: 1px solid var(--gray-100); border-radius: 5px; background: var(--gray-50); color: var(--gray-600); font-size: 10px; line-height: 1.55; }
 .trend-analysis-formula-item strong { display: block; margin-bottom: 3px; color: var(--gray-700); font-size: 10px; }
 @media (max-width: 640px) { .trend-analysis-metrics, .trend-analysis-insights, .trend-analysis-formula-grid { grid-template-columns: 1fr; } .trend-analysis-controls { align-items: flex-start; flex-direction: column; } }
+
+/* Standardized audit exception output */
+.exception-card { border-left: 3px solid var(--warning); }
+.exception-card .chat-card-icon { background: var(--warning-bg); color: var(--warning); }
+.exception-card-intro { margin: 0 0 12px; color: var(--gray-600); font-size: 12px; line-height: 1.65; }
+.exception-scenario-list { display: grid; gap: 10px; }
+.exception-scenario { padding: 11px; border: 1px solid var(--gray-200); border-radius: 6px; background: var(--white); }
+.exception-scenario.is-resolved { border-color: #ABEFC6; background: #F6FEF9; }
+.exception-scenario-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.exception-scenario-title { color: var(--gray-800); font-size: 12px; font-weight: 700; }
+.exception-code { display: inline-block; margin-top: 2px; color: var(--gray-500); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; }
+.exception-status { flex: 0 0 auto; padding: 2px 6px; border-radius: 999px; background: var(--warning-bg); color: #B54708; font-size: 10px; font-weight: 600; }
+.exception-scenario.is-resolved .exception-status { background: var(--success-bg); color: #067647; }
+.exception-message { margin: 7px 0; color: var(--gray-700); font-size: 11px; line-height: 1.6; }
+.exception-context, .exception-resolution { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--gray-100); color: var(--gray-500); font-size: 10px; line-height: 1.55; }
+.exception-context strong, .exception-resolution strong { color: var(--gray-700); font-weight: 600; }
+.exception-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.exception-action { min-height: 30px; padding: 5px 9px; border: 1px solid var(--gray-300); border-radius: 5px; background: var(--white); color: var(--gray-600); font-size: 11px; font-weight: 600; line-height: 1.35; }
+.exception-action.primary { border-color: var(--primary); background: var(--primary); color: var(--white); }
+.exception-action:disabled { cursor: default; opacity: .72; }
+@media (max-width: 640px) { .exception-scenario-head { display: block; } .exception-status { display: inline-block; margin-top: 5px; } .exception-actions { display: grid; grid-template-columns: 1fr; } .exception-action { width: 100%; text-align: left; } }
 .generated-result-actions { display: flex; align-items: center; justify-content: flex-end; gap: 2px; margin-top: 8px; }
 .generated-result-action { width: 30px; height: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 4px; background: transparent; color: var(--gray-400); cursor: pointer; }
 .generated-result-action:hover { background: var(--gray-50); color: var(--primary); }
@@ -7184,6 +7205,14 @@ const taskSkillCatalog = {
     ['法规匹配', '匹配问题定性与法规依据'],
     ['AI 定性', '生成问题定性及处理建议']
   ],
+  exception_scenarios: [
+    ['异常识别', '区分内容获取、数据解析、权限与服务连接异常'],
+    ['资料状态检查', '核验资料来源、完整性和可访问状态'],
+    ['数据解析校验', '验证文件结构、字段类型和解析规则'],
+    ['权限范围校验', '校验用户角色、项目范围和数据授权'],
+    ['MCP 服务健康检查', '检查服务连接、接口状态和重试结果'],
+    ['操作留痕', '记录处置选择、责任流转和后续待办']
+  ],
   interview_record: [
     ['录音整理', '提取访谈录音与文字记录要点'],
     ['事实比对', '比对访谈陈述与已有审计证据'],
@@ -7340,7 +7369,8 @@ const taskCategories = [
       { key: 'generate_draft', name: '生成审计底稿', desc: 'AI 自动生成审计底稿', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' },
       { key: 'collect_evidence', name: '收集审计证据', desc: '上传与管理审计证据材料', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' },
       { key: 'find_issue', name: '问题发现与定性', desc: '识别问题并匹配审计定性', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
-      { key: 'interview_record', name: '审计访谈记录', desc: '记录并整理访谈内容', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' }
+      { key: 'interview_record', name: '审计访谈记录', desc: '记录并整理访谈内容', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' },
+      { key: 'exception_scenarios', name: '异常处置示例', desc: '按统一规范处理数据与服务异常', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' }
     ]
   },
   {
@@ -7687,6 +7717,44 @@ const taskSimulations = {
     }}
   },
 
+  exception_scenarios: {
+    input: '展示现场实施过程中内容获取失败、数据解析失败、权限拦截和 MCP 服务离线的标准异常处置示例',
+    output: '已按异常规范归类展示。以下提示仅说明对应失败原因，并提供固定处置路径：',
+    card: { type: 'exception-scenarios', data: {
+      title: '现场实施异常处置示例',
+      scenarios: [
+        {
+          key: 'content_fetch', code: 'CONTENT_FETCH_FAILED', title: '内容获取失败',
+          message: '未能获取《采购决策会议纪要（2026年3月）》的正文内容。请确认资料已上传、文件未损坏且来源系统可访问。',
+          context: '影响范围：采购决策资料完整性核验；未获取的内容不会参与问题定性。',
+          primary: '重新获取', secondary: '标记待补',
+          resolutions: { primary: '已发起重新获取，当前等待资料中心返回文件内容。', secondary: '已标记为待补资料，并已加入被审计单位补充材料清单。' }
+        },
+        {
+          key: 'data_parse', code: 'DATA_PARSE_FAILED', title: '数据解析失败',
+          message: '已获取文件，但无法按当前规则解析《采购明细台账.xlsx》中的字段结构。请检查表头、日期和金额列格式。',
+          context: '影响范围：采购费用趋势分析；原始文件已保留，未生成任何推断结果。',
+          primary: '下载原始文件', secondary: '转人工校验',
+          resolutions: { primary: '已准备原始文件下载，建议核验表头、合并单元格和日期格式后重新提交。', secondary: '已转交人工数据校验，解析任务保持暂停，不影响其他证据核验。' }
+        },
+        {
+          key: 'permission', code: 'PERMISSION_DENIED', title: '权限拦截',
+          message: '当前账号无权访问“财务共享中心-付款凭证附件”数据集，系统已阻止读取操作。',
+          context: '影响范围：付款凭证穿透核查；本次访问未返回任何受限数据。',
+          primary: '申请权限', secondary: '查看申请指引',
+          resolutions: { primary: '已创建项目范围内的数据访问申请，待项目负责人和数据管理员审批。', secondary: '已打开申请指引，请按项目编号、数据集名称和使用期限提交申请。' }
+        },
+        {
+          key: 'mcp_offline', code: 'MCP_OFFLINE', title: 'MCP 服务离线',
+          message: '“法规知识库”MCP 服务当前不可连接，暂无法检索最新法规条文和案例索引。',
+          context: '影响范围：法规匹配与案例检索；已归集的项目资料和已确认事实不受影响。',
+          primary: '重试连接', secondary: '切换人工处理',
+          resolutions: { primary: '已执行连接重试，服务恢复前将继续保留离线状态并记录重试结果。', secondary: '已转为人工法规核验，需在复核记录中补充法规来源和生效状态。' }
+        }
+      ]
+    }}
+  },
+
   // ===== 审计报告 =====
   write_report: {
     input: '根据审计底稿和发现问题，撰写AG-2026-001项目的审计报告初稿',
@@ -7905,6 +7973,7 @@ const taskSimulations = {
 // ===== 五阶段业务状态模拟 =====
 // 依据《国家管网审计管理信息系统项目（一期）业务作业指导书》：用于展示角色、状态、附件和待办如何驱动流程流转。
 const taskWorkflowData = {
+  exception_scenarios: { steps: ['识别异常类型', '核验异常上下文', '执行标准处置', '记录处置结论'], note: '异常类型与处置路径固定映射；未完成处置不得将异常误标为业务问题。' },
   create_project: { title: '项目启动流转状态', project: 'AG-2026-013', role: '项目负责人', status: '待完善项目配置', steps: [['年度计划引用', '已完成'], ['项目启动', '已完成'], ['完善项目属性', '待处理', 'pending'], ['项目配置', '待处理', 'pending'], ['进入审前准备', '待处理', 'pending']], rule: '项目由年度计划或专项任务启动后，应补全项目类型、审计范围、被审计单位和时间边界；项目配置完成后才能进入审前准备。', todo: '待办：项目负责人补充项目属性与审计范围。' },
   project_approval: { title: '项目启动审批状态', project: 'AG-2026-013', role: '审计部门负责人', status: '部门负责人审批中', steps: [['立项材料提交', '已完成'], ['部门负责人审批', '待处理', 'pending'], ['分管领导审批', '待处理', 'pending'], ['审批结果回写', '待处理', 'pending'], ['创建审计组', '待处理', 'pending']], rule: '项目启动审批应按授权链路流转；审批通过后方可配置审计组和启动审前准备事项。', todo: '待办：审计部门负责人完成立项审批。' },
   project_ledger: { title: '项目启动台账状态', project: 'AG-2026-001', role: '项目管理员', status: '项目启动已登记', steps: [['计划项目登记', '已完成'], ['项目属性维护', '已完成'], ['阶段状态同步', '已完成'], ['项目成员关联', '待处理', 'pending'], ['资料空间创建', '待处理', 'pending']], rule: '项目台账是各阶段资料、人员和待办的唯一关联主体，阶段状态随审批和任务完成情况实时回写。', todo: '待办：项目管理员完成项目成员关联并创建资料空间。' },
@@ -8217,6 +8286,7 @@ const taskKeywordMap = {
   generate_draft: ['生成审计底稿', '生成底稿', '审计底稿', '自动生成底稿'],
   collect_evidence: ['收集审计证据', '收集证据', '审计证据', '证据收集'],
   find_issue: ['问题发现', '问题定性', '发现问题', '识别问题', '定性'],
+  exception_scenarios: ['异常处置', '异常场景', '内容获取失败', '数据解析失败', '权限拦截', 'MCP服务离线', 'MCP 服务离线'],
   interview_record: ['审计访谈', '访谈记录', '记录访谈'],
   write_report: ['撰写审计报告', '审计报告', '生成报告', '报告初稿', '撰写报告'],
   seek_opinion: ['征求意见', '征求意见稿', '反馈意见'],
@@ -8422,6 +8492,27 @@ function renderTrendAnalysisCard(data) {
   return `<div class="chat-card trend-analysis-card"><div class="chat-card-header"><div class="chat-card-icon">⌁</div><span class="chat-card-title">${data.title}</span><span class="issue-tag high">${data.risk}</span></div><div class="generated-result-body"><p class="trend-analysis-intro">分析期间：${data.period}。已完成费用、公开招标执行率和采购方式的交叉比对，异常数据可下钻至合同明细。</p><div class="trend-analysis-metrics"><div class="trend-analysis-metric"><span class="trend-analysis-metric-label">期间采购费用</span><span class="trend-analysis-metric-value">${data.spend}</span></div><div class="trend-analysis-metric"><span class="trend-analysis-metric-label">3月费用较前两月均值</span><span class="trend-analysis-metric-value alert">${data.variance}</span></div><div class="trend-analysis-metric"><span class="trend-analysis-metric-label">3月公开招标执行率</span><span class="trend-analysis-metric-value alert">${data.rate}</span></div></div><div class="trend-analysis-chart"><div class="trend-analysis-chart-head"><span class="trend-analysis-chart-title">月度采购费用与公开招标执行率</span><span class="trend-analysis-chart-unit">费用：万元 · 执行率：%</span></div><svg class="trend-analysis-svg" viewBox="0 0 340 150" role="img" aria-label="2026年1月至6月采购费用与公开招标执行率趋势图"><line class="trend-analysis-grid" x1="32" x2="330" y1="32" y2="32"/><line class="trend-analysis-grid" x1="32" x2="330" y1="76" y2="76"/><line class="trend-analysis-grid" x1="32" x2="330" y1="120" y2="120"/><text class="trend-analysis-axis" x="4" y="35">180</text><text class="trend-analysis-axis" x="8" y="79">90</text><text class="trend-analysis-axis" x="12" y="123">0</text><text class="trend-analysis-axis" x="300" y="35">100%</text><text class="trend-analysis-axis" x="306" y="79">50%</text>${bars.map(item => item.bar + item.annotation).join('')}<polyline class="trend-analysis-line" points="${points}"/>${bars.map(item => item.point + item.label).join('')}</svg><div class="trend-analysis-legend"><span><i></i>采购费用</span><span><i class="line"></i>公开招标执行率</span><span>红色柱：可下钻异常月份</span></div></div><div class="trend-analysis-insights">${(data.insights || []).map(item => `<div class="trend-analysis-insight"><strong>${item.title}</strong>${item.content}</div>`).join('')}</div><div class="trend-analysis-controls"><span class="trend-analysis-control-note">点击图中3月红色费用柱，或使用下方按钮查看合同级明细。</span><button class="card-btn primary" type="button" onclick="showTrendDrilldown(this)">查看3月异常明细</button></div><div class="trend-analysis-drill" hidden><div class="trend-analysis-drill-title">3月采购异常下钻明细</div><div class="trend-analysis-drill-desc">依据合同、采购方式、付款凭证及例外审批材料进行关联核验，共识别 2 笔需重点复核事项。</div><div class="trend-analysis-table-wrap"><table class="trend-analysis-table"><thead><tr><th>项目</th><th>合同号</th><th>供应商</th><th>金额</th><th>采购方式</th><th>证据状态</th><th>风险</th></tr></thead><tbody>${(data.drilldown || []).map(row => `<tr><td>${row.project}</td><td>${row.contract}</td><td>${row.supplier}</td><td class="amount">${row.amount}</td><td>${row.method}</td><td>${row.evidence}</td><td>${row.status}</td></tr>`).join('')}</tbody></table></div></div><details class="trend-analysis-formula"><summary>查看计算公式与统计口径</summary><div class="trend-analysis-formula-grid">${(data.formulas || []).map(item => `<div class="trend-analysis-formula-item"><strong>${item.title}</strong>${item.content}</div>`).join('')}</div></details><div class="ai-tag">AI 已完成趋势识别与风险解读，合同、凭证及例外审批材料仍需审计人员复核确认</div></div>${generatedResultActions(data.title || '多维趋势分析')}</div>`;
 }
 
+function renderExceptionScenariosCard(data) {
+  const scenarios = Array.isArray(data.scenarios) ? data.scenarios : [];
+  return `<div class="chat-card exception-card">
+    <div class="chat-card-header"><div class="chat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><span class="chat-card-title">${escapeHtml(data.title || '异常处置示例')}</span></div>
+    <div class="generated-result-body">
+      <p class="exception-card-intro">以下异常按照固定类型、固定提示和固定处置路径展示。异常处置不会被归类为审计业务问题。</p>
+      <div class="exception-scenario-list">${scenarios.map(item => `
+        <section class="exception-scenario" data-scenario-key="${escapeHtml(item.key)}">
+          <div class="exception-scenario-head"><div><div class="exception-scenario-title">${escapeHtml(item.title)}</div><code class="exception-code">${escapeHtml(item.code)}</code></div><span class="exception-status">待处置</span></div>
+          <p class="exception-message">${escapeHtml(item.message)}</p>
+          <div class="exception-context"><strong>影响上下文：</strong>${escapeHtml((item.context || '').replace(/^影响范围：/, ''))}</div>
+          <div class="exception-resolution" hidden><strong>处置结论：</strong><span></span></div>
+          <div class="exception-actions">
+            <button class="exception-action primary" type="button" data-resolution="${escapeHtml(item.resolutions && item.resolutions.primary)}" onclick="handleExceptionAction(this, 'primary')">${escapeHtml(item.primary)}</button>
+            <button class="exception-action" type="button" data-resolution="${escapeHtml(item.resolutions && item.resolutions.secondary)}" onclick="handleExceptionAction(this, 'secondary')">${escapeHtml(item.secondary)}</button>
+          </div>
+        </section>`).join('')}</div>
+    </div>
+  </div>`;
+}
+
 function renderTaskOutputCard(sim, resultData) {
   const card = sim && sim.card;
   const data = resultData || (card && card.data) || {};
@@ -8443,11 +8534,37 @@ function renderTaskOutputCard(sim, resultData) {
     return `<div class="chat-card issue-card"><div class="chat-card-header"><div class="chat-card-icon">⌕</div><span class="chat-card-title">${data.title}</span><span class="issue-tag high">${data.risk}</span><div class="chat-card-actions"><button class="card-btn primary" onclick="confirmSubmit('确认生成')">确认生成</button></div></div><div class="generated-result-body"><div class="task-output-text">${data.desc || ''}</div><div>${(data.laws || []).map(law => `<span class="law-ref">${law}</span>`).join('')}</div><div class="working-paper-note">建议：${data.suggestion || ''}</div><div class="ai-tag">AI 生成，请人工复核确认</div></div>${generatedResultActions(data.title || '审计问题定性')}</div>`;
   }
 
+  if (card.type === 'exception-scenarios') {
+    return renderExceptionScenariosCard(data);
+  }
+
   if (card.type === 'trend-analysis') {
     return renderTrendAnalysisCard(data);
   }
 
   return `<div class="chat-card draft-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">${data.title || '审计任务成果'}</span><div class="chat-card-actions"><button class="card-btn primary" onclick="confirmSubmit('确认生成')">确认生成</button></div></div><div class="generated-result-body">${(data.fields || []).map(field => `<div class="draft-field"><span class="draft-field-label">${field.label}</span><span class="draft-field-value">${field.value}</span></div>`).join('')}<div class="ai-tag">AI 生成，请人工复核确认</div></div>${generatedResultActions(data.title || '审计任务成果')}</div>`;
+}
+
+function handleExceptionAction(trigger, action) {
+  const item = trigger && trigger.closest('.exception-scenario');
+  if (!item || item.classList.contains('is-resolved')) return;
+
+  const resolution = trigger.dataset.resolution || '已记录本次处置结果，等待后续复核。';
+  item.classList.add('is-resolved');
+  const status = item.querySelector('.exception-status');
+  const conclusion = item.querySelector('.exception-resolution');
+  const conclusionText = conclusion && conclusion.querySelector('span');
+  if (status) status.textContent = '已处置';
+  if (conclusion && conclusionText) {
+    conclusionText.textContent = resolution;
+    conclusion.hidden = false;
+  }
+  item.querySelectorAll('.exception-action').forEach(button => {
+    button.disabled = true;
+    button.textContent = button === trigger ? '已执行' : button.textContent;
+  });
+  syncGeneratedResult(trigger);
+  showToast(`${item.querySelector('.exception-scenario-title')?.textContent || '异常'}：${action === 'primary' ? '已执行主操作' : '已执行辅助操作'}`);
 }
 
 function showTrendDrilldown(trigger) {
