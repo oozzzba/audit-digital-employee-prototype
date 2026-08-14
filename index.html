@@ -3173,6 +3173,10 @@ input, textarea { font-family: inherit; }
 .home-input-box:focus-within { border-color: #D77A70; box-shadow: 0 0 0 3px rgba(211,47,47,0.08), 0 6px 24px rgba(0,0,0,0.08); }
 .home-input { padding: 8px 10px 7px 12px; }
 .home-input textarea { font-size: 14px; min-height: 32px; }
+.audit-question-examples { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 10px 8px 12px; border-top: 1px solid var(--gray-100); }
+.audit-question-examples-label { color: var(--gray-400); font-size: 11px; flex: 0 0 auto; }
+.audit-question-example { max-width: 100%; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--gray-50); color: var(--gray-600); padding: 3px 7px; font-size: 11px; line-height: 1.5; text-align: left; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+.audit-question-example:hover { border-color: #E7A09B; background: var(--primary-lighter); color: var(--primary); }
 .home-input-action { border-radius: 5px; }
 .home-send-btn { width: 32px; height: 32px; border-radius: 6px; }
 .output-process, .output-explanation { border-radius: 6px; }
@@ -3190,6 +3194,9 @@ input, textarea { font-family: inherit; }
   .message-avatar { width: 28px; height: 28px; border-radius: 6px; }
   .message-bubble { font-size: 13px; }
   .home-input-area { bottom: 20px; padding: 10px 12px 14px; }
+  .audit-question-examples { align-items: flex-start; gap: 5px; padding: 0 8px 8px 10px; }
+  .audit-question-examples-label { width: 100%; }
+  .audit-question-example { font-size: 10px; padding: 3px 6px; }
 }
 .conversation-execution {
   display: flex;
@@ -3205,6 +3212,11 @@ input, textarea { font-family: inherit; }
   font-size: 12px;
   line-height: 1.6;
 }
+.intent-recognition-card { border-color: #F5C2C7; background: var(--primary-lighter); }
+.intent-recognition-route { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-500); }
+.intent-recognition-route strong { color: var(--gray-800); font-size: 13px; }
+.intent-recognition-route i { color: var(--primary); font-style: normal; font-size: 16px; line-height: 1; }
+.intent-recognition-reason { margin-top: 8px; color: var(--gray-600); font-size: 12px; line-height: 1.65; }
 .conversation-execution-icon {
   display: inline-flex;
   width: 18px;
@@ -3403,9 +3415,9 @@ input, textarea { font-family: inherit; }
           <div class="home-input-wrap">
             <div class="home-input-box">
               <div class="home-input">
-                <textarea id="homeChatInput" placeholder="请先从上方选择具体审计任务，再使用 AI 工具" rows="1" onkeydown="handleHomeKeyDown(event)" oninput="autoResize(this)" disabled aria-disabled="true"></textarea>
+                <textarea id="homeChatInput" placeholder="例如：分析采购费用和公开招标执行率，识别风险并查看明细" rows="1" onkeydown="handleHomeKeyDown(event)" oninput="autoResize(this)" aria-disabled="false"></textarea>
                 <div class="home-input-actions" style="position:relative">
-                  <button class="home-input-action" id="homeUploadBtn" title="请先选择具体审计任务" onclick="toggleUploadDropdown(event)" disabled aria-disabled="true">
+                  <button class="home-input-action" id="homeUploadBtn" title="请先选择具体审计任务后上传资料" onclick="toggleUploadDropdown(event)" disabled aria-disabled="true">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                   </button>
                   <div class="home-upload-dropdown" id="homeUploadDropdown">
@@ -3437,10 +3449,17 @@ input, textarea { font-family: inherit; }
                       <span>上传文件或图片</span>
                     </div>
                   </div>
-                  <button class="home-send-btn" id="homeSendBtn" title="请先选择具体审计任务" onclick="handleHomeInput()" disabled aria-disabled="true">
+                  <button class="home-send-btn" id="homeSendBtn" title="识别审计意图并开始办理" onclick="handleHomeInput()" aria-disabled="false">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                   </button>
                 </div>
+              </div>
+              <div class="audit-question-examples" aria-label="审计问题示例">
+                <span class="audit-question-examples-label">试试这样问</span>
+                <button type="button" class="audit-question-example" onclick="useAuditQuestionExample(this)">分析采购费用和公开招标执行率，识别风险并查看明细</button>
+                <button type="button" class="audit-question-example" onclick="useAuditQuestionExample(this)">根据采购合同和付款凭证生成审计底稿</button>
+                <button type="button" class="audit-question-example" onclick="useAuditQuestionExample(this)">查看项目整改进度，并对逾期事项发起督办</button>
+                <button type="button" class="audit-question-example" onclick="useAuditQuestionExample(this)">根据已审核底稿撰写审计报告初稿</button>
               </div>
             </div>
           </div>
@@ -8183,26 +8202,28 @@ function requireActiveAuditTask() {
 }
 
 function updateTaskWorkspaceState() {
-  const enabled = hasActiveAuditTask();
+  const hasTask = hasActiveAuditTask();
   const input = document.getElementById('homeChatInput');
   const upload = document.getElementById('homeUploadBtn');
   const send = document.getElementById('homeSendBtn');
   if (input) {
-    input.disabled = !enabled;
-    input.setAttribute('aria-disabled', String(!enabled));
-    input.placeholder = enabled ? '补充资料或直接描述当前审计任务...' : '请先从上方选择具体审计任务，再使用 AI 工具';
+    input.disabled = false;
+    input.setAttribute('aria-disabled', 'false');
+    input.placeholder = hasTask
+      ? '补充资料或直接描述当前审计任务...'
+      : '例如：分析采购费用和公开招标执行率，识别风险并查看明细';
   }
   if (upload) {
-    upload.disabled = !enabled;
-    upload.setAttribute('aria-disabled', String(!enabled));
-    upload.title = enabled ? '上传与更多' : '请先选择具体审计任务';
+    upload.disabled = !hasTask;
+    upload.setAttribute('aria-disabled', String(!hasTask));
+    upload.title = hasTask ? '上传与更多' : '请先选择具体审计任务后上传资料';
   }
   if (send) {
-    send.disabled = !enabled;
-    send.setAttribute('aria-disabled', String(!enabled));
-    send.title = enabled ? '发送当前任务指令' : '请先选择具体审计任务';
+    send.disabled = false;
+    send.setAttribute('aria-disabled', 'false');
+    send.title = hasTask ? '发送当前任务指令' : '识别审计意图并开始办理';
   }
-  if (!enabled) closeUploadDropdown();
+  if (!hasTask) closeUploadDropdown();
 }
 
 function handleHomeKeyDown(e) {
@@ -8215,7 +8236,6 @@ function handleHomeKeyDown(e) {
 function handleConversationKeyDown(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
-    if (!requireActiveAuditTask()) return;
     sendMessage();
   }
 }
@@ -8285,7 +8305,7 @@ const taskKeywordMap = {
   pre_survey: ['审前调查', '基础资料', '被审计单位调查'],
   generate_draft: ['生成审计底稿', '生成底稿', '审计底稿', '自动生成底稿'],
   collect_evidence: ['收集审计证据', '收集证据', '审计证据', '证据收集'],
-  find_issue: ['问题发现', '问题定性', '发现问题', '识别问题', '定性'],
+  find_issue: ['问题发现', '问题定性', '发现问题', '识别问题', '定性', '费用分析', '采购费用', '公开招标执行率', '指标异动', '风险解读', '异常明细', '查看明细', '风险分析'],
   exception_scenarios: ['异常处置', '异常场景', '内容获取失败', '数据解析失败', '权限拦截', 'MCP服务离线', 'MCP 服务离线'],
   interview_record: ['审计访谈', '访谈记录', '记录访谈'],
   write_report: ['撰写审计报告', '审计报告', '生成报告', '报告初稿', '撰写报告'],
@@ -8302,13 +8322,87 @@ const taskKeywordMap = {
   archive_borrow: ['档案借阅', '借阅档案', '申请借阅', '档案调阅']
 };
 
-function detectTaskIntent(text) {
+function recognizeAuditIntent(text) {
+  const normalized = (text || '').replace(/\s+/g, '').toLowerCase();
+  const matches = [];
+
   for (const [taskKey, keywords] of Object.entries(taskKeywordMap)) {
-    for (const kw of keywords) {
-      if (text.includes(kw)) return taskKey;
-    }
+    const matchedKeywords = keywords.filter(keyword => normalized.includes(keyword.replace(/\s+/g, '').toLowerCase()));
+    if (!matchedKeywords.length) continue;
+    const score = matchedKeywords.reduce((total, keyword) => total + Math.min(keyword.replace(/\s+/g, '').length, 8), 0);
+    matches.push({ taskKey, matchedKeywords, score });
   }
-  return null;
+
+  matches.sort((a, b) => b.score - a.score || b.matchedKeywords.length - a.matchedKeywords.length);
+  const best = matches[0] || null;
+  const meta = best && getTaskMeta(best.taskKey);
+  const confidence = !best ? 'none' : best.score >= 8 || best.matchedKeywords.length >= 2 ? 'high' : 'medium';
+
+  return {
+    taskKey: meta && meta.task ? best.taskKey : null,
+    category: meta && meta.category ? meta.category : null,
+    task: meta && meta.task ? meta.task : null,
+    matchedKeywords: best ? best.matchedKeywords : [],
+    confidence,
+    candidates: matches.slice(0, 3)
+  };
+}
+
+function detectTaskIntent(text) {
+  return recognizeAuditIntent(text).taskKey;
+}
+
+function useAuditQuestionExample(trigger) {
+  const input = document.getElementById('homeChatInput');
+  const text = trigger && trigger.textContent ? trigger.textContent.trim() : '';
+  if (!input || !text) return;
+  input.value = text;
+  autoResize(input);
+  handleHomeInput();
+}
+
+function renderAuditIntentRecognition(intent) {
+  if (!intent || !intent.taskKey || !intent.category || !intent.task) return '';
+  const confidenceLabel = intent.confidence === 'high' ? '高置信匹配' : '建议匹配';
+  return `<div class="chat-card intent-recognition-card"><div class="chat-card-header"><div class="chat-card-icon">⌕</div><span class="chat-card-title">已识别审计意图</span><span class="issue-tag">${confidenceLabel}</span></div><div class="generated-result-body"><div class="intent-recognition-route"><span>审计阶段</span><strong>${escapeHtml(intent.category.name)}</strong><i>›</i><span>具体任务</span><strong>${escapeHtml(intent.task.name)}</strong></div><div class="intent-recognition-reason">匹配依据：${intent.matchedKeywords.map(escapeHtml).join('、')}。系统将按该任务的既有审计流程调用技能并生成成果。</div></div></div>`;
+}
+
+function addAuditIntentRecognition(intent) {
+  const inner = document.getElementById('chatInner');
+  if (!inner || !intent || !intent.taskKey) return;
+  const assistant = getTaskAssistantMeta(intent.taskKey);
+  const node = document.createElement('div');
+  node.className = 'message ai intent-recognition-message';
+  node.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderAuditIntentRecognition(intent)}</div></div>`;
+  inner.appendChild(node);
+  if (activeConversation && !isRestoringPresetConversation) {
+    activeConversation.messages.push({ role: 'ai', text: `已识别审计意图：${intent.category.name} · ${intent.task.name}。匹配依据：${intent.matchedKeywords.join('、')}。`, taskKey: intent.taskKey });
+    activeConversation.updated = '刚刚';
+    renderSidebar();
+  }
+  scrollToBottom();
+}
+
+function routeAuditQuestion(text, intent) {
+  if (!intent || !intent.taskKey || !intent.category || !intent.task) return false;
+  setConversationMode();
+  beginTaskConversation(intent.category, intent.task);
+  currentSubTaskKey = intent.taskKey;
+  document.getElementById('chatInner').innerHTML = '';
+  addMessage('user', text, intent.taskKey);
+  addAuditIntentRecognition(intent);
+  executeAuditInstruction(text, intent.taskKey, '意图识别路由', null, false);
+  return true;
+}
+
+function routeUnmatchedAuditQuestion(text) {
+  setConversationMode();
+  const session = beginAdHocConversation('审计咨询', null, '待识别审计需求');
+  updateProjectChatHeader(session, '审计咨询', '待识别审计需求');
+  document.getElementById('chatInner').innerHTML = '';
+  addMessage('user', text);
+  addMessage('ai', '暂未能准确匹配到具体审计任务。请补充审计对象、办理动作或成果类型，例如“生成采购合规性审计底稿”“查看整改进度”或“编制归档清单”。');
+  updateConversationSummary('待补充审计需求，以便匹配具体任务');
 }
 
 const templateGenerationRequirements = {
@@ -8637,7 +8731,6 @@ function handlePendingTemplateGeneration(text) {
 }
 
 function handleHomeInput() {
-  if (!requireActiveAuditTask()) return;
   sendMessage();
 }
 
@@ -10050,13 +10143,13 @@ addAuditReportDemo = function(data, taskKey = 'write_report') {
   captureGeneratedResult('audit-report', taskKey);
 };
 
-function executeAuditInstruction(text, taskKey, source = '对话指令', usedSkillLabel = null) {
+function executeAuditInstruction(text, taskKey, source = '对话指令', usedSkillLabel = null, includeUserMessage = true) {
   const resolvedTaskKey = taskKey || currentSubTaskKey || detectTaskIntent(text);
   if (!resolvedTaskKey || !taskSimulations[resolvedTaskKey]) return;
   currentSubTaskKey = resolvedTaskKey;
   if (usedSkillLabel) markTaskSkillsUsed(resolvedTaskKey, [usedSkillLabel]);
   else markAllTaskSkillsUsed(resolvedTaskKey);
-  addMessage('user', text, resolvedTaskKey);
+  if (includeUserMessage) addMessage('user', text, resolvedTaskKey);
   const display = getTaskDisplayName(resolvedTaskKey);
   const executionId = addConversationExecution(resolvedTaskKey, `${source}：${display.task}`, '正在检索审计依据、调用任务工具并生成可复核成果', 'generating');
   updateConversationSummary(`正在执行${display.task}：检索依据与工具调用已启动`);
@@ -10079,18 +10172,29 @@ useFollowUpSuggestion = function(trigger) {
 };
 
 sendMessage = function() {
-  if (!requireActiveAuditTask()) return;
   const input = document.getElementById('homeChatInput');
-  const text = input.value.trim();
+  const text = input && input.value.trim();
   if (!text) return;
   input.value = '';
   input.style.height = '28px';
-  if (pendingTemplateGeneration) {
+
+  if (pendingTemplateGeneration && hasActiveAuditTask()) {
     addMessage('user', text, currentSubTaskKey);
     handlePendingTemplateGeneration(text);
     return;
   }
-  executeAuditInstruction(text, detectTaskIntent(text) || currentSubTaskKey, '审计指令');
+
+  const intent = recognizeAuditIntent(text);
+  if (intent.taskKey && (!hasActiveAuditTask() || intent.taskKey !== currentSubTaskKey)) {
+    routeAuditQuestion(text, intent);
+    return;
+  }
+  if (!hasActiveAuditTask()) {
+    routeUnmatchedAuditQuestion(text);
+    return;
+  }
+
+  executeAuditInstruction(text, currentSubTaskKey, '审计指令');
 };
 
 confirmWorkingPaperOutput = function(trigger) {
