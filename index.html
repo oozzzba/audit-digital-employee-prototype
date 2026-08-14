@@ -1971,7 +1971,7 @@ input, textarea { font-family: inherit; }
 /* ===== Manual View ===== */
 .manual-view { height: 100%; display: none; overflow: hidden; }
 .manual-view.active { display: block; }
-.manual-layout { display: grid; grid-template-columns: 240px 1fr 200px; height: 100%; }
+.manual-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); height: 100%; }
 .manual-sidebar {
   border-right: 1px solid var(--gray-200);
   padding: 20px 14px;
@@ -2022,7 +2022,8 @@ input, textarea { font-family: inherit; }
 .manual-content {
   padding: 32px 48px;
   overflow-y: auto;
-  max-width: 880px;
+  width: 100%;
+  max-width: 1080px;
   margin: 0 auto;
   background: var(--white);
 }
@@ -2049,30 +2050,6 @@ input, textarea { font-family: inherit; }
   font-size: 13px;
   color: var(--gray-700);
 }
-
-.manual-outline {
-  border-left: 1px solid var(--gray-200);
-  padding: 24px 16px;
-  font-size: 12px;
-  overflow-y: auto;
-}
-.manual-outline-title {
-  font-size: 12px; font-weight: 600; color: var(--gray-400);
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--gray-100);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-.manual-outline-item {
-  padding: 6px 10px;
-  color: var(--gray-500);
-  cursor: pointer;
-  border-left: 2px solid transparent;
-  margin-left: -10px;
-  transition: all 0.15s;
-}
-.manual-outline-item:hover { color: var(--primary); border-left-color: var(--primary); }
 
 /* ===== Rectification View ===== */
 .rect-view { padding: 24px; }
@@ -2788,8 +2765,8 @@ input, textarea { font-family: inherit; }
   .history-search { width: 100%; }
 
   /* Manual */
-  .manual-view { flex-direction: column; }
-  .manual-toc { width: 100%; max-height: 200px; overflow-y: auto; border-right: none; border-bottom: 1px solid var(--gray-200); }
+  .manual-layout { grid-template-columns: 1fr; }
+  .manual-sidebar { display: none; }
   .manual-content { flex: 1; padding: 16px; }
   .manual-content h1 { font-size: 18px; }
   .manual-content h2 { font-size: 15px; }
@@ -4845,12 +4822,6 @@ input, textarea { font-family: inherit; }
             <p>A：不能。AI 生成内容仅作为工作参考，审计人员必须核实原始凭证、法规依据、计算过程和处理意见，并完成审核签认后方可进入正式流转。</p>
             <p><strong>Q4：整改事项满足什么条件才能销号？</strong></p>
             <p>A：应确认整改措施落实、佐证材料完整、责任部门确认和复核意见通过；存在遗留风险或复核不通过时，必须退回补充整改，不能直接销号。</p>
-          </div>
-          <div class="manual-outline">
-            <div class="manual-outline-title">目录</div>
-            <div class="manual-outline-item" onclick="scrollToManualSection('m1-1', null)">（一）什么是审计数字员工</div>
-            <div class="manual-outline-item" onclick="scrollToManualSection('m1-2', null)">（二）核心能力</div>
-            <div class="manual-outline-item" onclick="scrollToManualSection('m1-3', null)">（三）应用场景</div>
           </div>
         </div>
       </div>
