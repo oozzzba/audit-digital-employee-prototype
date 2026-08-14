@@ -389,10 +389,17 @@ input, textarea { font-family: inherit; }
 .chat-view.active { display: flex; }
 
 .chat-workspace {
-  display: flex; flex: 1; min-height: 0; min-width: 0; position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  min-height: 0;
+  min-width: 0;
+  flex-direction: column;
+  position: relative;
 }
-.chat-main-column { display: flex; flex: 1; min-width: 0; min-height: 0; flex-direction: column; position: relative; }
-.chat-workspace .home-input-area { bottom: 0; left: 0; right: 0; }
+.chat-workspace.conversation-mode { flex: 1; }
+.chat-main-column { display: none; flex: 1; min-width: 0; min-height: 0; flex-direction: column; position: relative; }
+.chat-workspace.conversation-mode .chat-main-column { display: flex; }
+.chat-workspace .home-input-area { position: relative; inset: auto; width: 100%; flex-shrink: 0; }
 .working-paper-attachment { display: flex; align-items: center; gap: 10px; margin: 12px 0; padding: 10px 12px; border: 1px solid #D8E6F6; border-radius: 7px; background: #F7FBFF; }
 .working-paper-attachment-icon { width: 32px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; background: var(--primary-light); color: var(--primary); font-size: 10px; font-weight: 750; flex-shrink: 0; }
 .working-paper-attachment-info { min-width: 0; flex: 1; }
@@ -895,7 +902,7 @@ input, textarea { font-family: inherit; }
   align-items: center;
   justify-content: flex-start;
   overflow-y: auto;
-  padding: 10px 24px 156px;
+  padding: 10px 24px 24px;
 }
 .home-hero {
   text-align: center;
@@ -1082,14 +1089,12 @@ input, textarea { font-family: inherit; }
 .level2-card-desc { margin-top: 4px; font-size: 11px; color: var(--gray-400); line-height: 1.5; }
 
 .home-input-area {
-  position: fixed;
-  bottom: 24px; left: var(--sidebar-w); right: 0;
+  position: relative;
   padding: 12px 24px 16px;
-  background: linear-gradient(0deg, rgba(255,255,255,1) 68%, rgba(255,255,255,0) 100%);
-  z-index: 10;
-  transition: left 0.2s ease, bottom 0.2s ease;
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  z-index: 1;
 }
-.sidebar.collapsed ~ .main .home-input-area { left: 56px; }
 .home-input-wrap {
   max-width: 720px;
   margin: 0 auto;
@@ -2644,8 +2649,7 @@ input, textarea { font-family: inherit; }
   .main { width: 100vw; }
 
   /* Home input area full width */
-  .home-input-area { bottom: 12px; left: 0 !important; padding: 10px 16px 14px; }
-  .sidebar.collapsed ~ .main .home-input-area { left: 0; }
+  .home-input-area { padding: 10px 16px 14px; }
   .home-input-wrap { max-width: 100%; }
 
   /* Topbar adjustments */
@@ -3134,7 +3138,7 @@ input, textarea { font-family: inherit; }
 .project-chat-title h3 { font-size: 14px; letter-spacing: 0; }
 .project-chat-title p { font-size: 12px; }
 .project-chat-status { border-radius: 4px; font-size: 11px; }
-.chat-messages { padding: 28px 0 178px; gap: 20px; }
+.chat-messages { padding: 28px 0 24px; gap: 20px; }
 .chat-messages-inner { max-width: 860px; padding: 0 32px; gap: 24px; }
 .message { align-items: flex-start; gap: 12px; }
 .message.user { flex-direction: row; }
@@ -3178,9 +3182,9 @@ input, textarea { font-family: inherit; }
 .conversation-step { border-radius: 4px; }
 .conversation-note { border-left-width: 2px; border-radius: 0 4px 4px 0; }
 .home-input-area {
-  bottom: 36px;
   padding: 12px 24px 16px;
-  background: linear-gradient(0deg, rgba(250,250,250,1) 68%, rgba(250,250,250,0) 100%);
+  background: var(--white);
+  border-top-color: #E8E8E8;
 }
 .home-input-wrap { max-width: 860px; }
 .home-input-box {
@@ -3226,12 +3230,12 @@ input, textarea { font-family: inherit; }
 @media (max-width: 768px) {
   .project-chat-header { padding: 9px 14px; }
   .project-chat-title h3 { font-size: 13px; }
-  .chat-messages { padding: 18px 0 172px; }
+  .chat-messages { padding: 18px 0 22px; }
   .chat-messages-inner { padding: 0 14px; gap: 20px; }
   .message { gap: 9px; }
   .message-avatar { width: 28px; height: 28px; border-radius: 6px; }
   .message-bubble { font-size: 13px; }
-  .home-input-area { bottom: 20px; padding: 10px 12px 14px; }
+  .home-input-area { padding: 10px 12px 14px; }
   .audit-question-examples { align-items: flex-start; gap: 5px; padding: 0 8px 8px 10px; }
   .audit-question-examples-label { width: 100%; }
   .audit-question-example { font-size: 10px; padding: 3px 6px; }
@@ -3446,10 +3450,9 @@ input, textarea { font-family: inherit; }
               <div class="chat-messages-inner" id="chatInner"></div>
             </div>
           </div>
-        </div>
 
-        <!-- Home Input (fixed bottom) -->
-        <div class="home-input-area" id="homeInputArea">
+          <!-- Unified conversation input -->
+          <div class="home-input-area" id="homeInputArea">
           <div class="home-input-wrap">
             <div class="home-input-box">
               <div class="input-routing-toolbar" aria-label="审计任务输入方式">
@@ -3514,6 +3517,7 @@ input, textarea { font-family: inherit; }
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
 
@@ -5011,9 +5015,6 @@ function setConversationMode() {
   document.getElementById('homeState').style.display = 'none';
   document.getElementById('chatMessages').style.display = 'flex';
   const inputArea = document.getElementById('homeInputArea');
-  inputArea.style.left = '0';
-  inputArea.style.background = 'var(--white)';
-  inputArea.style.borderTop = '1px solid var(--gray-200)';
   inputArea.classList.add('conversation-mode');
   const workspace = document.getElementById('chatWorkspace');
   if (workspace) workspace.classList.add('conversation-mode');
@@ -7187,11 +7188,9 @@ function goHome() {
   document.getElementById('chatInner').innerHTML = '';
   const inputArea = document.getElementById('homeInputArea');
   inputArea.classList.remove('conversation-mode');
-  inputArea.style.left = '';
-  inputArea.style.background = '';
-  inputArea.style.borderTop = '';
   const workspace = document.getElementById('chatWorkspace');
   if (workspace) workspace.classList.remove('conversation-mode');
+  document.getElementById('homeChatInput').onkeydown = handleHomeKeyDown;
   updateProjectChatHeader(null);
   renderSidebar();
   renderHomeTabs();
@@ -9076,9 +9075,6 @@ function backToHome() {
   updateProjectChatHeader(null);
 
   const inputArea = document.getElementById('homeInputArea');
-  inputArea.style.left = '';
-  inputArea.style.background = '';
-  inputArea.style.borderTop = '';
   inputArea.classList.remove('conversation-mode');
   const workspace = document.getElementById('chatWorkspace');
   if (workspace) workspace.classList.remove('conversation-mode');
