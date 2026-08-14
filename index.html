@@ -1827,6 +1827,11 @@ input, textarea { font-family: inherit; }
 .material-tree-item.active { background: #FDEEEE; color: var(--primary); font-weight: 600; }
 .material-tree-item .tree-count { font-size: 11px; }
 .material-tree-item.level-2 { padding: 6px 8px; font-size: 11px; }
+.material-tree-item.level-3 { min-height: 28px; padding: 5px 8px; color: var(--gray-500); font-size: 11px; }
+.material-tree-phase { margin: 1px 0; }
+.materials-tree-children.project-phase-children { margin-top: 3px; }
+.materials-tree-children.level-3 { margin: 0 0 4px 10px; padding-left: 5px; }
+.materials-tree-children.hidden { display: none; }
 .project-tree-item { overflow: hidden; }
 .project-tree-item .project-tree-folder { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 16px; color: var(--gray-500); }
 .project-tree-item.active .project-tree-folder { color: var(--primary); }
@@ -5890,14 +5895,13 @@ const fileTypeIcons = {
   other: { icon: 'FILE', cls: 'other' }
 };
 
-const materialFolders = [
-  { id: 'initiation', title: '项目立项文件夹', phases: ['项目立项'], desc: '立项审批单、审计实施方案、审计计划、时间计划表、人员分工表、风控检查清单' },
-  { id: 'source', title: '基础业务数据源', phases: ['审前准备', '现场实施'], desc: '银行流水、记账凭证、合同文件、工单记录、客户档案、台账、征信资料' },
-  { id: 'ai-output', title: 'AI-Agent 审计产出资料', phases: ['审计报告'], desc: 'AI 解析日志、疑点明细、风险报告、凭证比对结果、异常流水清单、可视化分析报表、Agent 调用记录' },
-  { id: 'human-review', title: '人工复核材料', phases: [], desc: '人工批注、疑点核实笔录、沟通回执、取证截图' },
-  { id: 'rectification', title: '整改闭环档案', phases: ['整改跟踪'], desc: '整改通知书、业务部门整改材料、二次 AI 复检报告、闭环凭证' },
-  { id: 'delivery', title: '最终交付审计档案', phases: ['项目归档'], desc: '正式审计报告、归档包、合规底稿、台账清单' }
-];
+const materialFolders = phaseOrder.map((phase, index) => ({
+  id: `phase-${index + 1}`,
+  title: phase,
+  phase,
+  phases: [phase],
+  desc: `${phase}阶段的审计项目资料与数字员工产出`
+}));
 const materialSpecialPanels = {
   knowledge: { title: '公共审计知识库', desc: '全部 Agent 共享的法规、规则、案例与提示词资产', cards: [['审计法规库', '1,256 条法规与制度', '最后同步：今天 18:25'], ['风控规则库', '64 条审计预警与校验规则', '已发布：62 条'], ['行业案例库', '386 个典型审计案例', '本月新增：12 个'], ['提示词模板库', '52 套审计任务模板', '覆盖六阶段任务']] },
   queue: { title: 'AI 文件任务队列', desc: '文档解析、OCR、PDF 抽取与表格识别任务的运行情况', cards: [['正在解析文档', '采购合同汇总表.xlsx', '进度 78% · 现场实施助手'], ['OCR 任务', '大额支付凭证扫描件.zip', '等待人工核验'], ['PDF 抽取', '审计报告征求意见稿.pdf', '已完成 · 32 页'], ['表格识别', '银行流水明细.xlsx', '已完成 · 12,884 行']] },
@@ -5907,7 +5911,7 @@ const materialSpecialPanels = {
 let currentMaterialLocation = { type: 'all', projectId: null, folder: null, taskKey: null };
 let currentMatFilter = { keyword: '' };
 let selectedMaterialFileId = null;
-const expandedMaterialProjectIds = new Set();
+const expandedMaterialProjectIds = new Set(projectData.map(project => project.id));
 
 const taskOutputResources = [
   { id: 'ai-wp-001', projectId: 1, taskKey: 'generate_draft', name: 'AI生成审计问题底稿-采购合规.docx', type: 'word', size: '268 KB', uploader: '审计数字员工', date: '2026-08-12', phase: '现场实施', resourceType: 'AI生成底稿' },
@@ -5951,10 +5955,8 @@ function getAllMaterialFiles() {
 }
 
 function getMaterialFolder(file) {
-  if (file.name.includes('底稿') || file.name.includes('疑点') || file.name.includes('风险')) return 'ai-output';
-  if (file.name.includes('报告') || file.phase === '项目归档') return 'delivery';
-  const folder = materialFolders.find(item => item.phases.includes(file.phase));
-  return folder ? folder.id : 'human-review';
+  const folder = materialFolders.find(item => item.phase === file.phase);
+  return folder ? folder.id : null;
 }
 
 function fileActionButtons(file) {
@@ -6007,13 +6009,15 @@ function renderMaterialsTree(allFiles) {
   const projectNodes = projectData.filter(project => allFiles.some(file => file.projectId === project.id)).map(project => {
     const projectFiles = allFiles.filter(file => file.projectId === project.id);
     const isExpanded = expandedMaterialProjectIds.has(project.id);
-    const childNodes = materialFolders.map(folder => {
-      const folderCount = projectFiles.filter(file => getMaterialFolder(file) === folder.id).length;
-      if (!folderCount) return '';
-      return `<button class="material-tree-item level-2 ${active.projectId === project.id && active.folder === folder.id ? 'active' : ''}" onclick="selectMaterialLocation('project', ${project.id}, '${folder.id}')"><span>${folder.title}</span><span class="tree-count">${folderCount}</span></button>`;
+    const phaseNodes = materialFolders.map(folder => {
+      const phaseFiles = projectFiles.filter(file => getMaterialFolder(file) === folder.id);
+      const phaseCount = phaseFiles.length;
+      const isPhaseOpen = active.projectId === project.id && active.folder === folder.id;
+      const fileNodes = phaseFiles.map(file => `<button class="material-tree-item level-3 ${active.projectId === project.id && active.folder === folder.id && active.fileId === file.id ? 'active' : ''}" onclick="selectMaterialLocation('project', ${project.id}, '${folder.id}', '', '${file.id}')"><span class="project-tree-name">${file.name}</span></button>`).join('');
+      return `<div class="material-tree-phase"><button class="material-tree-item level-2 ${isPhaseOpen ? 'expanded' : ''}" onclick="selectMaterialLocation('project', ${project.id}, '${folder.id}')"><span>${folder.title}</span><span class="tree-count">${phaseCount}</span><span class="tree-arrow">›</span></button><div class="materials-tree-children level-3 ${isPhaseOpen ? '' : 'hidden'}">${fileNodes}</div></div>`;
     }).join('');
     const selected = active.type === 'project' && active.projectId === project.id && !active.folder;
-    return `<div class="material-tree-section"><button class="material-tree-item project-tree-item ${selected ? 'active' : ''} ${isExpanded ? 'expanded' : ''}" onclick="toggleMaterialProject(${project.id})"><span class="project-tree-folder" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span><span class="project-tree-name">${project.name}</span><span class="tree-count">${projectFiles.length}</span><span class="tree-arrow">›</span></button><div class="materials-tree-children ${isExpanded ? '' : 'hidden'}" id="projectTreeChildren-${project.id}">${childNodes}</div></div>`;
+    return `<div class="material-tree-section"><button class="material-tree-item project-tree-item ${selected ? 'active' : ''} ${isExpanded ? 'expanded' : ''}" onclick="toggleMaterialProject(${project.id})"><span class="project-tree-folder" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span><span class="project-tree-name">${project.name}</span><span class="tree-count">${projectFiles.length}</span><span class="tree-arrow">›</span></button><div class="materials-tree-children project-phase-children ${isExpanded ? '' : 'hidden'}" id="projectTreeChildren-${project.id}">${phaseNodes}</div></div>`;
   }).join('');
   tree.innerHTML = projectNodes || '<div class="materials-empty">暂无项目资料</div>';
 }
@@ -6025,8 +6029,9 @@ function toggleMaterialProject(projectId) {
   selectMaterialLocation('project', projectId, null);
 }
 
-function selectMaterialLocation(type, projectId, folder, taskKey) {
-  currentMaterialLocation = { type, projectId: projectId || null, folder: folder || null, taskKey: taskKey || null };
+function selectMaterialLocation(type, projectId, folder, taskKey, fileId) {
+  currentMaterialLocation = { type, projectId: projectId || null, folder: folder || null, taskKey: taskKey || null, fileId: fileId || null };
+  if (fileId) selectedMaterialFileId = fileId;
   currentMatFilter.keyword = '';
   const search = document.getElementById('matSearchInput');
   if (search) search.value = '';
