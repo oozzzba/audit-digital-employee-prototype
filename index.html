@@ -1798,8 +1798,6 @@ input, textarea { font-family: inherit; }
 /* Materials workbench refresh: category rail, document table and inspection panel */
 .materials-view { padding: 20px 24px 28px; background: #F7F8FA; min-height: 100%; }
 .materials-center-header { max-width: 1440px; margin: 0 auto 16px; align-items: center; }
-.materials-context { margin-top: 5px; color: var(--gray-500); font-size: 12px; }
-.materials-context strong { color: var(--gray-700); font-weight: 600; }
 .materials-header-actions { display: flex; align-items: center; gap: 8px; }
 .materials-header-actions .topbar-btn { min-height: 32px; padding: 0 13px; border-radius: 5px; font-size: 12px; }
 .materials-header-actions .topbar-btn:not(.primary) { background: var(--white); border: 1px solid var(--gray-200); color: var(--gray-700); }
@@ -4797,8 +4795,7 @@ input, textarea { font-family: inherit; }
       <div class="view materials-view" id="view-materials">
         <div class="page-header materials-center-header">
           <div>
-            <div class="page-title">项目资料中心</div>
-            <div class="materials-context">当前任务：<strong id="materialsProjectContext">2026年度经济责任审计</strong></div>
+            <div class="page-title">项目资料</div>
           </div>
           <div class="materials-header-actions">
             <button class="topbar-btn primary" onclick="showToast('已打开当前任务资料上传入口')">上传资料</button>
@@ -6085,10 +6082,6 @@ function renderMaterialsCenter() {
   document.getElementById('matStatSize').textContent = totalSize > 1024 ? (totalSize / 1024).toFixed(1) + ' GB' : totalSize.toFixed(1) + ' MB';
   document.getElementById('matStatProjects').textContent = allFiles.length ? `${Math.max(1, Math.ceil(allFiles.length / 6))} 个周期` : '0 个周期';
   document.getElementById('matStatToday').textContent = new Set(allFiles.map(file => file.resourceType || '任务资料')).size;
-  const activeContext = getActiveTaskMaterialsContext();
-  const contextName = activeContext ? activeContext.projectName : (projectData[0]?.name || '全部审计项目');
-  const context = document.getElementById('materialsProjectContext');
-  if (context) context.textContent = contextName;
   renderMaterialsTree(allFiles);
   const title = document.getElementById('materialsContentTitle');
   const desc = document.getElementById('materialsContentDesc');
