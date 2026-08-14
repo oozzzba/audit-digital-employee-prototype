@@ -2575,6 +2575,19 @@ input, textarea { font-family: inherit; }
   padding: 12px 20px; border-top: 1px solid var(--gray-200);
   display: flex; justify-content: flex-end; gap: 8px;
 }
+.human-review-modal { width: min(560px, 100%); }
+.human-review-lead { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 16px; }
+.human-review-icon { display: inline-flex; flex: 0 0 auto; width: 32px; height: 32px; align-items: center; justify-content: center; border-radius: 50%; background: var(--accent-red-bg); color: var(--primary); font-size: 17px; font-weight: 700; }
+.human-review-lead strong { display: block; color: var(--gray-800); font-size: 14px; }
+.human-review-lead p { margin: 4px 0 0; color: var(--gray-600); font-size: 12px; line-height: 1.65; }
+.human-review-details { display: grid; gap: 9px; }
+.human-review-detail { padding: 10px 11px; border: 1px solid var(--gray-200); border-radius: 6px; background: var(--gray-50); }
+.human-review-detail-label { display: block; margin-bottom: 4px; color: var(--gray-500); font-size: 10px; font-weight: 700; }
+.human-review-detail-value { color: var(--gray-700); font-size: 12px; line-height: 1.6; }
+.human-review-scope { margin: 14px 0 0; color: var(--gray-500); font-size: 11px; line-height: 1.6; }
+.risk-disposal-note { display: flex; align-items: flex-start; gap: 7px; margin-top: 12px; padding: 9px 10px; border-left: 2px solid #067647; background: #F6FEF9; color: #067647; font-size: 11px; line-height: 1.55; }
+.risk-disposal-note strong { color: #05603A; }
+@media (max-width: 640px) { .modal { max-width: calc(100vw - 24px); max-height: calc(100vh - 32px); } .modal-body { padding: 16px; } .modal-footer { padding: 10px 16px; } .human-review-lead { gap: 8px; } .human-review-icon { width: 28px; height: 28px; } }
 
 /* ===== Toast ===== */
 .toast {
@@ -8583,7 +8596,7 @@ function renderTrendAnalysisCard(data) {
     return { bar, point, label, annotation, x: x + 11, y: rateY };
   });
   const points = bars.map(item => `${item.x},${item.y}`).join(' ');
-  return `<div class="chat-card trend-analysis-card"><div class="chat-card-header"><div class="chat-card-icon">⌁</div><span class="chat-card-title">${data.title}</span><span class="issue-tag high">${data.risk}</span></div><div class="generated-result-body"><p class="trend-analysis-intro">分析期间：${data.period}。已完成费用、公开招标执行率和采购方式的交叉比对，异常数据可下钻至合同明细。</p><div class="trend-analysis-metrics"><div class="trend-analysis-metric"><span class="trend-analysis-metric-label">期间采购费用</span><span class="trend-analysis-metric-value">${data.spend}</span></div><div class="trend-analysis-metric"><span class="trend-analysis-metric-label">3月费用较前两月均值</span><span class="trend-analysis-metric-value alert">${data.variance}</span></div><div class="trend-analysis-metric"><span class="trend-analysis-metric-label">3月公开招标执行率</span><span class="trend-analysis-metric-value alert">${data.rate}</span></div></div><div class="trend-analysis-chart"><div class="trend-analysis-chart-head"><span class="trend-analysis-chart-title">月度采购费用与公开招标执行率</span><span class="trend-analysis-chart-unit">费用：万元 · 执行率：%</span></div><svg class="trend-analysis-svg" viewBox="0 0 340 150" role="img" aria-label="2026年1月至6月采购费用与公开招标执行率趋势图"><line class="trend-analysis-grid" x1="32" x2="330" y1="32" y2="32"/><line class="trend-analysis-grid" x1="32" x2="330" y1="76" y2="76"/><line class="trend-analysis-grid" x1="32" x2="330" y1="120" y2="120"/><text class="trend-analysis-axis" x="4" y="35">180</text><text class="trend-analysis-axis" x="8" y="79">90</text><text class="trend-analysis-axis" x="12" y="123">0</text><text class="trend-analysis-axis" x="300" y="35">100%</text><text class="trend-analysis-axis" x="306" y="79">50%</text>${bars.map(item => item.bar + item.annotation).join('')}<polyline class="trend-analysis-line" points="${points}"/>${bars.map(item => item.point + item.label).join('')}</svg><div class="trend-analysis-legend"><span><i></i>采购费用</span><span><i class="line"></i>公开招标执行率</span><span>红色柱：可下钻异常月份</span></div></div><div class="trend-analysis-insights">${(data.insights || []).map(item => `<div class="trend-analysis-insight"><strong>${item.title}</strong>${item.content}</div>`).join('')}</div><div class="trend-analysis-controls"><span class="trend-analysis-control-note">点击图中3月红色费用柱，或使用下方按钮查看合同级明细。</span><button class="card-btn primary" type="button" onclick="showTrendDrilldown(this)">查看3月异常明细</button></div><div class="trend-analysis-drill" hidden><div class="trend-analysis-drill-title">3月采购异常下钻明细</div><div class="trend-analysis-drill-desc">依据合同、采购方式、付款凭证及例外审批材料进行关联核验，共识别 2 笔需重点复核事项。</div><div class="trend-analysis-table-wrap"><table class="trend-analysis-table"><thead><tr><th>项目</th><th>合同号</th><th>供应商</th><th>金额</th><th>采购方式</th><th>证据状态</th><th>风险</th></tr></thead><tbody>${(data.drilldown || []).map(row => `<tr><td>${row.project}</td><td>${row.contract}</td><td>${row.supplier}</td><td class="amount">${row.amount}</td><td>${row.method}</td><td>${row.evidence}</td><td>${row.status}</td></tr>`).join('')}</tbody></table></div></div><details class="trend-analysis-formula"><summary>查看计算公式与统计口径</summary><div class="trend-analysis-formula-grid">${(data.formulas || []).map(item => `<div class="trend-analysis-formula-item"><strong>${item.title}</strong>${item.content}</div>`).join('')}</div></details><div class="ai-tag">AI 已完成趋势识别与风险解读，合同、凭证及例外审批材料仍需审计人员复核确认</div></div>${generatedResultActions(data.title || '多维趋势分析')}</div>`;
+  return `<div class="chat-card trend-analysis-card"><div class="chat-card-header"><div class="chat-card-icon">⌁</div><span class="chat-card-title">${data.title}</span><span class="issue-tag high">${data.risk}</span></div><div class="generated-result-body"><p class="trend-analysis-intro">分析期间：${data.period}。已完成费用、公开招标执行率和采购方式的交叉比对，异常数据可下钻至合同明细。</p><div class="trend-analysis-metrics"><div class="trend-analysis-metric"><span class="trend-analysis-metric-label">期间采购费用</span><span class="trend-analysis-metric-value">${data.spend}</span></div><div class="trend-analysis-metric"><span class="trend-analysis-metric-label">3月费用较前两月均值</span><span class="trend-analysis-metric-value alert">${data.variance}</span></div><div class="trend-analysis-metric"><span class="trend-analysis-metric-label">3月公开招标执行率</span><span class="trend-analysis-metric-value alert">${data.rate}</span></div></div><div class="trend-analysis-chart"><div class="trend-analysis-chart-head"><span class="trend-analysis-chart-title">月度采购费用与公开招标执行率</span><span class="trend-analysis-chart-unit">费用：万元 · 执行率：%</span></div><svg class="trend-analysis-svg" viewBox="0 0 340 150" role="img" aria-label="2026年1月至6月采购费用与公开招标执行率趋势图"><line class="trend-analysis-grid" x1="32" x2="330" y1="32" y2="32"/><line class="trend-analysis-grid" x1="32" x2="330" y1="76" y2="76"/><line class="trend-analysis-grid" x1="32" x2="330" y1="120" y2="120"/><text class="trend-analysis-axis" x="4" y="35">180</text><text class="trend-analysis-axis" x="8" y="79">90</text><text class="trend-analysis-axis" x="12" y="123">0</text><text class="trend-analysis-axis" x="300" y="35">100%</text><text class="trend-analysis-axis" x="306" y="79">50%</text>${bars.map(item => item.bar + item.annotation).join('')}<polyline class="trend-analysis-line" points="${points}"/>${bars.map(item => item.point + item.label).join('')}</svg><div class="trend-analysis-legend"><span><i></i>采购费用</span><span><i class="line"></i>公开招标执行率</span><span>红色柱：可下钻异常月份</span></div></div><div class="trend-analysis-insights">${(data.insights || []).map(item => `<div class="trend-analysis-insight"><strong>${item.title}</strong>${item.content}</div>`).join('')}</div><div class="trend-analysis-controls"><span class="trend-analysis-control-note">点击图中3月红色费用柱，或使用下方按钮查看合同级明细。</span><div class="chat-card-actions"><button class="card-btn" type="button" onclick="showTrendDrilldown(this)">查看3月异常明细</button><button class="card-btn primary" type="button" onclick="requestHighRiskDisposal(this)">处置高风险问题</button></div></div><div class="trend-analysis-drill" hidden><div class="trend-analysis-drill-title">3月采购异常下钻明细</div><div class="trend-analysis-drill-desc">依据合同、采购方式、付款凭证及例外审批材料进行关联核验，共识别 2 笔需重点复核事项。</div><div class="trend-analysis-table-wrap"><table class="trend-analysis-table"><thead><tr><th>项目</th><th>合同号</th><th>供应商</th><th>金额</th><th>采购方式</th><th>证据状态</th><th>风险</th></tr></thead><tbody>${(data.drilldown || []).map(row => `<tr><td>${row.project}</td><td>${row.contract}</td><td>${row.supplier}</td><td class="amount">${row.amount}</td><td>${row.method}</td><td>${row.evidence}</td><td>${row.status}</td></tr>`).join('')}</tbody></table></div></div><details class="trend-analysis-formula"><summary>查看计算公式与统计口径</summary><div class="trend-analysis-formula-grid">${(data.formulas || []).map(item => `<div class="trend-analysis-formula-item"><strong>${item.title}</strong>${item.content}</div>`).join('')}</div></details><div class="ai-tag">AI 已完成趋势识别与风险解读，合同、凭证及例外审批材料仍需审计人员复核确认</div></div>${generatedResultActions(data.title || '多维趋势分析')}</div>`;
 }
 
 function renderExceptionScenariosCard(data) {
@@ -8599,8 +8612,8 @@ function renderExceptionScenariosCard(data) {
           <div class="exception-context"><strong>影响上下文：</strong>${escapeHtml((item.context || '').replace(/^影响范围：/, ''))}</div>
           <div class="exception-resolution" hidden><strong>处置结论：</strong><span></span></div>
           <div class="exception-actions">
-            <button class="exception-action primary" type="button" data-resolution="${escapeHtml(item.resolutions && item.resolutions.primary)}" onclick="handleExceptionAction(this, 'primary')">${escapeHtml(item.primary)}</button>
-            <button class="exception-action" type="button" data-resolution="${escapeHtml(item.resolutions && item.resolutions.secondary)}" onclick="handleExceptionAction(this, 'secondary')">${escapeHtml(item.secondary)}</button>
+            <button class="exception-action primary" type="button" data-resolution="${escapeHtml(item.resolutions && item.resolutions.primary)}" onclick="requestExceptionDisposal(this, 'primary')">${escapeHtml(item.primary)}</button>
+            <button class="exception-action" type="button" data-resolution="${escapeHtml(item.resolutions && item.resolutions.secondary)}" onclick="requestExceptionDisposal(this, 'secondary')">${escapeHtml(item.secondary)}</button>
           </div>
         </section>`).join('')}</div>
     </div>
@@ -8639,10 +8652,32 @@ function renderTaskOutputCard(sim, resultData) {
   return `<div class="chat-card draft-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">${data.title || '审计任务成果'}</span><div class="chat-card-actions"><button class="card-btn primary" onclick="confirmSubmit('确认生成')">确认生成</button></div></div><div class="generated-result-body">${(data.fields || []).map(field => `<div class="draft-field"><span class="draft-field-label">${field.label}</span><span class="draft-field-value">${field.value}</span></div>`).join('')}<div class="ai-tag">AI 生成，请人工复核确认</div></div>${generatedResultActions(data.title || '审计任务成果')}</div>`;
 }
 
+let pendingHumanReviewAction = null;
+
+function requestExceptionDisposal(trigger, action) {
+  const item = trigger && trigger.closest('.exception-scenario');
+  if (!item || item.classList.contains('is-resolved')) return;
+  const title = item.querySelector('.exception-scenario-title')?.textContent || '系统异常';
+  const message = item.querySelector('.exception-message')?.textContent || '检测到需人工确认的系统异常。';
+  const context = item.querySelector('.exception-context')?.textContent.replace('影响上下文：', '').trim() || '当前审计作业。';
+  const actionName = trigger.textContent.trim();
+  const resolution = trigger.dataset.resolution || '已记录本次处置结果，等待后续复核。';
+  openHumanReviewModal({
+    kind: 'exception',
+    title,
+    severity: '异常待处置',
+    description: message,
+    impact: context,
+    plan: resolution,
+    actionName,
+    trigger,
+    action
+  });
+}
+
 function handleExceptionAction(trigger, action) {
   const item = trigger && trigger.closest('.exception-scenario');
   if (!item || item.classList.contains('is-resolved')) return;
-
   const resolution = trigger.dataset.resolution || '已记录本次处置结果，等待后续复核。';
   item.classList.add('is-resolved');
   const status = item.querySelector('.exception-status');
@@ -8657,8 +8692,90 @@ function handleExceptionAction(trigger, action) {
     button.disabled = true;
     button.textContent = button === trigger ? '已执行' : button.textContent;
   });
+  addHumanReviewExecution('异常处置', `${item.querySelector('.exception-scenario-title')?.textContent || '系统异常'}：${resolution}`);
   syncGeneratedResult(trigger);
-  showToast(`${item.querySelector('.exception-scenario-title')?.textContent || '异常'}：${action === 'primary' ? '已执行主操作' : '已执行辅助操作'}`);
+  showToast(`${item.querySelector('.exception-scenario-title')?.textContent || '异常'}：已按确认方案处置`);
+}
+
+function requestHighRiskDisposal(trigger) {
+  const card = trigger && trigger.closest('.trend-analysis-card');
+  if (!card || card.classList.contains('is-disposed')) return;
+  openHumanReviewModal({
+    kind: 'risk',
+    title: '采购合规高风险问题',
+    severity: '高风险',
+    description: '3月采购费用集中增长，公开招标执行率降至 33.3%。合同 HT-2026-031 涉及金额 ¥125.0 万，未见公开招标例外审批材料。',
+    impact: '影响采购合规性结论、问题定性及后续审计报告问题清单。',
+    plan: '生成高风险问题底稿，保全合同与招投标证据链，并向信息中心发起问题签认及补充例外审批材料通知。',
+    actionName: '执行处置方案',
+    trigger
+  });
+}
+
+function openHumanReviewModal(config) {
+  pendingHumanReviewAction = config;
+  document.getElementById('modalOverlay').classList.add('human-review-modal-open');
+  setModalContent('人工确认处置', `
+    <div class="human-review-modal">
+      <div class="human-review-lead"><span class="human-review-icon">!</span><div><strong>${escapeHtml(config.severity)}：${escapeHtml(config.title)}</strong><p>系统已完成识别与方案编排。请确认是否授权执行以下处置动作。</p></div></div>
+      <div class="human-review-details">
+        <div class="human-review-detail"><span class="human-review-detail-label">发现情况</span><div class="human-review-detail-value">${escapeHtml(config.description)}</div></div>
+        <div class="human-review-detail"><span class="human-review-detail-label">影响范围</span><div class="human-review-detail-value">${escapeHtml(config.impact)}</div></div>
+        <div class="human-review-detail"><span class="human-review-detail-label">建议处置方案</span><div class="human-review-detail-value">${escapeHtml(config.plan)}</div></div>
+      </div>
+      <p class="human-review-scope">确认后，系统将仅执行本次展示的方案，并在当前审计会话中记录执行过程和处置结论。</p>
+    </div>`, `<button class="topbar-btn" onclick="deferHumanReviewAction()">暂不处置</button><button class="topbar-btn primary" onclick="confirmHumanReviewAction()">确认并执行</button>`);
+}
+
+function deferHumanReviewAction() {
+  const config = pendingHumanReviewAction;
+  if (config && config.trigger) {
+    const card = config.trigger.closest('.trend-analysis-card') || config.trigger.closest('.exception-scenario');
+    if (card && !card.querySelector('.risk-disposal-note')) {
+      const note = document.createElement('div');
+      note.className = 'risk-disposal-note';
+      note.innerHTML = '<span>i</span><span><strong>待人工处置：</strong>已保留建议方案，未执行任何自动操作。</span>';
+      card.appendChild(note);
+      syncGeneratedResult(config.trigger);
+    }
+  }
+  pendingHumanReviewAction = null;
+  closeModal();
+  showToast('已保留为待人工处置，系统未执行方案');
+}
+
+function confirmHumanReviewAction() {
+  const config = pendingHumanReviewAction;
+  if (!config) return;
+  pendingHumanReviewAction = null;
+  closeModal();
+  if (config.kind === 'exception') {
+    handleExceptionAction(config.trigger, config.action);
+    return;
+  }
+  const card = config.trigger && config.trigger.closest('.trend-analysis-card');
+  if (!card || card.classList.contains('is-disposed')) return;
+  card.classList.add('is-disposed');
+  config.trigger.disabled = true;
+  config.trigger.textContent = '方案已执行';
+  const existingNote = card.querySelector('.risk-disposal-note');
+  if (existingNote) existingNote.remove();
+  const note = document.createElement('div');
+  note.className = 'risk-disposal-note';
+  note.innerHTML = '<span>✓</span><span><strong>已执行处置方案：</strong>已生成高风险问题底稿、保全 HT-2026-031 证据链，并向信息中心发起问题签认和补充材料通知。</span>';
+  card.appendChild(note);
+  addHumanReviewExecution('高风险问题处置', '已生成问题底稿并发起签认、补充材料通知。');
+  syncGeneratedResult(config.trigger);
+  showToast('已按确认方案执行高风险问题处置');
+}
+
+function addHumanReviewExecution(title, detail) {
+  if (!activeConversation) return;
+  const inner = document.getElementById('chatInner');
+  if (!inner) return;
+  const id = addConversationExecution(currentSubTaskKey, title, detail, 'complete');
+  if (id) markConversationExecutionComplete(id, detail);
+  updateConversationSummary(`${title}已执行，处置结论已留痕`);
 }
 
 function showTrendDrilldown(trigger) {
@@ -9856,14 +9973,13 @@ function addCardMessage(type, data) {
 
 // ===== Modal =====
 function confirmSubmit(action) {
-  document.getElementById('modalTitle').textContent = '确认' + action;
-  document.getElementById('modalBody').textContent = `确定要${action}吗？此操作将记录审计日志。`;
-  document.getElementById('modalOverlay').classList.add('show');
+  pendingHumanReviewAction = null;
+  setModalContent('确认' + action, `确定要${action}吗？此操作将记录审计日志。`, '<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="closeModal(); showToast(\'操作成功\')">确认</button>');
 }
 
 function closeModal() {
   const overlay = document.getElementById('modalOverlay');
-  overlay.classList.remove('show', 'create-agent-modal-open');
+  overlay.classList.remove('show', 'create-agent-modal-open', 'human-review-modal-open');
 }
 
 // ===== Toast =====
@@ -10130,8 +10246,23 @@ scheduleTaskOutput = function(taskKey, sim, title, resultData, includeActions = 
   window.setTimeout(() => {
     enrichExecutionProcess(taskKey, title);
     captureGeneratedResult('task-output', taskKey);
+    requestHumanReviewForTaskOutput(taskKey);
   }, 240);
 };
+
+function requestHumanReviewForTaskOutput(taskKey) {
+  if (taskKey !== 'find_issue' && taskKey !== 'exception_scenarios') return;
+  const root = document.getElementById('chatInner');
+  const latestOutput = root && root.lastElementChild;
+  if (!latestOutput || document.getElementById('modalOverlay').classList.contains('show')) return;
+  if (taskKey === 'find_issue') {
+    const trigger = latestOutput.querySelector('.trend-analysis-card .card-btn.primary');
+    if (trigger) window.setTimeout(() => requestHighRiskDisposal(trigger), 120);
+    return;
+  }
+  const trigger = latestOutput.querySelector('.exception-scenario:not(.is-resolved) .exception-action.primary');
+  if (trigger) window.setTimeout(() => requestExceptionDisposal(trigger, 'primary'), 120);
+}
 
 addWorkingPaperDemo = function(data, taskKey = 'generate_draft') {
   legacyAddWorkingPaperDemo(data, taskKey);
