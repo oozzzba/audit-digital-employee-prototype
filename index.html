@@ -816,6 +816,8 @@ input, textarea { font-family: inherit; }
 .exception-action:disabled { cursor: default; opacity: .72; }
 @media (max-width: 640px) { .exception-scenario-head { display: block; } .exception-status { display: inline-block; margin-top: 5px; } .exception-actions { display: grid; grid-template-columns: 1fr; } .exception-action { width: 100%; text-align: left; } }
 .generated-result-actions { display: flex; align-items: center; justify-content: flex-end; gap: 2px; margin-top: 8px; }
+/* 仅保留成果卡正文下方的操作区；删除落在成果内容上方的遗留按钮条。 */
+.message-bubble > .generated-result-actions { display: none !important; }
 .generated-result-action { width: 30px; height: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 4px; background: transparent; color: var(--gray-400); cursor: pointer; }
 .generated-result-action:hover { background: var(--gray-50); color: var(--primary); }
 .generated-result-action svg { width: 16px; height: 16px; }
