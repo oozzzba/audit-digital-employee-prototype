@@ -830,6 +830,32 @@ input, textarea { font-family: inherit; }
 .generated-result-action { width: 30px; height: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 4px; background: transparent; color: var(--gray-400); cursor: pointer; }
 .generated-result-action:hover { background: var(--gray-50); color: var(--primary); }
 .generated-result-action svg { width: 16px; height: 16px; }
+.result-trace-trigger { width: auto; height: 30px; gap: 5px; margin-left: 3px; padding: 0 8px; border: 1px solid var(--gray-200); border-radius: 6px; background: var(--white); color: var(--gray-600); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.result-trace-trigger svg { width: 15px; height: 15px; }
+.result-trace-trigger:hover { border-color: #F1AAA4; background: #FFF7F6; color: var(--primary); }
+.result-trace-count { color: var(--gray-400); font-size: 10px; font-weight: 500; }
+.result-trace-sidebar { position: fixed; z-index: 60; top: 0; right: 0; width: min(360px, 92vw); height: 100vh; display: flex; flex-direction: column; background: var(--white); border-left: 1px solid var(--gray-200); box-shadow: -12px 0 30px rgba(16,24,40,.12); transform: translateX(102%); transition: transform .24s ease; }
+.result-trace-sidebar.is-open { transform: translateX(0); }
+.result-trace-sidebar-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 18px 14px; border-bottom: 1px solid var(--gray-100); }
+.result-trace-sidebar-title { color: var(--gray-900); font-size: 15px; font-weight: 700; line-height: 1.4; }
+.result-trace-sidebar-meta { margin-top: 3px; color: var(--gray-400); font-size: 11px; }
+.result-trace-close { width: 28px; height: 28px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 5px; background: transparent; color: var(--gray-400); cursor: pointer; }
+.result-trace-close:hover { background: var(--gray-50); color: var(--gray-700); }
+.result-trace-close svg { width: 18px; height: 18px; }
+.result-trace-search-wrap { position: relative; display: flex; align-items: center; margin: 14px 16px 10px; }
+.result-trace-search-wrap svg { position: absolute; left: 10px; width: 15px; height: 15px; color: var(--gray-400); }
+.result-trace-search-wrap input { width: 100%; height: 34px; padding: 0 10px 0 32px; border: 1px solid var(--gray-200); border-radius: 6px; outline: none; color: var(--gray-700); font-size: 12px; }
+.result-trace-search-wrap input:focus { border-color: #F1AAA4; box-shadow: 0 0 0 3px var(--primary-lighter); }
+.result-trace-list { flex: 1; overflow-y: auto; padding: 0 8px 16px; }
+.result-trace-item { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 9px; padding: 12px 10px; border-bottom: 1px solid var(--gray-100); cursor: pointer; }
+.result-trace-item:hover { background: #FFF9F9; }
+.result-trace-index { width: 19px; height: 19px; margin-top: 1px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #FCEBEC; color: var(--primary); font-size: 10px; font-weight: 700; }
+.result-trace-type { display: block; color: var(--primary); font-size: 10px; font-weight: 700; }
+.result-trace-doc-title { display: block; margin-top: 3px; color: var(--gray-800); font-size: 13px; font-weight: 700; line-height: 1.45; }
+.result-trace-origin { display: block; margin-top: 5px; color: var(--gray-500); font-size: 11px; line-height: 1.5; }
+.result-trace-excerpt { display: -webkit-box; overflow: hidden; margin-top: 5px; color: var(--gray-400); font-size: 11px; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.result-trace-empty { padding: 32px 14px; color: var(--gray-400); font-size: 12px; text-align: center; }
+@media (max-width: 640px) { .result-trace-sidebar { width: min(360px, 100vw); } .result-trace-trigger { padding: 0 7px; } }
 .generated-result-action.editing { color: var(--primary); background: var(--primary-lighter); }
 .generated-result-action.feedback-active { color: var(--primary); border-color: #F1AAA4; background: var(--primary-lighter); }
 .generated-result-feedback-divider { width: 1px; height: 16px; margin: 0 4px; background: var(--gray-200); }
@@ -3451,6 +3477,15 @@ input, textarea { font-family: inherit; }
               <div class="chat-messages-inner" id="chatInner"></div>
             </div>
           </div>
+
+          <aside class="result-trace-sidebar" id="resultTraceSidebar" aria-label="溯源文档清单" aria-hidden="true">
+            <div class="result-trace-sidebar-head">
+              <div><div class="result-trace-sidebar-title">溯源文档</div><div class="result-trace-sidebar-meta" id="resultTraceSidebarMeta">本次成果引用的资料清单</div></div>
+              <button class="result-trace-close" type="button" onclick="closeResultTraceability()" aria-label="关闭溯源文档" title="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+            </div>
+            <div class="result-trace-search-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="resultTraceSearch" type="search" placeholder="搜索溯源文档" oninput="filterResultTraceability(this.value)"></div>
+            <div class="result-trace-list" id="resultTraceList"></div>
+          </aside>
 
           <!-- Unified conversation input -->
           <div class="home-input-area" id="homeInputArea">
@@ -8647,6 +8682,40 @@ function renderResultSourceAttribution(taskKey) {
   return `<section class="result-source-attribution" aria-label="成果来源与引用依据"><div class="result-source-attribution-heading"><span class="result-source-attribution-title">成果来源与引用依据</span><span class="result-source-attribution-meta">本成果基于以下资料与规则生成</span></div><div class="result-source-attribution-grid">${references.map(item => `<div class="result-source-attribution-item"><span class="result-source-attribution-label">${escapeHtml(item[0])}</span><span class="result-source-attribution-doc" title="${escapeHtml(item[1])}">${escapeHtml(item[1])}</span><span class="result-source-attribution-origin">出处：${escapeHtml(item[2])}</span></div>`).join('')}</div><p class="result-source-attribution-note">引用内容仅用于本次任务处理；制度、模板、案例及业务规则以当前库内有效版本为准。</p></section>`;
 }
 
+let activeResultTraceReferences = [];
+function openResultTraceability(trigger) {
+  const taskKey = currentSubTaskKey || 'fieldwork';
+  activeResultTraceReferences = getResultSourceReferences(taskKey);
+  const sidebar = document.getElementById('resultTraceSidebar');
+  const search = document.getElementById('resultTraceSearch');
+  const meta = document.getElementById('resultTraceSidebarMeta');
+  if (!sidebar) return;
+  if (meta) meta.textContent = `本次成果引用 ${activeResultTraceReferences.length} 份文档与依据`;
+  if (search) search.value = '';
+  renderResultTraceability(activeResultTraceReferences);
+  sidebar.classList.add('is-open');
+  sidebar.setAttribute('aria-hidden', 'false');
+  window.setTimeout(() => search && search.focus(), 180);
+}
+function closeResultTraceability() {
+  const sidebar = document.getElementById('resultTraceSidebar');
+  if (!sidebar) return;
+  sidebar.classList.remove('is-open');
+  sidebar.setAttribute('aria-hidden', 'true');
+}
+function filterResultTraceability(keyword) {
+  const query = String(keyword || '').trim().toLowerCase();
+  const filtered = activeResultTraceReferences.filter(item => item.join(' ').toLowerCase().includes(query));
+  renderResultTraceability(filtered);
+}
+function renderResultTraceability(references) {
+  const list = document.getElementById('resultTraceList');
+  if (!list) return;
+  if (!references.length) { list.innerHTML = '<div class="result-trace-empty">未找到匹配的溯源文档</div>'; return; }
+  list.innerHTML = references.map((item, index) => `<article class="result-trace-item" tabindex="0" title="查看文档：${escapeHtml(item[1])}" onclick="showToast('已定位到溯源文档：${escapeHtml(item[1])}')"><span class="result-trace-index">${index + 1}</span><div><span class="result-trace-type">${escapeHtml(item[0])}</span><span class="result-trace-doc-title">${escapeHtml(item[1])}</span><span class="result-trace-origin">来源：${escapeHtml(item[2])}</span><span class="result-trace-excerpt">该文档已被用于本次成果的事实核验、规则匹配或结论形成。</span></div></article>`).join('');
+}
+document.addEventListener('keydown', event => { if (event.key === 'Escape') closeResultTraceability(); });
+
 function renderAuditDemoCard(option) {
   const metrics = (option.metrics || []).map(item => `<div class="audit-demo-metric"><span class="audit-demo-metric-label">${escapeHtml(item[0])}</span><strong class="audit-demo-metric-value">${escapeHtml(item[1])}</strong></div>`).join('');
   const fields = (option.fields || []).map(item => `<div class="draft-field"><span class="draft-field-label">${escapeHtml(item[0])}</span><span class="draft-field-value">${escapeHtml(item[1])}</span></div>`).join('');
@@ -9599,6 +9668,9 @@ function generatedResultActions(downloadName) {
     <div class="generated-result-actions" aria-label="生成结果操作" data-download-name="${escapeHtml(downloadName)}">
       <button class="generated-result-action" type="button" onclick="copyGeneratedResult(this)" aria-label="复制生成结果" title="复制生成结果">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button>
+      <button class="generated-result-action result-trace-trigger" type="button" onclick="openResultTraceability(this)" aria-label="查看溯源文档" title="查看溯源文档">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h7l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/><path d="M3 7v12a2 2 0 0 0 2 2"/></svg><span>溯源案例</span><span class="result-trace-count">4 份</span>
       </button>
       <button class="generated-result-action" type="button" onclick="toggleGeneratedResultEdit(this)" aria-label="编辑生成结果" title="编辑生成结果">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
