@@ -5747,12 +5747,12 @@ const fileTypeIcons = {
 };
 
 const materialFolders = [
-  { id: 'initiation', title: '01-项目立项文件夹', phases: ['项目立项'], desc: '立项审批单、审计实施方案、审计计划、时间计划表、人员分工表、风控检查清单' },
-  { id: 'source', title: '02-基础业务数据源', phases: ['审前准备', '现场实施'], desc: '银行流水、记账凭证、合同文件、工单记录、客户档案、台账、征信资料' },
-  { id: 'ai-output', title: '03-AI-Agent 审计产出资料', phases: ['审计报告'], desc: 'AI 解析日志、疑点明细、风险报告、凭证比对结果、异常流水清单、可视化分析报表、Agent 调用记录' },
-  { id: 'human-review', title: '04-人工复核材料', phases: [], desc: '人工批注、疑点核实笔录、沟通回执、取证截图' },
-  { id: 'rectification', title: '05-整改闭环档案', phases: ['整改跟踪'], desc: '整改通知书、业务部门整改材料、二次 AI 复检报告、闭环凭证' },
-  { id: 'delivery', title: '06-最终交付审计档案', phases: ['项目归档'], desc: '正式审计报告、归档包、合规底稿、台账清单' }
+  { id: 'initiation', title: '项目立项文件夹', phases: ['项目立项'], desc: '立项审批单、审计实施方案、审计计划、时间计划表、人员分工表、风控检查清单' },
+  { id: 'source', title: '基础业务数据源', phases: ['审前准备', '现场实施'], desc: '银行流水、记账凭证、合同文件、工单记录、客户档案、台账、征信资料' },
+  { id: 'ai-output', title: 'AI-Agent 审计产出资料', phases: ['审计报告'], desc: 'AI 解析日志、疑点明细、风险报告、凭证比对结果、异常流水清单、可视化分析报表、Agent 调用记录' },
+  { id: 'human-review', title: '人工复核材料', phases: [], desc: '人工批注、疑点核实笔录、沟通回执、取证截图' },
+  { id: 'rectification', title: '整改闭环档案', phases: ['整改跟踪'], desc: '整改通知书、业务部门整改材料、二次 AI 复检报告、闭环凭证' },
+  { id: 'delivery', title: '最终交付审计档案', phases: ['项目归档'], desc: '正式审计报告、归档包、合规底稿、台账清单' }
 ];
 const materialSpecialPanels = {
   knowledge: { title: '公共审计知识库', desc: '全部 Agent 共享的法规、规则、案例与提示词资产', cards: [['审计法规库', '1,256 条法规与制度', '最后同步：今天 18:25'], ['风控规则库', '64 条审计预警与校验规则', '已发布：62 条'], ['行业案例库', '386 个典型审计案例', '本月新增：12 个'], ['提示词模板库', '52 套审计任务模板', '覆盖六阶段任务']] },
