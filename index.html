@@ -1660,8 +1660,6 @@ input, textarea { font-family: inherit; }
 .materials-content { min-width:0; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-xs); }
 .materials-content-toolbar { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; border-bottom:1px solid var(--gray-100); padding-bottom:14px; margin-bottom:10px; }
 .materials-content-title { color:var(--gray-900); font-size:16px; font-weight:700; }
-.materials-content-desc { color:var(--gray-500); font-size:12px; margin-top:4px; }
-.materials-breadcrumb { color:var(--gray-400); font-size:12px; padding:0 0 12px; }
 .materials-panel { padding:6px 0; }
 .materials-panel-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
 .materials-info-card { border:1px solid var(--gray-200); border-radius:var(--radius-sm); padding:14px; }
@@ -1823,11 +1821,9 @@ input, textarea { font-family: inherit; }
 .materials-content { padding: 0; min-height: 560px; overflow: hidden; }
 .materials-content-toolbar { align-items: center; padding: 15px 16px 11px; margin: 0; border: 0; }
 .materials-content-title { font-size: 15px; }
-.materials-content-desc { margin-top: 3px; }
 .materials-search-wrap { position: relative; width: 248px; }
 .materials-search-wrap svg { width: 14px; height: 14px; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--gray-400); pointer-events: none; }
 .materials-search { width: 100%; height: 32px; padding: 7px 10px 7px 31px; border-radius: 5px; background: #FBFCFD; font-size: 12px; }
-.materials-breadcrumb { padding: 0 16px 10px; border-bottom: 1px solid #EEF0F3; font-size: 11px; }
 .materials-filter-bar { display: flex; align-items: center; gap: 7px; padding: 10px 16px; border-bottom: 1px solid #EEF0F3; background: #FCFCFD; overflow-x: auto; }
 .materials-filter-label { flex: 0 0 auto; color: var(--gray-500); font-size: 12px; font-weight: 600; margin-right: 3px; }
 .materials-filter-select { flex: 0 0 auto; height: 28px; max-width: 150px; padding: 0 24px 0 8px; border: 1px solid #E2E5E9; border-radius: 4px; background: var(--white); color: var(--gray-600); font-size: 11px; outline: none; }
@@ -4736,10 +4732,9 @@ input, textarea { font-family: inherit; }
           <aside class="materials-tree"><div class="materials-tree-heading">项目资料</div><div id="materialsTree"></div></aside>
           <section class="materials-content">
             <div class="materials-content-toolbar">
-              <div><div class="materials-content-title" id="materialsContentTitle">全部项目资料</div><div class="materials-content-desc" id="materialsContentDesc">按任务、文件类型与上传信息快速定位审计资料</div></div>
+              <div class="materials-content-title" id="materialsContentTitle">全部项目资料</div>
               <div class="materials-search-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input type="search" class="materials-search" id="matSearchInput" placeholder="搜索文件名、标签或上传人" oninput="filterMaterials()"></div>
             </div>
-            <div class="materials-breadcrumb" id="materialsBreadcrumb"></div>
             <div class="materials-filter-bar">
               <span class="materials-filter-label">筛选</span>
               <select class="materials-filter-select" id="matTypeFilter" onchange="filterMaterials()"><option value="all">全部类型</option><option value="pdf">PDF 文档</option><option value="word">Word 文档</option><option value="excel">Excel 表格</option><option value="img">图片资料</option></select>
@@ -6003,12 +5998,10 @@ function renderMaterialsCenter() {
   document.getElementById('matStatToday').textContent = new Set(allFiles.map(file => file.resourceType || '任务资料')).size;
   renderMaterialsTree(allFiles);
   const title = document.getElementById('materialsContentTitle');
-  const desc = document.getElementById('materialsContentDesc');
-  const breadcrumb = document.getElementById('materialsBreadcrumb');
   const location = currentMaterialLocation;
   if (materialSpecialPanels[location.type]) {
     const panel = materialSpecialPanels[location.type];
-    title.textContent = panel.title; desc.textContent = panel.desc; breadcrumb.textContent = '项目资料中心 / ' + panel.title;
+    title.textContent = panel.title;
     list.innerHTML = `<div class="materials-panel-grid" style="padding:16px">${panel.cards.map(card => `<div class="materials-info-card"><div class="materials-info-card-title">${card[0]}</div><div class="materials-info-card-meta">${card[1]}<br>${card[2]}</div></div>`).join('')}</div>`;
     renderMaterialDetail(null);
     return;
@@ -6020,23 +6013,19 @@ function renderMaterialsCenter() {
     const display = getTaskDisplayName(location.taskKey);
     files = files.filter(file => file.projectId === location.projectId && file.taskKey === location.taskKey);
     title.textContent = `${display.task} · 专属素材库`;
-    desc.textContent = `${project ? project.name : '当前项目'} 的任务资料、会话记录、多维趋势图表、AI底稿和分析报告均在此隔离管理`;
-    breadcrumb.textContent = `项目资料中心 / 当前任务专属素材库 / ${display.category} / ${display.task}`;
     groupByFolder = false;
   } else if (location.type === 'project' && location.projectId) {
     const project = projectData.find(item => item.id === location.projectId);
     files = files.filter(file => file.projectId === location.projectId);
     title.textContent = location.folder ? materialFolders.find(item => item.id === location.folder).title : project.name;
-    desc.textContent = location.folder ? materialFolders.find(item => item.id === location.folder).desc : project.name + ' 的全部资料目录';
-    breadcrumb.textContent = '项目资料中心 / ' + project.name + (location.folder ? ' / ' + title.textContent : '');
     if (location.folder) { files = files.filter(file => getMaterialFolder(file) === location.folder); groupByFolder = false; }
   } else if (location.type === 'project-root') {
-    title.textContent = '按审计项目分类'; desc.textContent = '选择左侧项目文件夹，进入六类标准审计资料目录'; breadcrumb.textContent = '项目资料中心 / 按审计项目分类';
+    title.textContent = '按审计项目分类';
     list.innerHTML = `<div class="materials-panel-grid" style="padding:16px">${projectData.filter(project => materialsData[project.id]).map(project => `<button class="materials-info-card" style="text-align:left;background:var(--white);cursor:pointer" onclick="selectMaterialLocation('project', ${project.id})"><div class="materials-info-card-title">${project.name}</div><div class="materials-info-card-meta">${project.code} · ${(materialsData[project.id] || []).length} 个文件<br>点击进入项目资料目录</div></button>`).join('')}</div>`;
     renderMaterialDetail(null);
     return;
   } else {
-    title.textContent = '全部项目资料'; desc.textContent = '汇总全部审计项目资料，按标准资料目录聚合展示'; breadcrumb.textContent = '项目资料中心 / 全部项目资料';
+    title.textContent = '全部项目资料';
   }
   if (currentMatFilter.keyword) files = files.filter(file => [file.name, file.projectName, file.uploader, file.resourceType].join(' ').toLowerCase().includes(currentMatFilter.keyword));
   files = applyMaterialsFilters(files);
