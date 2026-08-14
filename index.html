@@ -4377,10 +4377,10 @@ input, textarea { font-family: inherit; }
 
       <div class="view admin-view asset-detail-view" id="view-admin-asset-detail">
         <div class="asset-detail-topbar"><div class="asset-detail-breadcrumb"><button onclick="switchView('knowledge')">审计知识库</button><span>›</span><span id="assetDetailBreadcrumb">知识库详情</span></div><div class="admin-actions"><button class="topbar-btn" onclick="syncAssetLibrary()">同步发布</button><button class="topbar-btn primary" onclick="openAssetEntryForm()">新增条目</button></div></div>
-        <div class="admin-header"><div><div class="admin-title" id="assetDetailTitle">知识资产详情</div><div class="admin-subtitle" id="assetDetailSubtitle">维护可供审计智能体检索与引用的资产条目</div></div></div>
+        <div class="admin-header"><div><div class="admin-title" id="assetDetailTitle">知识资产详情</div><div class="admin-subtitle" id="assetDetailSubtitle">维护可供审计智能体检索与引用的文档</div></div></div>
         <div class="asset-detail-kpi" id="assetDetailKpi"></div>
         <div class="asset-detail-search"><div class="qa-kb-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="assetEntrySearch" type="search" placeholder="搜索文档名称、分类或来源" oninput="renderAssetLibraryDetail()"></div><select class="qa-entry-filter" id="assetEntryStatus" onchange="renderAssetLibraryDetail()"><option value="all">全部状态</option><option value="active">已启用</option><option value="pending">待审核</option><option value="disabled">已停用</option></select><button class="topbar-btn" onclick="resetAssetEntryFilter()">重置</button></div>
-        <section class="asset-document-list" aria-label="文档列表"><div class="asset-document-list-title">文档列表</div><div class="admin-table-wrap asset-detail-table-wrap"><table class="admin-table"><thead><tr><th>文档名称</th><th>分类</th><th>知识来源</th><th>更新人</th><th>更新时间</th><th>状态</th><th>操作</th></tr></thead><tbody id="assetEntryTableBody"></tbody></table></div></section>
+        <section class="asset-document-list" aria-label="文档列表"><div class="asset-document-list-title">文档列表</div><div class="admin-table-wrap asset-detail-table-wrap"><table class="admin-table"><thead><tr><th>文件名称</th><th>分类</th><th>知识来源</th><th>更新人</th><th>更新时间</th><th>状态</th><th>操作</th></tr></thead><tbody id="assetEntryTableBody"></tbody></table></div></section>
       </div>
 
       <!-- ===== Admin: Q&A Knowledge Management ===== -->
@@ -6604,9 +6604,44 @@ function switchAssetDetailTab(button, tab) { document.querySelectorAll('.asset-d
 
 function getAssetEntry(id) { return (kbData[activeAssetLibrary] || []).find(item => (item.id || item.title) === id); }
 function resetAssetEntryFilter() { const input = document.getElementById('assetEntrySearch'); const status = document.getElementById('assetEntryStatus'); if (input) input.value = ''; if (status) status.value = 'all'; renderAssetLibraryDetail(); }
-function previewAssetEntry(id) { const item = getAssetEntry(id); if (!item) return; setModalContent('知识资产预览', `<div class="qa-preview-question">${item.title}</div><div class="qa-preview-answer">分类：${item.category}<br>来源：${item.source}<br>维护人：${item.updater}<br>更新时间：${item.date}</div>`); }
-function openAssetEntryForm(id) { const item = id ? getAssetEntry(id) : { title: '', category: '', source: '', status: 'active' }; setModalContent(id ? '编辑知识资产' : '新增知识资产', `<div class="qa-entry-form"><div class="qa-entry-form-field full"><label>资产名称</label><input id="assetFormTitle" value="${item.title}" placeholder="请输入知识资产名称"></div><div class="qa-entry-form-field"><label>分类</label><input id="assetFormCategory" value="${item.category}" placeholder="例如：国家法律"></div><div class="qa-entry-form-field"><label>知识来源</label><input id="assetFormSource" value="${item.source}" placeholder="例如：国家法律法规数据库"></div><div class="qa-entry-form-field"><label>发布状态</label><select id="assetFormStatus"><option value="active"${item.status === 'active' ? ' selected' : ''}>已启用</option><option value="pending"${item.status === 'pending' ? ' selected' : ''}>待审核</option><option value="disabled"${item.status === 'disabled' ? ' selected' : ''}>已停用</option></select></div></div>`, `<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="saveAssetEntry('${id || ''}')">保存</button>`); }
-function saveAssetEntry(id) { const title = ((document.getElementById('assetFormTitle') || {}).value || '').trim(); const category = ((document.getElementById('assetFormCategory') || {}).value || '').trim(); const source = ((document.getElementById('assetFormSource') || {}).value || '').trim(); const status = ((document.getElementById('assetFormStatus') || {}).value || 'active'); if (!title || !category) { showToast('请填写资产名称和分类'); return; } const item = id ? getAssetEntry(id) : null; if (item) Object.assign(item, { title, category, source: source || '待补充来源', status, updater: '李管理员', date: '刚刚' }); else kbData[activeAssetLibrary].unshift({ id: 'asset-' + Date.now(), title, category, source: source || '待补充来源', status, updater: '李管理员', date: '刚刚' }); closeModal(); renderAssetLibraryDetail(); showToast(id ? '知识资产已更新' : '知识资产已新增'); }
+function getAssetDocumentContent(item) {
+  if (item.content) return item.content;
+  const libraryContent = {
+    law: `第一条　为规范审计工作，保障审计监督依法独立行使职权，根据有关法律法规，制定本文件。\n\n第二条　审计机关和内部审计机构应当围绕财政收支、财务收支及相关经济活动实施监督，依法出具审计结论。\n\n第三条　审计人员应当保持独立、客观、公正，审计证据应当具备充分性和适当性。\n\n适用提示：本文件可作为审计立项、现场核验、问题定性和报告编制的基础依据。`,
+    case: `一、事项概述\n审计发现被审计单位在相关经营活动中存在决策程序不规范、风险评估不充分等情形。\n\n二、审计关注要点\n1. 核验决策资料、合同文本及付款凭证的一致性；\n2. 复核授权审批链路是否完整；\n3. 对照适用制度判断责任边界和风险影响。\n\n三、处理参考\n应形成完整证据索引，提出整改建议，并由责任单位反馈整改材料后复核闭环。`,
+    template: `【文档用途】\n本模板用于统一审计成果的结构、字段口径与人工复核要求。\n\n一、基本信息\n项目名称：\n审计期间：\n被审计单位：\n\n二、事实与证据\n事实描述：\n证据索引：\n\n三、依据与处理意见\n适用制度：\n问题定性：\n处理意见：\n\n四、复核记录\n编制人：\n复核人：\n复核结论：`,
+    tool: `【工具说明】\n本文件说明该工具的适用范围、输入字段、处理逻辑及结果校验要求。\n\n一、适用场景\n用于审计数据取数、口径核验、异常识别或规则校验。\n\n二、输入要求\n应提供来源明确、结构完整且已获授权的数据资料。\n\n三、输出说明\n输出结果仅用于辅助审计判断，异常结果须回溯至原始资料并经人工复核。`,
+    term: `【术语定义】\n${item.title}是审计工作中用于识别、评价和表达专业判断的重要概念。\n\n【适用说明】\n使用本术语时，应结合审计目标、审计范围、风险水平及证据充分性进行判断。\n\n【引用提示】\n在审计底稿和报告中引用时，应注明使用场景、判断依据和复核结论。`,
+    faq: `【问题】\n${item.title}\n\n【答复】\n请先确认当前审计项目、任务阶段和资料访问权限，再根据页面指引完成操作。涉及审计结论、对外发布或高风险处置时，应提交具备权限的人员复核确认。\n\n【关联功能】\n项目资料、任务对话、成果来源与引用依据、审批权限设置。`,
+    rule: `【规则名称】\n${item.title}\n\n一、规则目标\n识别可能影响审计结论的异常事项，为审计人员提供进一步核验线索。\n\n二、校验逻辑\n对业务数据、制度阈值和历史期间数据进行交叉比对；满足预警条件时，输出异常记录和建议核验范围。\n\n三、处置要求\n规则命中不等同于审计定性，应结合原始凭证、业务说明和适用制度完成人工复核。`
+  };
+  return libraryContent[activeAssetLibrary] || `【文件内容】\n${item.title}\n\n该文件用于审计智能体检索、任务编排和人工复核引用。`;
+}
+function previewAssetEntry(id) {
+  const item = getAssetEntry(id);
+  if (!item) return;
+  const content = getAssetDocumentContent(item);
+  setModalContent('文档预览', `<div class="qa-preview-question">${item.title}</div><div class="qa-preview-answer">文件分类：${item.category}<br>知识来源：${item.source}<br>更新人：${item.updater}<br>更新时间：${item.date}</div><div class="qa-preview-answer" style="margin-top:14px;white-space:pre-wrap;line-height:1.85">${content}</div>`, `<button class="topbar-btn" onclick="closeModal()">关闭</button><button class="topbar-btn primary" onclick="openAssetEntryForm('${id}')">编辑文档</button>`);
+}
+function openAssetEntryForm(id) {
+  const item = id ? getAssetEntry(id) : { title: '', category: '', source: '', status: 'active', content: '' };
+  const content = id ? getAssetDocumentContent(item) : '';
+  setModalContent(id ? '编辑文档' : '新增文档', `<div class="qa-entry-form"><div class="qa-entry-form-field full"><label>文件名称</label><input id="assetFormTitle" value="${item.title}" placeholder="请输入文件名称"></div><div class="qa-entry-form-field"><label>分类</label><input id="assetFormCategory" value="${item.category}" placeholder="例如：国家法律"></div><div class="qa-entry-form-field"><label>知识来源</label><input id="assetFormSource" value="${item.source}" placeholder="例如：国家法律法规数据库"></div><div class="qa-entry-form-field"><label>发布状态</label><select id="assetFormStatus"><option value="active"${item.status === 'active' ? ' selected' : ''}>已启用</option><option value="pending"${item.status === 'pending' ? ' selected' : ''}>待审核</option><option value="disabled"${item.status === 'disabled' ? ' selected' : ''}>已停用</option></select></div><div class="qa-entry-form-field full"><label>文档具体内容</label><textarea id="assetFormContent" rows="12" placeholder="请输入文档正文内容">${content}</textarea></div></div>`, `<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="saveAssetEntry('${id || ''}')">保存文档</button>`);
+}
+function saveAssetEntry(id) {
+  const title = ((document.getElementById('assetFormTitle') || {}).value || '').trim();
+  const category = ((document.getElementById('assetFormCategory') || {}).value || '').trim();
+  const source = ((document.getElementById('assetFormSource') || {}).value || '').trim();
+  const status = ((document.getElementById('assetFormStatus') || {}).value || 'active');
+  const content = ((document.getElementById('assetFormContent') || {}).value || '').trim();
+  if (!title || !category || !content) { showToast('请填写文件名称、分类和文档具体内容'); return; }
+  const item = id ? getAssetEntry(id) : null;
+  if (item) Object.assign(item, { title, category, source: source || '待补充来源', status, content, updater: '李管理员', date: '刚刚' });
+  else kbData[activeAssetLibrary].unshift({ id: 'asset-' + Date.now(), title, category, source: source || '待补充来源', status, content, updater: '李管理员', date: '刚刚' });
+  closeModal();
+  renderAssetLibraryDetail();
+  showToast(id ? '文档已更新' : '文档已新增');
+}
 function toggleAssetEntryStatus(id) { const item = getAssetEntry(id); if (!item) return; item.status = item.status === 'active' ? 'disabled' : 'active'; item.date = '刚刚'; renderAssetLibraryDetail(); showToast(`知识资产已${item.status === 'active' ? '启用' : '停用'}`); }
 function deleteAssetEntry(id) { const item = getAssetEntry(id); if (!item) return; setModalContent('删除知识资产', `<p>确认删除“${item.title}”吗？此操作仅为原型模拟。</p>`, `<button class="topbar-btn" onclick="closeModal()">取消</button><button class="topbar-btn primary" onclick="confirmDeleteAssetEntry('${id}')">确认删除</button>`); }
 function confirmDeleteAssetEntry(id) { const items = kbData[activeAssetLibrary]; const index = items.findIndex(item => (item.id || item.title) === id); if (index < 0) return; items.splice(index, 1); closeModal(); renderAssetLibraryDetail(); showToast('知识资产已删除'); }
