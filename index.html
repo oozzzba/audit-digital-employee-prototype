@@ -1172,6 +1172,24 @@ input, textarea { font-family: inherit; }
 .home-upload-divider {
   height: 1px; background: var(--gray-100); margin: 6px 0;
 }
+.home-attachment-list {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 6px 10px 2px;
+}
+.home-attachment-list:empty { display: none; }
+.home-attachment-chip {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 100%;
+  height: 26px; padding: 0 6px 0 8px; border: 1px solid #F2C6C2;
+  border-radius: 5px; background: var(--primary-lighter); color: var(--primary);
+  font-size: 11px;
+}
+.home-attachment-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-attachment-chip button {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; padding: 0; border: 0; border-radius: 3px;
+  background: transparent; color: inherit; font-size: 15px; line-height: 1; cursor: pointer;
+}
+.home-attachment-chip button:hover { background: rgba(211,47,47,0.12); }
 .home-send-btn {
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
@@ -3446,39 +3464,31 @@ input, textarea { font-family: inherit; }
                   <option value="">选择问题</option>
                 </select>
               </div>
+              <div class="home-attachment-list" id="homeAttachmentList" aria-live="polite"></div>
               <div class="home-input">
-                <textarea id="homeChatInput" placeholder="输入审计问题或办理要求" rows="1" onkeydown="handleHomeKeyDown(event)" oninput="handleAuditInput(event)" aria-disabled="false"></textarea>
+                <textarea id="homeChatInput" placeholder="请描述审计任务，示例：分析采购费用和公开招标执行率" rows="1" onkeydown="handleHomeKeyDown(event)" oninput="handleAuditInput(event)" aria-disabled="false"></textarea>
                 <div class="home-input-actions" style="position:relative">
-                  <button class="home-input-action" id="homeUploadBtn" title="请先选择具体审计任务后上传资料" onclick="toggleUploadDropdown(event)" disabled aria-disabled="true">
+                  <input id="homeFileInput" type="file" multiple hidden onchange="handleSelectedFiles(this.files)">
+                  <button class="home-input-action" id="homeUploadBtn" title="添加审计附件" onclick="toggleUploadDropdown(event)" aria-disabled="false">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                   </button>
                   <div class="home-upload-dropdown" id="homeUploadDropdown">
-                    <div class="home-upload-item" onclick="handleUploadOption(event, 'audio')">
+                    <div class="home-upload-item" onclick="selectAuditFiles(event, 'video/*')">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="m17 10 4-3v10l-4-3z"/></svg>
+                      <span>上传视频</span>
+                    </div>
+                    <div class="home-upload-item" onclick="selectAuditFiles(event, 'audio/*')">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-                      <span>录音转写</span>
-                    </div>
-                    <div class="home-upload-item" onclick="handleUploadOption(event, 'subtitle')">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="15" rx="2"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="14" x2="14" y2="14"/></svg>
-                      <span>实时双语字幕</span>
+                      <span>上传语音</span>
                     </div>
                     <div class="home-upload-divider"></div>
-                    <div class="home-upload-item" onclick="handleUploadOption(event, 'cloud')">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-                      <span>选择云盘文件</span>
+                    <div class="home-upload-item" onclick="selectAuditFiles(event, 'image/*')">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                      <span>上传图片</span>
                     </div>
-                    <div class="home-upload-item" onclick="handleUploadOption(event, 'screenshot')">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="6"/><path d="M15 3h6v6"/><path d="M21 3l-7 7"/></svg>
-                      <span>截图提问</span>
-                    </div>
-                    <div class="home-upload-item" onclick="handleUploadOption(event, 'screen')">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                      <span>共享屏幕和应用</span>
-                      <svg style="margin-left:auto" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                    </div>
-                    <div class="home-upload-divider"></div>
-                    <div class="home-upload-item" onclick="handleUploadOption(event, 'file')">
+                    <div class="home-upload-item" onclick="selectAuditFiles(event, '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip')">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                      <span>上传文件或图片</span>
+                      <span>上传文档</span>
                     </div>
                   </div>
                   <button class="home-send-btn" id="homeSendBtn" title="识别审计意图并开始办理" onclick="handleHomeInput()" aria-disabled="false">
@@ -4965,6 +4975,7 @@ const recentConversations = [
 
 let activeConversationId = null;
 let activeConversation = null;
+let pendingAuditFiles = [];
 
 function getConversation(conversationId) {
   return recentConversations.find(item => item.id === conversationId) || null;
@@ -8224,21 +8235,66 @@ function updateTaskWorkspaceState() {
   if (input) {
     input.disabled = false;
     input.setAttribute('aria-disabled', 'false');
-    input.placeholder = hasTask
-      ? '直接描述当前任务或办理要求'
-      : '输入审计问题或办理要求';
+    input.placeholder = '请描述审计任务，示例：分析采购费用和公开招标执行率';
   }
   if (upload) {
-    upload.disabled = !hasTask;
-    upload.setAttribute('aria-disabled', String(!hasTask));
-    upload.title = hasTask ? '上传与更多' : '请先选择具体审计任务后上传资料';
+    upload.disabled = false;
+    upload.setAttribute('aria-disabled', 'false');
+    upload.title = '添加审计附件';
   }
   if (send) {
     send.disabled = false;
     send.setAttribute('aria-disabled', 'false');
     send.title = hasTask ? '发送当前任务指令' : '识别审计意图并开始办理';
   }
-  if (!hasTask) closeUploadDropdown();
+}
+
+function selectAuditFiles(e, accept) {
+  if (e) e.stopPropagation();
+  closeUploadDropdown();
+  const input = document.getElementById('homeFileInput');
+  if (!input) return;
+  input.accept = accept || '*/*';
+  input.value = '';
+  input.click();
+}
+
+function formatAuditFileSize(bytes) {
+  if (!Number.isFinite(bytes) || bytes <= 0) return '待上传';
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function getAuditFileKind(file) {
+  const type = (file && file.type) || '';
+  if (type.startsWith('video/')) return '视频';
+  if (type.startsWith('audio/')) return '音频';
+  if (type.startsWith('image/')) return '图片';
+  return '文档';
+}
+
+function renderPendingAuditFiles() {
+  const list = document.getElementById('homeAttachmentList');
+  if (!list) return;
+  list.innerHTML = pendingAuditFiles.map((file, index) => `
+    <div class="home-attachment-chip" title="${escapeHtml(file.name)}">
+      <span>${escapeHtml(getAuditFileKind(file))} · ${escapeHtml(file.name)} · ${formatAuditFileSize(file.size)}</span>
+      <button type="button" onclick="removePendingAuditFile(${index}, event)" aria-label="移除附件">×</button>
+    </div>`).join('');
+}
+
+function handleSelectedFiles(fileList) {
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  pendingAuditFiles = pendingAuditFiles.concat(files).slice(0, 10);
+  renderPendingAuditFiles();
+  showToast(`已添加 ${files.length} 个审计附件`);
+}
+
+function removePendingAuditFile(index, e) {
+  if (e) e.stopPropagation();
+  pendingAuditFiles.splice(index, 1);
+  renderPendingAuditFiles();
 }
 
 function handleHomeKeyDown(e) {
@@ -8262,7 +8318,6 @@ function autoResize(el) {
 
 function toggleUploadDropdown(e) {
   if (e) e.stopPropagation();
-  if (!requireActiveAuditTask()) return;
   const dropdown = document.getElementById('homeUploadDropdown');
   const btn = document.getElementById('homeUploadBtn');
   if (!dropdown || !btn) return;
@@ -8278,20 +8333,6 @@ function closeUploadDropdown() {
   if (btn) btn.classList.remove('active');
 }
 
-function handleUploadOption(e, type) {
-  if (e) e.stopPropagation();
-  closeUploadDropdown();
-  if (!requireActiveAuditTask()) return;
-  const labels = {
-    audio: '已打开录音转写，请开始录音',
-    subtitle: '已开启实时双语字幕',
-    cloud: '请选择云盘文件',
-    screenshot: '请选择截图区域进行提问',
-    screen: '请选择要共享的屏幕或应用窗口',
-    file: '请选择要上传的文件或图片'
-  };
-  showToast(labels[type] || '上传功能');
-}
 
 // Close upload dropdown when clicking outside
 document.addEventListener('click', function(e) {
@@ -10343,27 +10384,32 @@ useFollowUpSuggestion = function(trigger) {
 sendMessage = function() {
   const input = document.getElementById('homeChatInput');
   const text = input && input.value.trim();
-  if (!text) return;
+  const files = pendingAuditFiles.slice();
+  if (!text && !files.length) return;
+  const attachmentSummary = files.length ? `\n附件：${files.map(file => `${file.name}（${getAuditFileKind(file)}，${formatAuditFileSize(file.size)}）`).join('、')}` : '';
+  const userText = `${text || '请处理以下审计附件'}${attachmentSummary}`;
   input.value = '';
   input.style.height = '28px';
+  pendingAuditFiles = [];
+  renderPendingAuditFiles();
 
   if (pendingTemplateGeneration && hasActiveAuditTask()) {
-    addMessage('user', text, currentSubTaskKey);
-    handlePendingTemplateGeneration(text);
+    addMessage('user', userText, currentSubTaskKey);
+    handlePendingTemplateGeneration(userText);
     return;
   }
 
-  const intent = recognizeAuditIntent(text);
+  const intent = recognizeAuditIntent(userText);
   if (intent.taskKey && (!hasActiveAuditTask() || intent.taskKey !== currentSubTaskKey)) {
-    routeAuditQuestion(text, intent);
+    routeAuditQuestion(userText, intent);
     return;
   }
   if (!hasActiveAuditTask()) {
-    routeUnmatchedAuditQuestion(text);
+    routeUnmatchedAuditQuestion(userText);
     return;
   }
 
-  executeAuditInstruction(text, currentSubTaskKey, '审计指令');
+  executeAuditInstruction(userText, currentSubTaskKey, '审计指令');
 };
 
 renderAuditInputControls();
