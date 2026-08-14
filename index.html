@@ -815,17 +815,6 @@ input, textarea { font-family: inherit; }
 .exception-action.primary { border-color: var(--primary); background: var(--primary); color: var(--white); }
 .exception-action:disabled { cursor: default; opacity: .72; }
 @media (max-width: 640px) { .exception-scenario-head { display: block; } .exception-status { display: inline-block; margin-top: 5px; } .exception-actions { display: grid; grid-template-columns: 1fr; } .exception-action { width: 100%; text-align: left; } }
-.result-source-attribution { margin: 10px 0 0; padding: 11px 12px; border: 1px solid #F1E1E2; border-radius: 7px; background: #FFFCFC; }
-.result-source-attribution-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
-.result-source-attribution-title { color: var(--gray-700); font-size: 12px; font-weight: 700; }
-.result-source-attribution-meta { color: var(--gray-400); font-size: 10px; }
-.result-source-attribution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.result-source-attribution-item { min-width: 0; padding: 8px 9px; border: 1px solid var(--gray-100); border-radius: 5px; background: var(--white); }
-.result-source-attribution-label { display: block; margin-bottom: 4px; color: var(--primary); font-size: 10px; font-weight: 700; }
-.result-source-attribution-doc { display: block; overflow: hidden; color: var(--gray-700); font-size: 11px; font-weight: 600; line-height: 1.5; text-overflow: ellipsis; white-space: nowrap; }
-.result-source-attribution-origin { display: block; margin-top: 3px; color: var(--gray-400); font-size: 10px; line-height: 1.45; }
-.result-source-attribution-note { margin: 8px 0 0; padding-left: 8px; border-left: 2px solid #E7A09B; color: var(--gray-500); font-size: 10px; line-height: 1.55; }
-@media (max-width: 640px) { .result-source-attribution-grid { grid-template-columns: 1fr; } .result-source-attribution-heading { align-items: flex-start; flex-direction: column; gap: 2px; } }
 .generated-result-actions { display: flex; align-items: center; justify-content: flex-end; gap: 2px; margin-top: 8px; }
 .generated-result-action { width: 30px; height: 30px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 4px; background: transparent; color: var(--gray-400); cursor: pointer; }
 .generated-result-action:hover { background: var(--gray-50); color: var(--primary); }
@@ -6524,7 +6513,7 @@ function getAssetDocumentContent(item) {
     template: `【文档用途】\n本模板用于统一审计成果的结构、字段口径与人工复核要求。\n\n一、基本信息\n项目名称：\n审计期间：\n被审计单位：\n\n二、事实与证据\n事实描述：\n证据索引：\n\n三、依据与处理意见\n适用制度：\n问题定性：\n处理意见：\n\n四、复核记录\n编制人：\n复核人：\n复核结论：`,
     tool: `【工具说明】\n本文件说明该工具的适用范围、输入字段、处理逻辑及结果校验要求。\n\n一、适用场景\n用于审计数据取数、口径核验、异常识别或规则校验。\n\n二、输入要求\n应提供来源明确、结构完整且已获授权的数据资料。\n\n三、输出说明\n输出结果仅用于辅助审计判断，异常结果须回溯至原始资料并经人工复核。`,
     term: `【术语定义】\n${item.title}是审计工作中用于识别、评价和表达专业判断的重要概念。\n\n【适用说明】\n使用本术语时，应结合审计目标、审计范围、风险水平及证据充分性进行判断。\n\n【引用提示】\n在审计底稿和报告中引用时，应注明使用场景、判断依据和复核结论。`,
-    faq: `【问题】\n${item.title}\n\n【答复】\n请先确认当前审计项目、任务阶段和资料访问权限，再根据页面指引完成操作。涉及审计结论、对外发布或高风险处置时，应提交具备权限的人员复核确认。\n\n【关联功能】\n项目资料、任务对话、成果来源与引用依据、审批权限设置。`,
+    faq: `【问题】\n${item.title}\n\n【答复】\n请先确认当前审计项目、任务阶段和资料访问权限，再根据页面指引完成操作。涉及审计结论、对外发布或高风险处置时，应提交具备权限的人员复核确认。\n\n【关联功能】\n项目资料、任务对话、溯源案例、审批权限设置。`,
     rule: `【规则名称】\n${item.title}\n\n一、规则目标\n识别可能影响审计结论的异常事项，为审计人员提供进一步核验线索。\n\n二、校验逻辑\n对业务数据、制度阈值和历史期间数据进行交叉比对；满足预警条件时，输出异常记录和建议核验范围。\n\n三、处置要求\n规则命中不等同于审计定性，应结合原始凭证、业务说明和适用制度完成人工复核。`
   };
   return libraryContent[activeAssetLibrary] || `【文件内容】\n${item.title}\n\n该文件用于审计智能体检索、任务编排和人工复核引用。`;
@@ -8674,12 +8663,6 @@ function getResultSourceReferences(taskKey) {
   return references.slice(0, 4);
 }
 
-function renderResultSourceAttribution(taskKey) {
-  const references = getResultSourceReferences(taskKey);
-  if (!references.length) return '';
-  return `<section class="result-source-attribution" aria-label="成果来源与引用依据"><div class="result-source-attribution-heading"><span class="result-source-attribution-title">成果来源与引用依据</span><span class="result-source-attribution-meta">本成果基于以下资料与规则生成</span></div><div class="result-source-attribution-grid">${references.map(item => `<div class="result-source-attribution-item"><span class="result-source-attribution-label">${escapeHtml(item[0])}</span><span class="result-source-attribution-doc" title="${escapeHtml(item[1])}">${escapeHtml(item[1])}</span><span class="result-source-attribution-origin">出处：${escapeHtml(item[2])}</span></div>`).join('')}</div><p class="result-source-attribution-note">引用内容仅用于本次任务处理；制度、模板、案例及业务规则以当前库内有效版本为准。</p></section>`;
-}
-
 let activeResultTraceReferences = [];
 function openResultTraceability(trigger) {
   const taskKey = currentSubTaskKey || 'fieldwork';
@@ -8718,7 +8701,7 @@ function renderAuditDemoCard(option) {
   const metrics = (option.metrics || []).map(item => `<div class="audit-demo-metric"><span class="audit-demo-metric-label">${escapeHtml(item[0])}</span><strong class="audit-demo-metric-value">${escapeHtml(item[1])}</strong></div>`).join('');
   const fields = (option.fields || []).map(item => `<div class="draft-field"><span class="draft-field-label">${escapeHtml(item[0])}</span><span class="draft-field-value">${escapeHtml(item[1])}</span></div>`).join('');
   const insights = (option.insights || []).map(item => `<div class="audit-demo-insight">${escapeHtml(item)}</div>`).join('');
-  return `<div class="chat-card audit-demo-card"><div class="chat-card-header"><div class="chat-card-icon">✦</div><span class="chat-card-title">${escapeHtml(option.title)}</span><span class="issue-tag">任务结果</span></div><div class="generated-result-body"><p class="audit-demo-summary">${escapeHtml(option.summary)}</p><div class="audit-demo-metrics">${metrics}</div>${renderAuditDemoChart(option.chart)}<div class="draft-card-fields">${fields}</div><div class="audit-demo-insights">${insights}</div><div class="ai-tag">请结合当前项目资料进行人工复核</div></div>${renderResultSourceAttribution(option.taskKey)}${generatedResultActions(option.title)}</div>`;
+  return `<div class="chat-card audit-demo-card"><div class="chat-card-header"><div class="chat-card-icon">✦</div><span class="chat-card-title">${escapeHtml(option.title)}</span><span class="issue-tag">任务结果</span></div><div class="generated-result-body"><p class="audit-demo-summary">${escapeHtml(option.summary)}</p><div class="audit-demo-metrics">${metrics}</div>${renderAuditDemoChart(option.chart)}<div class="draft-card-fields">${fields}</div><div class="audit-demo-insights">${insights}</div><div class="ai-tag">请结合当前项目资料进行人工复核</div></div>${generatedResultActions(option.title)}</div>`;
 }
 
 function runSelectedAuditDemo(option, userText) {
@@ -8994,34 +8977,33 @@ function renderExceptionScenariosCard(data) {
 function renderTaskOutputCard(sim, resultData, taskKey = '') {
   const card = sim && sim.card;
   const data = resultData || (card && card.data) || {};
-  const attribution = taskKey ? renderResultSourceAttribution(taskKey) : '';
   if (!card) return '';
 
   if (card.type === 'working-paper-demo') {
-    return `<div class="chat-card working-paper-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">问题清单</span><span class="issue-tag high">${(data.issueRows || []).length}项待确认</span></div><div class="generated-result-body"><div class="working-paper-note">已完成证据与法规匹配，待人工确认后可生成审计问题底稿。</div><div class="working-paper-table-wrap"><table class="working-paper-table"><thead><tr><th class="paper-index">序号</th><th>问题类型</th><th>审计事实</th><th>审计结论</th><th>风险</th></tr></thead><tbody>${(data.issueRows || []).map((row, index) => `<tr><td class="paper-index">${index + 1}</td><td>${row.issue}</td><td>${row.fact}</td><td>${row.conclusion}</td><td class="paper-risk">${row.risk}</td></tr>`).join('')}</tbody></table></div><div class="ai-tag">AI 生成，请人工复核确认</div></div>${attribution}${generatedResultActions('审计问题清单')}</div>`;
+    return `<div class="chat-card working-paper-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">问题清单</span><span class="issue-tag high">${(data.issueRows || []).length}项待确认</span></div><div class="generated-result-body"><div class="working-paper-note">已完成证据与法规匹配，待人工确认后可生成审计问题底稿。</div><div class="working-paper-table-wrap"><table class="working-paper-table"><thead><tr><th class="paper-index">序号</th><th>问题类型</th><th>审计事实</th><th>审计结论</th><th>风险</th></tr></thead><tbody>${(data.issueRows || []).map((row, index) => `<tr><td class="paper-index">${index + 1}</td><td>${row.issue}</td><td>${row.fact}</td><td>${row.conclusion}</td><td class="paper-risk">${row.risk}</td></tr>`).join('')}</tbody></table></div><div class="ai-tag">AI 生成，请人工复核确认</div></div>${generatedResultActions('审计问题清单')}</div>`;
   }
 
   if (card.type === 'report-output') {
-    return `<div class="chat-card report-output-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">${data.title || '审计报告（初稿）'}</span></div><div class="generated-result-body"><div class="report-output-note">已按标准模板归集已审核底稿、确认问题和法规依据，以下为可送审的报告初稿。</div><div class="report-document"><div class="report-document-head"><div class="report-document-kicker">审计报告（初稿）</div><div class="report-document-title">${data.project || ''}</div></div>${(data.sections || []).map(section => `<div class="report-section"><div class="report-section-title">${section.title}</div><div class="report-section-content">${section.content}</div></div>`).join('')}</div><div class="ai-tag">报告须经主审、组长及项目负责人审核后方可进入审理流程</div></div>${attribution}${generatedResultActions(data.title || '审计报告')}</div>`;
+    return `<div class="chat-card report-output-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">${data.title || '审计报告（初稿）'}</span></div><div class="generated-result-body"><div class="report-output-note">已按标准模板归集已审核底稿、确认问题和法规依据，以下为可送审的报告初稿。</div><div class="report-document"><div class="report-document-head"><div class="report-document-kicker">审计报告（初稿）</div><div class="report-document-title">${data.project || ''}</div></div>${(data.sections || []).map(section => `<div class="report-section"><div class="report-section-title">${section.title}</div><div class="report-section-content">${section.content}</div></div>`).join('')}</div><div class="ai-tag">报告须经主审、组长及项目负责人审核后方可进入审理流程</div></div>${generatedResultActions(data.title || '审计报告')}</div>`;
   }
 
   if (card.type === 'template-output') {
-    return `<div class="chat-card template-output-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">${data.title || '审计底稿'}</span></div><div class="generated-result-body"><div class="template-output-note">系统已将项目资料和证据填入标准模板字段，以下为可提交审核的成稿预览。</div><div class="template-document">${(data.fields || []).map(field => `<div class="template-document-section"><span class="template-document-label">${field.label}</span><div class="template-document-value">${field.value}</div></div>`).join('')}</div><div class="ai-tag">AI 已按模板自动填充，请人工复核</div></div>${attribution}${generatedResultActions(data.title || '审计底稿')}</div>`;
+    return `<div class="chat-card template-output-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">${data.title || '审计底稿'}</span></div><div class="generated-result-body"><div class="template-output-note">系统已将项目资料和证据填入标准模板字段，以下为可提交审核的成稿预览。</div><div class="template-document">${(data.fields || []).map(field => `<div class="template-document-section"><span class="template-document-label">${field.label}</span><div class="template-document-value">${field.value}</div></div>`).join('')}</div><div class="ai-tag">AI 已按模板自动填充，请人工复核</div></div>${generatedResultActions(data.title || '审计底稿')}</div>`;
   }
 
   if (card.type === 'issue') {
-    return `<div class="chat-card issue-card"><div class="chat-card-header"><div class="chat-card-icon">⌕</div><span class="chat-card-title">${data.title}</span><span class="issue-tag high">${data.risk}</span></div><div class="generated-result-body"><div class="task-output-text">${data.desc || ''}</div><div>${(data.laws || []).map(law => `<span class="law-ref">${law}</span>`).join('')}</div><div class="working-paper-note">建议：${data.suggestion || ''}</div><div class="ai-tag">AI 生成，请人工复核确认</div></div>${attribution}${generatedResultActions(data.title || '审计问题定性')}</div>`;
+    return `<div class="chat-card issue-card"><div class="chat-card-header"><div class="chat-card-icon">⌕</div><span class="chat-card-title">${data.title}</span><span class="issue-tag high">${data.risk}</span></div><div class="generated-result-body"><div class="task-output-text">${data.desc || ''}</div><div>${(data.laws || []).map(law => `<span class="law-ref">${law}</span>`).join('')}</div><div class="working-paper-note">建议：${data.suggestion || ''}</div><div class="ai-tag">AI 生成，请人工复核确认</div></div>${generatedResultActions(data.title || '审计问题定性')}</div>`;
   }
 
   if (card.type === 'exception-scenarios') {
-    return `${renderExceptionScenariosCard(data)}${attribution}`;
+    return `${renderExceptionScenariosCard(data)}`;
   }
 
   if (card.type === 'trend-analysis') {
-    return `${renderTrendAnalysisCard(data)}${attribution}`;
+    return `${renderTrendAnalysisCard(data)}`;
   }
 
-  return `<div class="chat-card draft-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">${data.title || '审计任务成果'}</span></div><div class="generated-result-body">${(data.fields || []).map(field => `<div class="draft-field"><span class="draft-field-label">${field.label}</span><span class="draft-field-value">${field.value}</span></div>`).join('')}<div class="ai-tag">AI 生成，请人工复核确认</div></div>${attribution}${generatedResultActions(data.title || '审计任务成果')}</div>`;
+  return `<div class="chat-card draft-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">${data.title || '审计任务成果'}</span></div><div class="generated-result-body">${(data.fields || []).map(field => `<div class="draft-field"><span class="draft-field-label">${field.label}</span><span class="draft-field-value">${field.value}</span></div>`).join('')}<div class="ai-tag">AI 生成，请人工复核确认</div></div>${generatedResultActions(data.title || '审计任务成果')}</div>`;
 }
 
 let pendingHumanReviewAction = null;
@@ -10056,7 +10038,6 @@ function addWorkingPaperDemo(data, taskKey = 'generate_draft') {
         <div class="chat-card working-paper-card" data-word-file-name="审计问题底稿-${(activeConversation && activeConversation.number) || 'SJ-2026-001'}.docx">
           <div class="chat-card-header"><div class="chat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span class="chat-card-title">审计问题底稿</span></div>
           <div class="generated-result-body"><div class="working-paper-note">已按标准模板自动填充项目、事实、证据、定性和处理意见。</div><div class="template-output-meta"><span>模板：${data.template}</span><span>现场实施</span><span>问题底稿</span></div><div class="working-paper-attachment"><span class="working-paper-attachment-icon">DOCX</span><div class="working-paper-attachment-info"><div class="working-paper-attachment-name">审计问题底稿-${(activeConversation && activeConversation.number) || 'SJ-2026-001'}.docx</div><div class="working-paper-attachment-meta">已挂载 · 标准审计工作底稿模板 · 可下载</div></div><button class="working-paper-download-btn" type="button" onclick="downloadWorkingPaperWord(this)">下载 Word</button></div><div class="working-paper-document"><div class="working-paper-document-head"><div class="working-paper-document-kicker">审计工作底稿</div><div class="working-paper-document-title">${paper.issue}</div></div><div class="working-paper-document-meta"><div class="working-paper-document-meta-item"><span class="working-paper-document-meta-label">项目名称</span><span class="working-paper-document-meta-value">${data.project}</span></div><div class="working-paper-document-meta-item"><span class="working-paper-document-meta-label">被审计单位</span><span class="working-paper-document-meta-value">${data.auditedUnit}</span></div><div class="working-paper-document-meta-item"><span class="working-paper-document-meta-label">审计期间 / 编制人</span><span class="working-paper-document-meta-value">${data.auditPeriod} / ${data.preparedBy}</span></div></div>${[['底稿编号', paper.number], ['审计依据', paper.basis], ['审计事实', paper.fact], ['审计证据', paper.evidence], ['问题定性与金额', paper.conclusion], ['处理意见', paper.opinion]].map(field => `<div class="working-paper-section"><span class="working-paper-section-label">${field[0]}</span><div class="working-paper-section-value">${field[1]}</div></div>`).join('')}</div><div class="ai-tag">AI已完成模板填充，需补充被审计单位盖章确认附件后方可推送问题清单</div></div>
-          ${renderResultSourceAttribution(taskKey)}
           ${generatedResultActions('审计问题底稿')}
         </div>
       </div>
@@ -10083,7 +10064,6 @@ function addAuditReportDemo(data, taskKey = 'write_report') {
         <div class="chat-card report-output-card audit-report-card" data-word-file-name="${fileName}">
           <div class="chat-card-header"><div class="chat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span class="chat-card-title">审计报告初稿</span></div>
           <div class="generated-result-body"><div class="report-output-note">已按通用审计报告模板自动归集已审核底稿、确认问题和法规依据。</div><div class="template-output-meta"><span>模板：${data.template}</span><span>审计报告</span><span>${data.documentType}</span></div><div class="working-paper-attachment"><span class="working-paper-attachment-icon">DOCX</span><div class="working-paper-attachment-info"><div class="working-paper-attachment-name">${fileName}</div><div class="working-paper-attachment-meta">已挂载 · 通用审计报告初稿模板 · 可下载</div></div><button class="working-paper-download-btn" type="button" onclick="downloadAuditReportWord(this)">下载 Word</button></div><div class="report-document"><div class="report-document-head"><div class="report-document-kicker">审计报告（初稿）</div><div class="report-document-title">${data.project}</div><div class="report-document-number">${data.reportNumber}</div></div><div class="report-document-meta"><div class="report-document-meta-item"><span class="report-document-meta-label">被审计单位</span><span class="report-document-meta-value">${data.auditedUnit}</span></div><div class="report-document-meta-item"><span class="report-document-meta-label">审计期间</span><span class="report-document-meta-value">${data.auditPeriod}</span></div><div class="report-document-meta-item"><span class="report-document-meta-label">编制人</span><span class="report-document-meta-value">${data.preparedBy}</span></div></div>${data.sections.map(section => `<div class="report-section"><div class="report-section-title">${section.title}</div><div class="report-section-content">${section.content}</div></div>`).join('')}</div><div class="ai-tag">报告内容已按模板生成，须经主审、组长及项目负责人审核后方可进入审理流程</div></div>
-          ${renderResultSourceAttribution(taskKey)}
           ${generatedResultActions('审计报告初稿')}
         </div>
       </div>
