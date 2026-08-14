@@ -699,13 +699,16 @@ input, textarea { font-family: inherit; }
 .workflow-lane-action { display: block; color: var(--gray-600); font-size: 11px; line-height: 1.5; }
 .workflow-lane-output { display: block; margin-top: 4px; color: var(--gray-400); font-size: 10px; line-height: 1.45; }
 
-/* Unified pre-output execution explanation: a vertical audit trail, not a second result card. */
-.output-process { margin: 2px 0 14px; padding: 12px 14px; border: 1px solid var(--gray-100); border-radius: 8px; background: linear-gradient(180deg, #FFFDFC 0%, var(--white) 100%); }
-.output-process-summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 8px; color: var(--gray-800); font-size: 13px; font-weight: 700; list-style: none; }
+/* Collapsed thinking process shown before each generated result. */
+.output-process { margin: 2px 0 14px; }
+.output-process-summary { display: inline-flex; align-items: center; gap: 8px; padding: 6px 0; color: var(--gray-500); font-size: 13px; font-weight: 500; line-height: 1.45; cursor: pointer; list-style: none; user-select: none; }
 .output-process-summary::-webkit-details-marker { display: none; }
-.output-process-summary-icon { display: inline-flex; width: 18px; height: 18px; align-items: center; justify-content: center; border-radius: 50%; background: var(--primary); color: var(--white); font-size: 11px; line-height: 1; }
-.output-process-summary-meta { color: var(--gray-400); font-size: 11px; font-weight: 400; }
-.output-process-body { margin-top: 11px; }
+.output-process-summary::after { content: ''; width: 7px; height: 7px; margin: 0 3px 1px 5px; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); transition: transform .18s ease; }
+.output-process[open] .output-process-summary { color: var(--gray-700); }
+.output-process[open] .output-process-summary::after { transform: rotate(135deg); margin-bottom: -2px; }
+.output-process-summary-icon { display: none; }
+.output-process-summary-meta { color: inherit; font-size: inherit; font-weight: inherit; }
+.output-process-body { margin-top: 7px; padding: 12px 14px; border: 1px solid var(--gray-100); border-radius: 8px; background: linear-gradient(180deg, #FFFDFC 0%, var(--white) 100%); }
 .output-process-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 9px; }
 .output-process-title { color: var(--gray-700); font-size: 12px; font-weight: 700; }
 .output-process-subtitle { color: var(--gray-400); font-size: 11px; text-align: right; }
@@ -10029,13 +10032,28 @@ function getExecutionActionItems(taskKey, trace, title, resultLabel) {
   return [...common, action, ['模板与成果准备', `引用${templateNames}，完成字段映射、结果校验和版本留痕，准备生成${resultLabel}。`]];
 }
 
+function getThinkingDuration(taskKey, steps) {
+  const category = getTaskMeta(taskKey).category;
+  const baseByPhase = {
+    initiation: 3,
+    preaudit: 4,
+    fieldwork: 5,
+    report: 4,
+    rectification: 4,
+    archive: 3
+  };
+  const base = baseByPhase[category && category.key] || 4;
+  return Math.max(3, Math.min(8, base + Math.max(0, (steps || []).length - 5)));
+}
+
 function renderToolchainProcess(taskKey, title, resultLabel = '审计成果') {
   const trace = getTaskTraceability(taskKey);
   const source = (trace.sources && trace.sources[0]) || '当前审计项目资料';
   const category = getTaskMeta(taskKey).category;
   const steps = getExecutionActionItems(taskKey, trace, title, resultLabel);
   const phase = category ? category.name : '审计任务';
-  return `<section class="output-process toolchain-process" aria-label="成果生成前执行逻辑"><div class="output-process-summary"><span class="output-process-summary-icon">✦</span>执行过程与产出说明 <span class="output-process-summary-meta">成果生成前的处理依据、分析动作与结果准备</span></div><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${phase} · ${title}</span><span class="output-process-subtitle">${steps.length} 个执行动作已完成</span></div><div class="output-process-context"><span>数据范围：${source}</span><span>复核口径：${trace.control.replace('人工复核点：', '')}</span></div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node done"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note">已完成${phase}阶段的处理逻辑留痕。以下基于上述资料、制度依据和分析判断生成${resultLabel}，请结合项目实际情况进行人工复核。</p></div></section>`;
+  const duration = getThinkingDuration(taskKey, steps);
+  return `<details class="output-process toolchain-process" aria-label="思考过程"><summary class="output-process-summary">已思考 <span class="output-process-summary-meta">（用时 ${duration} 秒）</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${phase} · ${title}</span><span class="output-process-subtitle">${steps.length} 个处理动作已完成</span></div><div class="output-process-context"><span>数据范围：${source}</span><span>复核口径：${trace.control.replace('人工复核点：', '')}</span></div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node done"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note">已完成${phase}阶段的处理逻辑留痕。以下基于上述资料、制度依据和分析判断生成${resultLabel}，请结合项目实际情况进行人工复核。</p></div></details>`;
 }
 
 function renderDocumentGenerationProcess(taskKey, data) {
