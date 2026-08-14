@@ -3239,9 +3239,6 @@ input, textarea { font-family: inherit; }
 .question-picker.is-open .question-picker-trigger svg { transform: rotate(180deg); }
 .question-cascade-menu { position: absolute; z-index: 35; top: calc(100% + 7px); left: 0; width: min(610px, calc(100vw - 40px)); overflow: hidden; border: 1px solid #E5E7EB; border-radius: 10px; background: var(--white); box-shadow: 0 16px 34px rgba(15,23,42,.15); display: none; }
 .question-picker.is-open .question-cascade-menu { display: block; }
-.question-cascade-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 14px 10px; border-bottom: 1px solid var(--gray-100); }
-.question-cascade-head strong { color: var(--gray-800); font-size: 13px; }
-.question-cascade-head span { color: var(--gray-400); font-size: 11px; }
 .question-cascade-layout { display: grid; grid-template-columns: 178px minmax(0, 1fr); min-height: 250px; }
 .question-type-list { padding: 7px; border-right: 1px solid var(--gray-100); background: #FAFAFA; }
 .question-type-item { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; padding: 9px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--gray-600); font-size: 12px; text-align: left; cursor: pointer; }
@@ -3253,7 +3250,7 @@ input, textarea { font-family: inherit; }
 .question-item { width: 100%; padding: 9px 9px 9px 11px; border: 0; border-radius: 6px; background: transparent; color: var(--gray-700); font-size: 12px; line-height: 1.5; text-align: left; cursor: pointer; }
 .question-item:hover { background: #FFF4F3; color: var(--primary); }
 .question-item::before { content: '›'; display: inline-block; width: 13px; color: var(--primary); font-size: 15px; font-weight: 700; vertical-align: -1px; }
-@media (max-width: 768px) { .input-routing-toolbar { flex-wrap: wrap; padding: 4px 4px 5px; } .approval-select { flex: 0 1 116px; } .question-picker { flex: 1 1 150px; } .question-cascade-menu { left: auto; right: 0; width: min(100%, calc(100vw - 32px)); } .question-cascade-head { display: block; } .question-cascade-head span { display: block; margin-top: 3px; } .question-cascade-layout { grid-template-columns: 132px minmax(0, 1fr); min-height: 236px; } .question-type-list { padding: 5px; } .question-type-item { padding: 8px 6px; font-size: 11px; } .question-item-panel { padding: 6px; } .question-item { padding: 8px 5px 8px 7px; font-size: 11px; } }
+@media (max-width: 768px) { .input-routing-toolbar { flex-wrap: wrap; padding: 4px 4px 5px; } .approval-select { flex: 0 1 116px; } .question-picker { flex: 1 1 150px; } .question-cascade-menu { left: auto; right: 0; width: min(100%, calc(100vw - 32px)); } .question-cascade-layout { grid-template-columns: 132px minmax(0, 1fr); min-height: 236px; } .question-type-list { padding: 5px; } .question-type-item { padding: 8px 6px; font-size: 11px; } .question-item-panel { padding: 6px; } .question-item { padding: 8px 5px 8px 7px; font-size: 11px; } }
 .home-input-action { border-radius: 5px; }
 .home-voice-btn {
   position: relative;
@@ -3524,8 +3521,7 @@ input, textarea { font-family: inherit; }
                     <span id="auditQuestionLabel">选择问题</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 10 5 5 5-5"/></svg>
                   </button>
-                  <div class="question-cascade-menu" id="auditQuestionMenu" role="menu" aria-label="选择高频审计问题">
-                    <div class="question-cascade-head"><strong>选择高频问题</strong><span>先选问题类型，再选具体问题</span></div>
+                  <div class="question-cascade-menu" id="auditQuestionMenu" role="menu" aria-label="选择审计问题类型与高频问题">
                     <div class="question-cascade-layout">
                       <div class="question-type-list" id="auditQuestionTypeList" role="menu"></div>
                       <div class="question-item-panel" id="auditQuestionItemPanel"></div>
