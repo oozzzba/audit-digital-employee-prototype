@@ -8738,7 +8738,7 @@ function runSelectedAuditDemo(option, userText) {
     const assistant = getTaskAssistantMeta(option.taskKey);
     const message = document.createElement('div');
     message.className = 'message ai unified-task-response selected-audit-demo-response';
-    message.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(option.taskKey, option.title, option.title)}<div class="task-response-section-title">任务结果</div>${renderAuditDemoCard(option)}</div></div>`;
+    message.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(option.taskKey, option.title, option.title)}${renderAuditDemoCard(option)}</div></div>`;
     inner.appendChild(message);
     captureGeneratedResult('selected-audit-demo', option.taskKey);
     updateConversationSummary(`已生成“${option.title}”任务结果，待人工复核`);
@@ -8834,7 +8834,6 @@ function addTemplateDataCollectionCard(taskKey, categoryName, taskName) {
     <div class="message-avatar">${assistant.icon}</div>
     <div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">
       <div class="task-preparation-summary">已进入「${categoryName}」-「${taskName}」工作台。已从当前项目资料中心、审计证据和已确认问题中获取生成所需数据。</div>
-      <div class="task-response-section-title">数据归集与生成</div>
       <div class="chat-card template-input-card">
         <div class="chat-card-header"><div class="chat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><span class="chat-card-title">已获取${requirement.label}所需关键数据</span><span class="issue-tag">自动生成中</span></div>
         <div class="template-input-note">现场实施助手已自动读取项目基本信息、审计事实、证据索引、法规依据、问题定性和处理意见，无需用户重复输入或确认；系统将直接按标准模板生成底稿。</div>
@@ -8996,7 +8995,7 @@ function renderTaskOutputCard(sim, resultData, taskKey = '') {
   const card = sim && sim.card;
   const data = resultData || (card && card.data) || {};
   const attribution = taskKey ? renderResultSourceAttribution(taskKey) : '';
-  if (!card) return sim && sim.output ? `<div class="task-output-text">${sim.output}</div>` : '';
+  if (!card) return '';
 
   if (card.type === 'working-paper-demo') {
     return `<div class="chat-card working-paper-card"><div class="chat-card-header"><div class="chat-card-icon">▤</div><span class="chat-card-title">问题清单</span><span class="issue-tag high">${(data.issueRows || []).length}项待确认</span></div><div class="generated-result-body"><div class="working-paper-note">已完成证据与法规匹配，待人工确认后可生成审计问题底稿。</div><div class="working-paper-table-wrap"><table class="working-paper-table"><thead><tr><th class="paper-index">序号</th><th>问题类型</th><th>审计事实</th><th>审计结论</th><th>风险</th></tr></thead><tbody>${(data.issueRows || []).map((row, index) => `<tr><td class="paper-index">${index + 1}</td><td>${row.issue}</td><td>${row.fact}</td><td>${row.conclusion}</td><td class="paper-risk">${row.risk}</td></tr>`).join('')}</tbody></table></div><div class="ai-tag">AI 生成，请人工复核确认</div></div>${attribution}${generatedResultActions('审计问题清单')}</div>`;
@@ -9176,7 +9175,7 @@ function scheduleTaskOutput(taskKey, sim, title, resultData, includeActions = tr
   setTimeout(() => {
     const msg = document.createElement('div');
     msg.className = 'message ai unified-task-response';
-    msg.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(taskKey, title, title.split(' · ').pop())}<div class="task-response-section-title">成果生成</div>${sim && sim.output ? `<div class="generated-result-body"><div class="task-output-text">${sim.output}</div></div>${generatedResultActions(`${title.split(' · ').pop()}成果说明`)}` : ''}${renderTaskOutputCard(sim, resultData, taskKey)}${renderTaskFollowUps(taskKey)}</div></div>`;
+    msg.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(taskKey, title, title.split(' · ').pop())}${renderTaskOutputCard(sim, resultData, taskKey)}${renderTaskFollowUps(taskKey)}</div></div>`;
     inner.appendChild(msg);
     scrollToBottom();
   }, 180);
@@ -10028,12 +10027,9 @@ function getThinkingDuration(taskKey, steps) {
 
 function renderToolchainProcess(taskKey, title, resultLabel = '审计成果') {
   const trace = getTaskTraceability(taskKey);
-  const source = (trace.sources && trace.sources[0]) || '当前审计项目资料';
-  const category = getTaskMeta(taskKey).category;
   const steps = getExecutionActionItems(taskKey, trace, title, resultLabel);
-  const phase = category ? category.name : '审计任务';
   const duration = getThinkingDuration(taskKey, steps);
-  return `<details class="output-process toolchain-process" aria-label="思考过程"><summary class="output-process-summary"><span class="output-process-status">已思考</span><span class="output-process-summary-meta">（用时 ${duration} 秒 · ${steps.length} 步已完成）</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${phase} · ${title}</span><span class="output-process-subtitle">动态推理与处理留痕</span></div><div class="output-process-context"><span>数据范围：${source}</span><span>复核口径：${trace.control.replace('人工复核点：', '')}</span></div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node done"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note">已在同一思考链路中完成资料读取、依据核验、分析判断、处理动作和成果准备。以下基于上述资料、制度依据和分析判断生成${resultLabel}，请结合项目实际情况进行人工复核。</p></div></details>`;
+  return `<details class="output-process toolchain-process" aria-label="思考过程"><summary class="output-process-summary"><span class="output-process-status">已思考</span><span class="output-process-summary-meta">（用时 ${duration} 秒 · ${steps.length} 步已完成）</span></summary><div class="output-process-body"><div class="output-process-flow">${steps.map(step => `<div class="output-process-node done"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div></div></details>`;
 }
 
 function renderDocumentGenerationProcess(taskKey, data) {
@@ -10057,7 +10053,6 @@ function addWorkingPaperDemo(data, taskKey = 'generate_draft') {
       <div class="message-name">${assistant.name}</div>
       <div class="message-bubble" style="background:transparent;border:none;padding:0;">
         ${renderDocumentGenerationProcess(taskKey, data)}
-        <div class="task-response-section-title">成果生成</div>
         <div class="chat-card working-paper-card" data-word-file-name="审计问题底稿-${(activeConversation && activeConversation.number) || 'SJ-2026-001'}.docx">
           <div class="chat-card-header"><div class="chat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span class="chat-card-title">审计问题底稿</span></div>
           <div class="generated-result-body"><div class="working-paper-note">已按标准模板自动填充项目、事实、证据、定性和处理意见。</div><div class="template-output-meta"><span>模板：${data.template}</span><span>现场实施</span><span>问题底稿</span></div><div class="working-paper-attachment"><span class="working-paper-attachment-icon">DOCX</span><div class="working-paper-attachment-info"><div class="working-paper-attachment-name">审计问题底稿-${(activeConversation && activeConversation.number) || 'SJ-2026-001'}.docx</div><div class="working-paper-attachment-meta">已挂载 · 标准审计工作底稿模板 · 可下载</div></div><button class="working-paper-download-btn" type="button" onclick="downloadWorkingPaperWord(this)">下载 Word</button></div><div class="working-paper-document"><div class="working-paper-document-head"><div class="working-paper-document-kicker">审计工作底稿</div><div class="working-paper-document-title">${paper.issue}</div></div><div class="working-paper-document-meta"><div class="working-paper-document-meta-item"><span class="working-paper-document-meta-label">项目名称</span><span class="working-paper-document-meta-value">${data.project}</span></div><div class="working-paper-document-meta-item"><span class="working-paper-document-meta-label">被审计单位</span><span class="working-paper-document-meta-value">${data.auditedUnit}</span></div><div class="working-paper-document-meta-item"><span class="working-paper-document-meta-label">审计期间 / 编制人</span><span class="working-paper-document-meta-value">${data.auditPeriod} / ${data.preparedBy}</span></div></div>${[['底稿编号', paper.number], ['审计依据', paper.basis], ['审计事实', paper.fact], ['审计证据', paper.evidence], ['问题定性与金额', paper.conclusion], ['处理意见', paper.opinion]].map(field => `<div class="working-paper-section"><span class="working-paper-section-label">${field[0]}</span><div class="working-paper-section-value">${field[1]}</div></div>`).join('')}</div><div class="ai-tag">AI已完成模板填充，需补充被审计单位盖章确认附件后方可推送问题清单</div></div>
@@ -10085,7 +10080,6 @@ function addAuditReportDemo(data, taskKey = 'write_report') {
       <div class="message-name">${assistant.name}</div>
       <div class="message-bubble" style="background:transparent;border:none;padding:0;">
         ${renderDocumentGenerationProcess(taskKey, data)}
-        <div class="task-response-section-title">成果生成</div>
         <div class="chat-card report-output-card audit-report-card" data-word-file-name="${fileName}">
           <div class="chat-card-header"><div class="chat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span class="chat-card-title">审计报告初稿</span></div>
           <div class="generated-result-body"><div class="report-output-note">已按通用审计报告模板自动归集已审核底稿、确认问题和法规依据。</div><div class="template-output-meta"><span>模板：${data.template}</span><span>审计报告</span><span>${data.documentType}</span></div><div class="working-paper-attachment"><span class="working-paper-attachment-icon">DOCX</span><div class="working-paper-attachment-info"><div class="working-paper-attachment-name">${fileName}</div><div class="working-paper-attachment-meta">已挂载 · 通用审计报告初稿模板 · 可下载</div></div><button class="working-paper-download-btn" type="button" onclick="downloadAuditReportWord(this)">下载 Word</button></div><div class="report-document"><div class="report-document-head"><div class="report-document-kicker">审计报告（初稿）</div><div class="report-document-title">${data.project}</div><div class="report-document-number">${data.reportNumber}</div></div><div class="report-document-meta"><div class="report-document-meta-item"><span class="report-document-meta-label">被审计单位</span><span class="report-document-meta-value">${data.auditedUnit}</span></div><div class="report-document-meta-item"><span class="report-document-meta-label">审计期间</span><span class="report-document-meta-value">${data.auditPeriod}</span></div><div class="report-document-meta-item"><span class="report-document-meta-label">编制人</span><span class="report-document-meta-value">${data.preparedBy}</span></div></div>${data.sections.map(section => `<div class="report-section"><div class="report-section-title">${section.title}</div><div class="report-section-content">${section.content}</div></div>`).join('')}</div><div class="ai-tag">报告内容已按模板生成，须经主审、组长及项目负责人审核后方可进入审理流程</div></div>
