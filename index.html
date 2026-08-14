@@ -3197,28 +3197,12 @@ input, textarea { font-family: inherit; }
 .home-input { padding: 8px 10px 7px 12px; }
 .home-input textarea { font-size: 14px; min-height: 32px; }
 .input-routing-toolbar { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 3px 6px 4px; border-bottom: 1px solid var(--gray-100); }
-.input-routing-button { display: inline-flex; align-items: center; gap: 4px; height: 26px; padding: 0 8px; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--white); color: var(--gray-600); font-size: 11px; cursor: pointer; white-space: nowrap; }
-.input-routing-button:hover, .input-routing-button.active { border-color: #E7A09B; background: var(--primary-lighter); color: var(--primary); }
-.input-mention-chip { display: none; align-items: center; min-width: 0; max-width: 220px; height: 26px; padding: 0 7px; border-radius: 5px; background: var(--primary-lighter); color: var(--primary); font-size: 11px; font-weight: 600; }
-.input-mention-chip.show { display: inline-flex; }
-.input-mention-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.input-mention-chip button { width: 16px; height: 16px; margin-left: 5px; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font-size: 15px; line-height: 1; }
 .approval-select, .question-select { min-width: 0; height: 26px; padding: 0 23px 0 8px; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--gray-50); color: var(--gray-500); font-size: 11px; outline: none; cursor: pointer; }
 .approval-select { flex: 0 1 116px; color: var(--primary); font-weight: 600; }
 .question-select { flex: 1; }
 .approval-select:focus, .question-select:focus { border-color: #E7A09B; background: var(--white); }
 .approval-select option { color: var(--gray-700); background: var(--white); font-weight: 400; }
-.task-mention-menu { position: absolute; z-index: 30; left: 10px; bottom: calc(100% + 7px); display: none; width: min(360px, calc(100vw - 40px)); max-height: 280px; overflow-y: auto; padding: 6px; border: 1px solid var(--gray-200); border-radius: 7px; background: var(--white); box-shadow: var(--shadow-md); }
-.task-mention-menu.show { display: block; }
-.task-mention-stage { padding: 7px 8px 4px; color: var(--gray-400); font-size: 10px; font-weight: 700; }
-.task-mention-option { display: flex; width: 100%; align-items: center; gap: 8px; padding: 7px 8px; border: 0; border-radius: 5px; background: transparent; color: var(--gray-700); font-size: 12px; text-align: left; cursor: pointer; }
-.task-mention-option:hover { background: var(--primary-lighter); color: var(--primary); }
-.task-mention-option span { color: var(--gray-400); font-size: 10px; }
-.audit-question-examples { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 10px 8px 12px; border-top: 1px solid var(--gray-100); }
-.audit-question-examples-label { color: var(--gray-400); font-size: 11px; flex: 0 0 auto; }
-.audit-question-example { max-width: 100%; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--gray-50); color: var(--gray-600); padding: 3px 7px; font-size: 11px; line-height: 1.5; text-align: left; transition: border-color 0.15s, background 0.15s, color 0.15s; }
-.audit-question-example:hover { border-color: #E7A09B; background: var(--primary-lighter); color: var(--primary); }
-@media (max-width: 768px) { .input-routing-toolbar { flex-wrap: wrap; padding: 4px 4px 5px; } .approval-select { flex: 0 1 116px; } .question-select { flex: 1 1 150px; } .input-mention-chip { max-width: 175px; } .task-mention-menu { left: 4px; } }
+@media (max-width: 768px) { .input-routing-toolbar { flex-wrap: wrap; padding: 4px 4px 5px; } .approval-select { flex: 0 1 116px; } .question-select { flex: 1 1 150px; } }
 .home-input-action { border-radius: 5px; }
 .home-send-btn { width: 32px; height: 32px; border-radius: 6px; }
 .output-process, .output-explanation { border-radius: 6px; }
@@ -3236,9 +3220,6 @@ input, textarea { font-family: inherit; }
   .message-avatar { width: 28px; height: 28px; border-radius: 6px; }
   .message-bubble { font-size: 13px; }
   .home-input-area { padding: 10px 12px 14px; }
-  .audit-question-examples { align-items: flex-start; gap: 5px; padding: 0 8px 8px 10px; }
-  .audit-question-examples-label { width: 100%; }
-  .audit-question-example { font-size: 10px; padding: 3px 6px; }
 }
 .conversation-execution {
   display: flex;
@@ -3455,22 +3436,19 @@ input, textarea { font-family: inherit; }
           <div class="home-input-area" id="homeInputArea">
           <div class="home-input-wrap">
             <div class="home-input-box">
-              <div class="input-routing-toolbar" aria-label="审计任务输入方式">
-                <button type="button" class="input-routing-button" id="taskMentionButton" onclick="toggleTaskMentionMenu(event)" title="选择并@具体审计任务">@ 审计任务</button>
-                <div class="input-mention-chip" id="taskMentionChip"><span id="taskMentionLabel"></span><button type="button" onclick="clearTaskMention()" aria-label="移除审计任务">×</button></div>
+              <div class="input-routing-toolbar" aria-label="审计问题输入设置">
                 <select id="auditApprovalMode" class="approval-select" onchange="handleAuditApprovalModeChange(this)" aria-label="审计数字员工审批权限" title="设置审计数字员工对高风险和异常事项的审批权限">
                   <option value="request" selected>请求审批</option>
                   <option value="delegate">替我审批</option>
                   <option value="autonomous">完全自主审批</option>
                 </select>
-                <select id="auditQuestionSelect" class="question-select" onchange="useSelectedAuditQuestion(this)" aria-label="按审计阶段选择高频问题">
-                  <option value="">选择阶段高频问题，可继续编辑</option>
+                <select id="auditQuestionSelect" class="question-select" onchange="useSelectedAuditQuestion(this)" aria-label="选择审计问题">
+                  <option value="">选择问题</option>
                 </select>
               </div>
               <div class="home-input">
-                <textarea id="homeChatInput" placeholder="直接输入问题，或 @ 审计任务后提出办理要求" rows="1" onkeydown="handleHomeKeyDown(event)" oninput="handleAuditInput(event)" aria-disabled="false"></textarea>
+                <textarea id="homeChatInput" placeholder="输入审计问题或办理要求" rows="1" onkeydown="handleHomeKeyDown(event)" oninput="handleAuditInput(event)" aria-disabled="false"></textarea>
                 <div class="home-input-actions" style="position:relative">
-                  <div class="task-mention-menu" id="taskMentionMenu" aria-label="选择审计任务"></div>
                   <button class="home-input-action" id="homeUploadBtn" title="请先选择具体审计任务后上传资料" onclick="toggleUploadDropdown(event)" disabled aria-disabled="true">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                   </button>
@@ -3507,13 +3485,6 @@ input, textarea { font-family: inherit; }
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                   </button>
                 </div>
-              </div>
-              <div class="audit-question-examples" aria-label="审计问题示例">
-                <span class="audit-question-examples-label">试试这样问</span>
-                <button type="button" class="audit-question-example" onclick="useAuditQuestionExample(this)">分析采购费用和公开招标执行率，识别风险并查看明细</button>
-                <button type="button" class="audit-question-example" onclick="useAuditQuestionExample(this)">根据采购合同和付款凭证生成审计底稿</button>
-                <button type="button" class="audit-question-example" onclick="useAuditQuestionExample(this)">查看项目整改进度，并对逾期事项发起督办</button>
-                <button type="button" class="audit-question-example" onclick="useAuditQuestionExample(this)">根据已审核底稿撰写审计报告初稿</button>
               </div>
             </div>
           </div>
@@ -8254,8 +8225,8 @@ function updateTaskWorkspaceState() {
     input.disabled = false;
     input.setAttribute('aria-disabled', 'false');
     input.placeholder = hasTask
-      ? '直接描述当前任务，或 @ 审计任务后切换办理事项...'
-      : '直接输入问题，或 @ 审计任务后提出办理要求';
+      ? '直接描述当前任务或办理要求'
+      : '输入审计问题或办理要求';
   }
   if (upload) {
     upload.disabled = !hasTask;
@@ -8329,11 +8300,6 @@ document.addEventListener('click', function(e) {
   if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
     closeUploadDropdown();
   }
-  const taskMenu = document.getElementById('taskMentionMenu');
-  const taskButton = document.getElementById('taskMentionButton');
-  if (taskMenu && taskButton && !taskMenu.contains(e.target) && !taskButton.contains(e.target)) {
-    closeTaskMentionMenu();
-  }
   // Close admin dropdown when clicking outside
   const adminDropdown = document.getElementById('topbarAdminDropdown');
   const adminBtn = document.getElementById('topbarAdminBtn');
@@ -8401,7 +8367,6 @@ function detectTaskIntent(text) {
   return recognizeAuditIntent(text).taskKey;
 }
 
-let selectedTaskMention = null;
 let auditApprovalMode = 'request';
 
 const auditApprovalModes = {
@@ -8462,67 +8427,14 @@ function getAuditQuestionOptions() {
 }
 
 function renderAuditInputControls() {
-  const menu = document.getElementById('taskMentionMenu');
   const select = document.getElementById('auditQuestionSelect');
-  if (menu) {
-    menu.innerHTML = taskCategories.map(category => `<div class="task-mention-stage">${escapeHtml(category.name)}</div>${category.subItems.map(task => `<button type="button" class="task-mention-option" onclick="selectTaskMention('${task.key}')"><strong>@${escapeHtml(task.name)}</strong><span>${escapeHtml(task.desc)}</span></button>`).join('')}`).join('');
-  }
-  if (select && select.options.length <= 1) {
-    const options = getAuditQuestionOptions();
-    select.insertAdjacentHTML('beforeend', taskCategories.map(category => {
-      const stageQuestions = options.filter(item => item.categoryKey === category.key);
-      if (!stageQuestions.length) return '';
-      return `<optgroup label="${escapeHtml(category.name)}">${stageQuestions.map(item => `<option value="${item.taskKey}">${escapeHtml(item.text)}</option>`).join('')}</optgroup>`;
-    }).join(''));
-  }
-  updateTaskMentionChip();
-}
-
-function updateTaskMentionChip() {
-  const chip = document.getElementById('taskMentionChip');
-  const label = document.getElementById('taskMentionLabel');
-  const button = document.getElementById('taskMentionButton');
-  if (chip) chip.classList.toggle('show', Boolean(selectedTaskMention));
-  if (label) label.textContent = selectedTaskMention ? `@${selectedTaskMention.name}` : '';
-  if (button) button.classList.toggle('active', Boolean(selectedTaskMention));
-}
-
-function toggleTaskMentionMenu(event) {
-  if (event) event.stopPropagation();
-  const menu = document.getElementById('taskMentionMenu');
-  if (!menu) return;
-  renderAuditInputControls();
-  menu.classList.toggle('show');
-}
-
-function closeTaskMentionMenu() {
-  const menu = document.getElementById('taskMentionMenu');
-  if (menu) menu.classList.remove('show');
-}
-
-function selectTaskMention(taskKey) {
-  const meta = getTaskMeta(taskKey);
-  if (!meta || !meta.task) return;
-  selectedTaskMention = { taskKey, name: meta.task.name, category: meta.category.name };
-  updateTaskMentionChip();
-  closeTaskMentionMenu();
-  const input = document.getElementById('homeChatInput');
-  if (input) {
-    input.focus();
-    if (!input.value.trim() || input.value.trim() === '@') input.value = '';
-  }
-}
-
-function clearTaskMention() {
-  selectedTaskMention = null;
-  updateTaskMentionChip();
-}
-
-function buildMentionIntent(mention) {
-  if (!mention) return null;
-  const meta = getTaskMeta(mention.taskKey);
-  if (!meta || !meta.task || !meta.category) return null;
-  return { taskKey: mention.taskKey, category: meta.category, task: meta.task, matchedKeywords: [`@${meta.task.name}`], confidence: 'high', candidates: [] };
+  if (!select || select.options.length > 1) return;
+  const options = getAuditQuestionOptions();
+  select.insertAdjacentHTML('beforeend', taskCategories.map(category => {
+    const stageQuestions = options.filter(item => item.categoryKey === category.key);
+    if (!stageQuestions.length) return '';
+    return `<optgroup label="${escapeHtml(category.name)}">${stageQuestions.map(item => `<option value="${item.taskKey}">${escapeHtml(item.text)}</option>`).join('')}</optgroup>`;
+  }).join(''));
 }
 
 function useSelectedAuditQuestion(select) {
@@ -8534,28 +8446,12 @@ function useSelectedAuditQuestion(select) {
   input.value = option.text;
   autoResize(input);
   input.focus();
-  if (!selectedTaskMention) selectTaskMention(taskKey);
   select.value = '';
 }
 
 function handleAuditInput(event) {
   const input = event && event.target;
-  if (!input) return;
-  autoResize(input);
-  if (!selectedTaskMention && input.value.trim() === '@') {
-    const menu = document.getElementById('taskMentionMenu');
-    renderAuditInputControls();
-    if (menu) menu.classList.add('show');
-  }
-}
-
-function useAuditQuestionExample(trigger) {
-  const input = document.getElementById('homeChatInput');
-  const text = trigger && trigger.textContent ? trigger.textContent.trim() : '';
-  if (!input || !text) return;
-  input.value = text;
-  autoResize(input);
-  input.focus();
+  if (input) autoResize(input);
 }
 
 function renderAuditIntentRecognition(intent) {
@@ -10448,20 +10344,18 @@ sendMessage = function() {
   const input = document.getElementById('homeChatInput');
   const text = input && input.value.trim();
   if (!text) return;
-  const mentionIntent = buildMentionIntent(selectedTaskMention);
   input.value = '';
   input.style.height = '28px';
 
-  if (pendingTemplateGeneration && hasActiveAuditTask() && (!mentionIntent || mentionIntent.taskKey === currentSubTaskKey)) {
+  if (pendingTemplateGeneration && hasActiveAuditTask()) {
     addMessage('user', text, currentSubTaskKey);
     handlePendingTemplateGeneration(text);
     return;
   }
 
-  const intent = mentionIntent || recognizeAuditIntent(text);
+  const intent = recognizeAuditIntent(text);
   if (intent.taskKey && (!hasActiveAuditTask() || intent.taskKey !== currentSubTaskKey)) {
     routeAuditQuestion(text, intent);
-    clearTaskMention();
     return;
   }
   if (!hasActiveAuditTask()) {
@@ -10469,8 +10363,7 @@ sendMessage = function() {
     return;
   }
 
-  executeAuditInstruction(text, currentSubTaskKey, mentionIntent ? '指定审计任务' : '审计指令');
-  clearTaskMention();
+  executeAuditInstruction(text, currentSubTaskKey, '审计指令');
 };
 
 renderAuditInputControls();
