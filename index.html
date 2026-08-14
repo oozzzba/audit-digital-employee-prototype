@@ -3228,12 +3228,32 @@ input, textarea { font-family: inherit; }
 .home-input { padding: 8px 10px 7px 12px; }
 .home-input textarea { font-size: 14px; min-height: 32px; }
 .input-routing-toolbar { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 3px 6px 4px; border-bottom: 1px solid var(--gray-100); }
-.approval-select, .question-select { min-width: 0; height: 26px; padding: 0 23px 0 8px; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--gray-50); color: var(--gray-500); font-size: 11px; outline: none; cursor: pointer; }
+.approval-select { min-width: 0; height: 26px; padding: 0 23px 0 8px; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--gray-50); color: var(--gray-500); font-size: 11px; outline: none; cursor: pointer; }
 .approval-select { flex: 0 1 116px; color: var(--primary); font-weight: 600; }
-.question-select { flex: 1; }
-.approval-select:focus, .question-select:focus { border-color: #E7A09B; background: var(--white); }
+.approval-select:focus { border-color: #E7A09B; background: var(--white); }
 .approval-select option { color: var(--gray-700); background: var(--white); font-weight: 400; }
-@media (max-width: 768px) { .input-routing-toolbar { flex-wrap: wrap; padding: 4px 4px 5px; } .approval-select { flex: 0 1 116px; } .question-select { flex: 1 1 150px; } }
+.question-picker { position: relative; flex: 1; min-width: 0; }
+.question-picker-trigger { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; height: 26px; padding: 0 8px; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--gray-50); color: var(--gray-500); font-size: 11px; text-align: left; cursor: pointer; }
+.question-picker-trigger:hover, .question-picker.is-open .question-picker-trigger { border-color: #E7A09B; background: var(--white); color: var(--primary); }
+.question-picker-trigger svg { width: 14px; height: 14px; flex: none; transition: transform .18s ease; }
+.question-picker.is-open .question-picker-trigger svg { transform: rotate(180deg); }
+.question-cascade-menu { position: absolute; z-index: 35; top: calc(100% + 7px); left: 0; width: min(610px, calc(100vw - 40px)); overflow: hidden; border: 1px solid #E5E7EB; border-radius: 10px; background: var(--white); box-shadow: 0 16px 34px rgba(15,23,42,.15); display: none; }
+.question-picker.is-open .question-cascade-menu { display: block; }
+.question-cascade-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 14px 10px; border-bottom: 1px solid var(--gray-100); }
+.question-cascade-head strong { color: var(--gray-800); font-size: 13px; }
+.question-cascade-head span { color: var(--gray-400); font-size: 11px; }
+.question-cascade-layout { display: grid; grid-template-columns: 178px minmax(0, 1fr); min-height: 250px; }
+.question-type-list { padding: 7px; border-right: 1px solid var(--gray-100); background: #FAFAFA; }
+.question-type-item { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; padding: 9px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--gray-600); font-size: 12px; text-align: left; cursor: pointer; }
+.question-type-item:hover { background: #FFF3F2; color: var(--primary); }
+.question-type-item.active { background: var(--primary-light); color: var(--primary); font-weight: 700; }
+.question-type-count { flex: none; min-width: 18px; padding: 1px 5px; border-radius: 9px; background: rgba(211,47,47,.10); color: inherit; font-size: 10px; text-align: center; }
+.question-item-panel { padding: 8px; }
+.question-item-panel-title { padding: 2px 6px 8px; color: var(--gray-400); font-size: 11px; }
+.question-item { width: 100%; padding: 9px 9px 9px 11px; border: 0; border-radius: 6px; background: transparent; color: var(--gray-700); font-size: 12px; line-height: 1.5; text-align: left; cursor: pointer; }
+.question-item:hover { background: #FFF4F3; color: var(--primary); }
+.question-item::before { content: '›'; display: inline-block; width: 13px; color: var(--primary); font-size: 15px; font-weight: 700; vertical-align: -1px; }
+@media (max-width: 768px) { .input-routing-toolbar { flex-wrap: wrap; padding: 4px 4px 5px; } .approval-select { flex: 0 1 116px; } .question-picker { flex: 1 1 150px; } .question-cascade-menu { left: auto; right: 0; width: min(100%, calc(100vw - 32px)); } .question-cascade-head { display: block; } .question-cascade-head span { display: block; margin-top: 3px; } .question-cascade-layout { grid-template-columns: 132px minmax(0, 1fr); min-height: 236px; } .question-type-list { padding: 5px; } .question-type-item { padding: 8px 6px; font-size: 11px; } .question-item-panel { padding: 6px; } .question-item { padding: 8px 5px 8px 7px; font-size: 11px; } }
 .home-input-action { border-radius: 5px; }
 .home-voice-btn {
   position: relative;
@@ -3499,9 +3519,19 @@ input, textarea { font-family: inherit; }
                   <option value="delegate">替我审批</option>
                   <option value="autonomous">完全自主审批</option>
                 </select>
-                <select id="auditQuestionSelect" class="question-select" onchange="useSelectedAuditQuestion(this)" aria-label="选择审计问题">
-                  <option value="">选择问题</option>
-                </select>
+                <div class="question-picker" id="auditQuestionPicker">
+                  <button class="question-picker-trigger" id="auditQuestionTrigger" type="button" onclick="toggleAuditQuestionPicker(event)" aria-haspopup="true" aria-expanded="false" aria-controls="auditQuestionMenu">
+                    <span id="auditQuestionLabel">选择问题</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 10 5 5 5-5"/></svg>
+                  </button>
+                  <div class="question-cascade-menu" id="auditQuestionMenu" role="menu" aria-label="选择高频审计问题">
+                    <div class="question-cascade-head"><strong>选择高频问题</strong><span>先选问题类型，再选具体问题</span></div>
+                    <div class="question-cascade-layout">
+                      <div class="question-type-list" id="auditQuestionTypeList" role="menu"></div>
+                      <div class="question-item-panel" id="auditQuestionItemPanel"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="home-attachment-list" id="homeAttachmentList" aria-live="polite"></div>
               <div class="home-voice-hint" id="homeVoiceHint" role="status" aria-live="polite" hidden></div>
@@ -8478,6 +8508,10 @@ document.addEventListener('click', function(e) {
   if (adminDropdown && adminBtn && !adminDropdown.contains(e.target) && !adminBtn.contains(e.target)) {
     closeAdminDropdown();
   }
+  const questionPicker = document.getElementById('auditQuestionPicker');
+  if (questionPicker && !questionPicker.contains(e.target)) {
+    closeAuditQuestionPicker();
+  }
 });
 
 // Match specific sub-task keywords from user input
@@ -8584,28 +8618,67 @@ function getAuditQuestionOptions() {
   ];
 }
 
+let activeAuditQuestionGroup = '';
+
 function renderAuditInputControls() {
-  const select = document.getElementById('auditQuestionSelect');
-  if (!select || select.options.length > 1) return;
+  const typeList = document.getElementById('auditQuestionTypeList');
+  const itemPanel = document.getElementById('auditQuestionItemPanel');
+  if (!typeList || !itemPanel || typeList.dataset.ready === 'true') return;
   const options = getAuditQuestionOptions();
   const groups = [...new Set(options.map(item => item.group))];
-  select.insertAdjacentHTML('beforeend', groups.map(group => {
-    const questions = options.filter(item => item.group === group);
-    return `<optgroup label="${escapeHtml(group)}">${questions.map(item => `<option value="${item.id}">${escapeHtml(item.text)}</option>`).join('')}</optgroup>`;
-  }).join(''));
+  activeAuditQuestionGroup = groups[0] || '';
+  typeList.innerHTML = groups.map(group => {
+    const count = options.filter(item => item.group === group).length;
+    return `<button type="button" class="question-type-item${group === activeAuditQuestionGroup ? ' active' : ''}" data-question-group="${escapeHtml(group)}" onclick="selectAuditQuestionGroup(this.dataset.questionGroup)"><span>${escapeHtml(group)}</span><span class="question-type-count">${count}</span></button>`;
+  }).join('');
+  typeList.dataset.ready = 'true';
+  renderAuditQuestionItems();
 }
 
-function useSelectedAuditQuestion(select) {
-  const optionId = select && select.value;
+function renderAuditQuestionItems() {
+  const panel = document.getElementById('auditQuestionItemPanel');
+  if (!panel) return;
+  const options = getAuditQuestionOptions().filter(item => item.group === activeAuditQuestionGroup);
+  panel.innerHTML = `<div class="question-item-panel-title">${escapeHtml(activeAuditQuestionGroup)} · ${options.length} 个高频问题</div>${options.map(item => `<button type="button" class="question-item" data-question-id="${item.id}" onclick="useSelectedAuditQuestion(this.dataset.questionId)">${escapeHtml(item.text)}</button>`).join('')}`;
+}
+
+function selectAuditQuestionGroup(group) {
+  if (!group) return;
+  activeAuditQuestionGroup = group;
+  document.querySelectorAll('.question-type-item').forEach(item => item.classList.toggle('active', item.dataset.questionGroup === group));
+  renderAuditQuestionItems();
+}
+
+function toggleAuditQuestionPicker(event) {
+  if (event) event.stopPropagation();
+  const picker = document.getElementById('auditQuestionPicker');
+  const trigger = document.getElementById('auditQuestionTrigger');
+  if (!picker || !trigger) return;
+  const willOpen = !picker.classList.contains('is-open');
+  picker.classList.toggle('is-open', willOpen);
+  trigger.setAttribute('aria-expanded', String(willOpen));
+  if (willOpen) renderAuditInputControls();
+}
+
+function closeAuditQuestionPicker() {
+  const picker = document.getElementById('auditQuestionPicker');
+  const trigger = document.getElementById('auditQuestionTrigger');
+  if (picker) picker.classList.remove('is-open');
+  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+}
+
+function useSelectedAuditQuestion(optionId) {
   if (!optionId) return;
   const option = getAuditQuestionOptions().find(item => item.id === optionId);
   const input = document.getElementById('homeChatInput');
+  const label = document.getElementById('auditQuestionLabel');
   if (!option || !input) return;
   input.value = option.text;
   input.dataset.auditDemoId = option.id;
+  if (label) label.textContent = `${option.group} · 已选择问题`;
   autoResize(input);
+  closeAuditQuestionPicker();
   input.focus();
-  select.value = '';
 }
 
 function handleAuditInput(event) {
