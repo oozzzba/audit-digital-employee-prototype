@@ -3452,8 +3452,8 @@ input, textarea { font-family: inherit; }
               <div class="input-routing-toolbar" aria-label="审计任务输入方式">
                 <button type="button" class="input-routing-button" id="taskMentionButton" onclick="toggleTaskMentionMenu(event)" title="选择并@具体审计任务">@ 审计任务</button>
                 <div class="input-mention-chip" id="taskMentionChip"><span id="taskMentionLabel"></span><button type="button" onclick="clearTaskMention()" aria-label="移除审计任务">×</button></div>
-                <select id="auditQuestionSelect" class="question-select" onchange="useSelectedAuditQuestion(this)" aria-label="选择问题示例">
-                  <option value="">选择问题示例，可继续编辑</option>
+                <select id="auditQuestionSelect" class="question-select" onchange="useSelectedAuditQuestion(this)" aria-label="按审计阶段选择高频问题">
+                  <option value="">选择阶段高频问题，可继续编辑</option>
                 </select>
               </div>
               <div class="home-input">
@@ -8398,12 +8398,30 @@ let selectedTaskMention = null;
 
 function getAuditQuestionOptions() {
   return [
-    { taskKey: 'find_issue', text: '分析采购费用和公开招标执行率，识别风险并查看明细' },
-    { taskKey: 'generate_draft', text: '根据采购合同和付款凭证生成审计底稿' },
-    { taskKey: 'audit_scheme', text: '根据项目资料编制审计实施方案并列出审计重点' },
-    { taskKey: 'rect_progress', text: '查看项目整改进度，并对逾期事项发起督办' },
-    { taskKey: 'write_report', text: '根据已审核底稿撰写审计报告初稿' },
-    { taskKey: 'archive_list', text: '汇总本项目归档材料并生成归档清单' }
+    { categoryKey: 'initiation', taskKey: 'create_project', text: '创建一个信息化建设项目专项审计，并检查立项依据是否齐全' },
+    { categoryKey: 'initiation', taskKey: 'project_approval', text: '查看当前审计项目的立项审批状态和待补充材料' },
+    { categoryKey: 'initiation', taskKey: 'audit_plan', text: '根据年度计划和项目风险，提出本项目立项建议' },
+
+    { categoryKey: 'preaudit', taskKey: 'audit_scheme', text: '根据项目资料编制审计实施方案并列出审计重点' },
+    { categoryKey: 'preaudit', taskKey: 'pre_survey', text: '汇总被审计单位基础资料，生成审前调查要点' },
+    { categoryKey: 'preaudit', taskKey: 'audit_notice', text: '生成审计通知书，并列出需提供的资料清单' },
+
+    { categoryKey: 'fieldwork', taskKey: 'find_issue', text: '分析采购费用和公开招标执行率，识别风险并查看明细' },
+    { categoryKey: 'fieldwork', taskKey: 'generate_draft', text: '根据采购合同和付款凭证生成审计底稿' },
+    { categoryKey: 'fieldwork', taskKey: 'collect_evidence', text: '核验合同、付款凭证和招投标资料的证据链完整性' },
+    { categoryKey: 'fieldwork', taskKey: 'interview_record', text: '根据访谈纪要整理审计访谈记录并提取疑点' },
+
+    { categoryKey: 'report', taskKey: 'write_report', text: '根据已审核底稿撰写审计报告初稿' },
+    { categoryKey: 'report', taskKey: 'seek_opinion', text: '生成审计报告征求意见稿，并汇总反馈意见' },
+    { categoryKey: 'report', taskKey: 'submit_review', text: '检查报告送审材料是否齐全，并生成审理提交清单' },
+
+    { categoryKey: 'rectification', taskKey: 'rect_progress', text: '查看项目整改进度，并对逾期事项发起督办' },
+    { categoryKey: 'rectification', taskKey: 'rect_plan', text: '针对已发现问题生成整改方案和责任分工建议' },
+    { categoryKey: 'rectification', taskKey: 'rect_accept', text: '核验整改证据，判断问题是否满足销号条件' },
+
+    { categoryKey: 'archive', taskKey: 'archive_list', text: '汇总本项目归档材料并生成归档清单' },
+    { categoryKey: 'archive', taskKey: 'file_materials', text: '检查各阶段资料是否齐全，并分类整理归档' },
+    { categoryKey: 'archive', taskKey: 'project_close', text: '核验报告、整改和归档状态，生成项目终结检查结论' }
   ];
 }
 
@@ -8414,9 +8432,11 @@ function renderAuditInputControls() {
     menu.innerHTML = taskCategories.map(category => `<div class="task-mention-stage">${escapeHtml(category.name)}</div>${category.subItems.map(task => `<button type="button" class="task-mention-option" onclick="selectTaskMention('${task.key}')"><strong>@${escapeHtml(task.name)}</strong><span>${escapeHtml(task.desc)}</span></button>`).join('')}`).join('');
   }
   if (select && select.options.length <= 1) {
-    select.insertAdjacentHTML('beforeend', getAuditQuestionOptions().map(item => {
-      const meta = getTaskMeta(item.taskKey);
-      return `<option value="${item.taskKey}">${escapeHtml(meta.category.name)} · ${escapeHtml(meta.task.name)}：${escapeHtml(item.text)}</option>`;
+    const options = getAuditQuestionOptions();
+    select.insertAdjacentHTML('beforeend', taskCategories.map(category => {
+      const stageQuestions = options.filter(item => item.categoryKey === category.key);
+      if (!stageQuestions.length) return '';
+      return `<optgroup label="${escapeHtml(category.name)}">${stageQuestions.map(item => `<option value="${item.taskKey}">${escapeHtml(item.text)}</option>`).join('')}</optgroup>`;
     }).join(''));
   }
   updateTaskMentionChip();
