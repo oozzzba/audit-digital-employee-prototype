@@ -702,6 +702,9 @@ input, textarea { font-family: inherit; }
 /* Collapsed thinking process shown before each generated result. */
 .output-process { margin: 2px 0 14px; }
 .output-process-summary { display: inline-flex; align-items: center; gap: 8px; padding: 6px 0; color: var(--gray-500); font-size: 13px; font-weight: 500; line-height: 1.45; cursor: pointer; list-style: none; user-select: none; }
+.output-process-status { display: inline-flex; align-items: center; gap: 6px; }
+.output-process-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 0 rgba(211,47,47,.32); animation: thinkingStatusPulse 1.8s ease-out 1; }
+@keyframes thinkingStatusPulse { 0% { box-shadow: 0 0 0 0 rgba(211,47,47,.38); } 70% { box-shadow: 0 0 0 6px rgba(211,47,47,0); } 100% { box-shadow: 0 0 0 0 rgba(211,47,47,0); } }
 .output-process-summary::-webkit-details-marker { display: none; }
 .output-process-summary::after { content: ''; width: 7px; height: 7px; margin: 0 3px 1px 5px; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); transition: transform .18s ease; }
 .output-process[open] .output-process-summary { color: var(--gray-700); }
@@ -831,21 +834,6 @@ input, textarea { font-family: inherit; }
 .generated-result-action.feedback-active { color: var(--primary); border-color: #F1AAA4; background: var(--primary-lighter); }
 .generated-result-feedback-divider { width: 1px; height: 16px; margin: 0 4px; background: var(--gray-200); }
 .generated-result-body[contenteditable="true"] { outline: 1px solid #F1AAA4; outline-offset: 4px; border-radius: 4px; }
-.output-explanation { margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid var(--gray-100); }
-.output-explanation-summary { display: flex; align-items: center; gap: 8px; padding: 3px 0; color: var(--gray-700); font-size: 12px; font-weight: 700; cursor: pointer; list-style: none; }
-.output-explanation-summary::-webkit-details-marker { display: none; }
-.output-explanation-summary::after { content: ''; width: 7px; height: 7px; margin-left: 2px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .15s ease; }
-.output-explanation[open] .output-explanation-summary::after { transform: rotate(225deg) translateY(-2px); }
-.output-explanation-summary-icon { display: inline-flex; width: 17px; height: 17px; align-items: center; justify-content: center; border: 1px solid var(--gray-300); border-radius: 50%; color: var(--gray-500); font-size: 10px; line-height: 1; }
-.output-explanation-summary-meta { color: var(--gray-400); font-size: 11px; font-weight: 400; }
-.output-explanation-body { margin-top: 8px; padding: 2px 0 0 14px; border-left: 1px solid var(--gray-200); }
-.output-explanation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; }
-.output-explanation-item { min-width: 0; }
-.output-explanation-item.wide { grid-column: 1 / -1; }
-.output-explanation-label { display: block; margin-bottom: 5px; color: var(--gray-700); font-size: 11px; font-weight: 600; }
-.output-explanation-list { margin: 0; padding-left: 16px; color: var(--gray-500); font-size: 11px; line-height: 1.65; }
-.output-explanation-text { color: var(--gray-600); font-size: 11px; line-height: 1.65; }
-.output-explanation-control { margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--warning); color: var(--warning); font-size: 11px; line-height: 1.55; }
 .follow-up-suggestions { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--gray-100); }
 .follow-up-suggestions-heading { display: flex; align-items: baseline; gap: 7px; color: var(--gray-700); font-size: 12px; font-weight: 700; }
 .follow-up-suggestions-hint { color: var(--gray-400); font-size: 11px; font-weight: 400; }
@@ -2729,13 +2717,9 @@ input, textarea { font-family: inherit; }
   .output-process-summary { font-size: 13px; }
   .output-process-heading { display: block; }
   .output-process-subtitle { display: block; margin-top: 4px; text-align: left; }
-  .output-explanation-summary { gap: 7px; align-items: flex-start; }
-  .output-explanation-summary-meta { line-height: 1.45; }
   .output-process-node { padding-left: 30px; }
   .output-process-node:not(:last-child)::after { left: 9px; }
   .output-process-note { margin-left: 30px; }
-  .output-explanation-grid { grid-template-columns: 1fr; }
-  .output-explanation-item.wide { grid-column: auto; }
   .generated-result-actions { justify-content: flex-start; }
   .generated-result-action { width: 34px; height: 34px; }
   .home-card-icon { width: 36px; height: 36px; font-size: 18px; }
@@ -3293,7 +3277,7 @@ input, textarea { font-family: inherit; }
 .home-voice-hint[hidden] { display: none; }
 @keyframes voiceRecordingPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(211,47,47,0.22); } 50% { box-shadow: 0 0 0 5px rgba(211,47,47,0); } }
 .home-send-btn { width: 32px; height: 32px; border-radius: 6px; }
-.output-process, .output-explanation { border-radius: 6px; }
+.output-process { border-radius: 6px; }
 .follow-up-suggestions { margin-top: 10px; }
 .follow-up-suggestion { border-radius: 5px; background: #FAFAFA; }
 .generated-result-actions { justify-content: flex-start; margin-top: 10px; }
@@ -9213,12 +9197,6 @@ function showTrendDrilldown(trigger) {
   if (wasHidden) drill.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function renderTaskTraceability(taskKey) {
-  const trace = getTaskTraceability(taskKey);
-  if (!trace) return '';
-  return `<details class="output-explanation" aria-label="产出解释说明"><summary class="output-explanation-summary"><span class="output-explanation-summary-icon">i</span>本次产出说明 <span class="output-explanation-summary-meta">数据依据、处理路径与复核口径</span></summary><div class="output-explanation-body"><div class="output-explanation-grid"><div class="output-explanation-item"><span class="output-explanation-label">数据来源</span><ul class="output-explanation-list">${trace.sources.map(item => `<li>${item}</li>`).join('')}</ul></div><div class="output-explanation-item"><span class="output-explanation-label">处理链路</span><ol class="output-explanation-list">${trace.chain.map(item => `<li>${item}</li>`).join('')}</ol></div><div class="output-explanation-item wide"><span class="output-explanation-label">计算与校验逻辑</span><div class="output-explanation-text">${trace.logic}</div></div></div><div class="output-explanation-control"><strong>人工复核点：</strong>${trace.control}</div></div></details>`;
-}
-
 function renderTaskFollowUps(taskKey) {
   return `<div class="follow-up-suggestions" aria-label="推荐追问"><div class="follow-up-suggestions-heading">继续处理 <span class="follow-up-suggestions-hint">基于本次审计成果</span></div><div class="follow-up-suggestions-list">${getFollowUpSuggestions(taskKey).map(item => `<button class="follow-up-suggestion" type="button" onclick="useFollowUpSuggestion(this)">${item}</button>`).join('')}</div></div>`;
 }
@@ -9232,7 +9210,7 @@ function scheduleTaskOutput(taskKey, sim, title, resultData, includeActions = tr
   setTimeout(() => {
     const msg = document.createElement('div');
     msg.className = 'message ai unified-task-response';
-    msg.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(taskKey, title, title.split(' · ').pop())}<div class="task-response-section-title">成果生成</div>${sim && sim.output ? `<div class="generated-result-body"><div class="task-output-text">${sim.output}</div></div>${generatedResultActions(`${title.split(' · ').pop()}成果说明`)}` : ''}${renderTaskOutputCard(sim, resultData, taskKey)}${renderTaskTraceability(taskKey)}${renderTaskFollowUps(taskKey)}</div></div>`;
+    msg.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(taskKey, title, title.split(' · ').pop())}<div class="task-response-section-title">成果生成</div>${sim && sim.output ? `<div class="generated-result-body"><div class="task-output-text">${sim.output}</div></div>${generatedResultActions(`${title.split(' · ').pop()}成果说明`)}` : ''}${renderTaskOutputCard(sim, resultData, taskKey)}${renderTaskFollowUps(taskKey)}</div></div>`;
     inner.appendChild(msg);
     scrollToBottom();
   }, 180);
@@ -9711,47 +9689,6 @@ function useFollowUpSuggestion(trigger) {
   input.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function addTraceabilityCard(taskKey) {
-  const trace = getTaskTraceability(taskKey);
-  const inner = document.getElementById('chatInner');
-  if (!inner || !trace) return;
-  const msg = document.createElement('div');
-  msg.className = 'message ai';
-  msg.innerHTML = `
-    <div class="message-avatar">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-    </div>
-    <div class="message-content">
-      <div class="message-name">审计智能助手</div>
-      <div class="message-bubble" style="background:transparent;border:none;padding:0;">
-        <details class="output-explanation" aria-label="产出解释说明">
-          <summary class="output-explanation-summary"><span class="output-explanation-summary-icon">i</span>本次产出说明 <span class="output-explanation-summary-meta">数据依据、处理路径与复核口径</span></summary>
-          <div class="output-explanation-body">
-            <div class="output-explanation-grid">
-              <div class="output-explanation-item">
-                <span class="output-explanation-label">数据来源</span>
-                <ul class="output-explanation-list">${trace.sources.map(item => `<li>${item}</li>`).join('')}</ul>
-              </div>
-              <div class="output-explanation-item">
-                <span class="output-explanation-label">处理链路</span>
-                <ol class="output-explanation-list">${trace.chain.map(item => `<li>${item}</li>`).join('')}</ol>
-              </div>
-              <div class="output-explanation-item wide">
-                <span class="output-explanation-label">计算与校验逻辑</span>
-                <div class="output-explanation-text">${trace.logic}</div>
-              </div>
-            </div>
-            <div class="output-explanation-control"><strong>人工复核点：</strong>${trace.control}</div>
-          </div>
-        </details>
-      </div>
-    </div>
-  `;
-  inner.appendChild(msg);
-  scrollToBottom();
-  setTimeout(() => addFollowUpSuggestions(taskKey), 120);
-}
-
 function generatedResultActions(downloadName) {
   return `
     <div class="generated-result-actions" aria-label="生成结果操作" data-download-name="${escapeHtml(downloadName)}">
@@ -10121,7 +10058,7 @@ function renderToolchainProcess(taskKey, title, resultLabel = '审计成果') {
   const steps = getExecutionActionItems(taskKey, trace, title, resultLabel);
   const phase = category ? category.name : '审计任务';
   const duration = getThinkingDuration(taskKey, steps);
-  return `<details class="output-process toolchain-process" aria-label="思考过程"><summary class="output-process-summary">已思考 <span class="output-process-summary-meta">（用时 ${duration} 秒）</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${phase} · ${title}</span><span class="output-process-subtitle">${steps.length} 个处理动作已完成</span></div><div class="output-process-context"><span>数据范围：${source}</span><span>复核口径：${trace.control.replace('人工复核点：', '')}</span></div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node done"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note">已完成${phase}阶段的处理逻辑留痕。以下基于上述资料、制度依据和分析判断生成${resultLabel}，请结合项目实际情况进行人工复核。</p></div></details>`;
+  return `<details class="output-process toolchain-process" aria-label="思考过程"><summary class="output-process-summary"><span class="output-process-status">已思考</span><span class="output-process-summary-meta">（用时 ${duration} 秒 · ${steps.length} 步已完成）</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${phase} · ${title}</span><span class="output-process-subtitle">动态推理与处理留痕</span></div><div class="output-process-context"><span>数据范围：${source}</span><span>复核口径：${trace.control.replace('人工复核点：', '')}</span></div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node done"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note">已在同一思考链路中完成资料读取、依据核验、分析判断、处理动作和成果准备。以下基于上述资料、制度依据和分析判断生成${resultLabel}，请结合项目实际情况进行人工复核。</p></div></details>`;
 }
 
 function renderDocumentGenerationProcess(taskKey, data) {
