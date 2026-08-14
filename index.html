@@ -707,7 +707,7 @@ input, textarea { font-family: inherit; }
 .output-process-context { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; color: var(--gray-500); font-size: 11px; }
 .output-process-context span { padding: 0; background: transparent; border: 0; }
 .output-process-context span:not(:last-child)::after { content: '·'; margin-left: 6px; color: var(--gray-300); }
-.output-process-flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; margin: 0 0 10px; }
+.output-process-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 0 0 10px; }
 .output-process-node { position: relative; min-width: 0; padding: 0 10px 0 14px; }
 .output-process-node:first-child { padding-left: 0; }
 .output-process-node:not(:last-child)::after { content: ''; position: absolute; top: 7px; right: 0; width: 10px; height: 1px; background: var(--gray-300); }
@@ -1784,6 +1784,12 @@ input, textarea { font-family: inherit; }
 .material-tree-item.active { background: #FDEEEE; color: var(--primary); font-weight: 600; }
 .material-tree-item .tree-count { font-size: 11px; }
 .material-tree-item.level-2 { padding: 6px 8px; font-size: 11px; }
+.project-tree-item { overflow: hidden; }
+.project-tree-item .project-tree-folder { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 16px; color: var(--gray-500); }
+.project-tree-item.active .project-tree-folder { color: var(--primary); }
+.project-tree-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.project-tree-item .tree-count { margin-left: auto; }
+.project-tree-item .tree-arrow { margin-left: 4px; }
 .materials-tree-children { margin-left: 12px; padding-left: 5px; }
 .materials-content { padding: 0; min-height: 560px; overflow: hidden; }
 .materials-content-toolbar { align-items: center; padding: 15px 16px 11px; margin: 0; border: 0; }
@@ -2749,7 +2755,7 @@ input, textarea { font-family: inherit; }
   .materials-header-actions { width: 100%; }
   .materials-header-actions .topbar-btn { flex: 1; }
   .materials-center-layout { grid-template-columns:1fr; gap:12px; }
-  .materials-tree { position:static; max-height:230px; overflow-y:auto; }
+  .materials-tree { position:static; max-height:230px; overflow-x:hidden; overflow-y:auto; }
   .materials-content { min-height: 0; padding:0; }
   .materials-content-toolbar { flex-direction:column; gap:10px; align-items:stretch; }
   .materials-search-wrap { width:100%; }
@@ -3186,10 +3192,26 @@ input, textarea { font-family: inherit; }
 .home-input-box:focus-within { border-color: #D77A70; box-shadow: 0 0 0 3px rgba(211,47,47,0.08), 0 6px 24px rgba(0,0,0,0.08); }
 .home-input { padding: 8px 10px 7px 12px; }
 .home-input textarea { font-size: 14px; min-height: 32px; }
+.input-routing-toolbar { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 3px 6px 4px; border-bottom: 1px solid var(--gray-100); }
+.input-routing-button { display: inline-flex; align-items: center; gap: 4px; height: 26px; padding: 0 8px; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--white); color: var(--gray-600); font-size: 11px; cursor: pointer; white-space: nowrap; }
+.input-routing-button:hover, .input-routing-button.active { border-color: #E7A09B; background: var(--primary-lighter); color: var(--primary); }
+.input-mention-chip { display: none; align-items: center; min-width: 0; max-width: 220px; height: 26px; padding: 0 7px; border-radius: 5px; background: var(--primary-lighter); color: var(--primary); font-size: 11px; font-weight: 600; }
+.input-mention-chip.show { display: inline-flex; }
+.input-mention-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.input-mention-chip button { width: 16px; height: 16px; margin-left: 5px; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font-size: 15px; line-height: 1; }
+.question-select { min-width: 0; flex: 1; height: 26px; padding: 0 23px 0 8px; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--gray-50); color: var(--gray-500); font-size: 11px; outline: none; cursor: pointer; }
+.question-select:focus { border-color: #E7A09B; background: var(--white); }
+.task-mention-menu { position: absolute; z-index: 30; left: 10px; bottom: calc(100% + 7px); display: none; width: min(360px, calc(100vw - 40px)); max-height: 280px; overflow-y: auto; padding: 6px; border: 1px solid var(--gray-200); border-radius: 7px; background: var(--white); box-shadow: var(--shadow-md); }
+.task-mention-menu.show { display: block; }
+.task-mention-stage { padding: 7px 8px 4px; color: var(--gray-400); font-size: 10px; font-weight: 700; }
+.task-mention-option { display: flex; width: 100%; align-items: center; gap: 8px; padding: 7px 8px; border: 0; border-radius: 5px; background: transparent; color: var(--gray-700); font-size: 12px; text-align: left; cursor: pointer; }
+.task-mention-option:hover { background: var(--primary-lighter); color: var(--primary); }
+.task-mention-option span { color: var(--gray-400); font-size: 10px; }
 .audit-question-examples { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 10px 8px 12px; border-top: 1px solid var(--gray-100); }
 .audit-question-examples-label { color: var(--gray-400); font-size: 11px; flex: 0 0 auto; }
 .audit-question-example { max-width: 100%; border: 1px solid var(--gray-200); border-radius: 5px; background: var(--gray-50); color: var(--gray-600); padding: 3px 7px; font-size: 11px; line-height: 1.5; text-align: left; transition: border-color 0.15s, background 0.15s, color 0.15s; }
 .audit-question-example:hover { border-color: #E7A09B; background: var(--primary-lighter); color: var(--primary); }
+@media (max-width: 768px) { .input-routing-toolbar { flex-wrap: wrap; padding: 4px 4px 5px; } .question-select { flex: 1 1 150px; } .input-mention-chip { max-width: 175px; } .task-mention-menu { left: 4px; } }
 .home-input-action { border-radius: 5px; }
 .home-send-btn { width: 32px; height: 32px; border-radius: 6px; }
 .output-process, .output-explanation { border-radius: 6px; }
@@ -3427,9 +3449,17 @@ input, textarea { font-family: inherit; }
         <div class="home-input-area" id="homeInputArea">
           <div class="home-input-wrap">
             <div class="home-input-box">
+              <div class="input-routing-toolbar" aria-label="审计任务输入方式">
+                <button type="button" class="input-routing-button" id="taskMentionButton" onclick="toggleTaskMentionMenu(event)" title="选择并@具体审计任务">@ 审计任务</button>
+                <div class="input-mention-chip" id="taskMentionChip"><span id="taskMentionLabel"></span><button type="button" onclick="clearTaskMention()" aria-label="移除审计任务">×</button></div>
+                <select id="auditQuestionSelect" class="question-select" onchange="useSelectedAuditQuestion(this)" aria-label="选择问题示例">
+                  <option value="">选择问题示例，可继续编辑</option>
+                </select>
+              </div>
               <div class="home-input">
-                <textarea id="homeChatInput" placeholder="例如：分析采购费用和公开招标执行率，识别风险并查看明细" rows="1" onkeydown="handleHomeKeyDown(event)" oninput="autoResize(this)" aria-disabled="false"></textarea>
+                <textarea id="homeChatInput" placeholder="直接输入问题，或 @ 审计任务后提出办理要求" rows="1" onkeydown="handleHomeKeyDown(event)" oninput="handleAuditInput(event)" aria-disabled="false"></textarea>
                 <div class="home-input-actions" style="position:relative">
+                  <div class="task-mention-menu" id="taskMentionMenu" aria-label="选择审计任务"></div>
                   <button class="home-input-action" id="homeUploadBtn" title="请先选择具体审计任务后上传资料" onclick="toggleUploadDropdown(event)" disabled aria-disabled="true">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                   </button>
@@ -4721,7 +4751,7 @@ input, textarea { font-family: inherit; }
           <div class="materials-stat-card"><div class="materials-stat-value" id="matStatToday">0</div><div class="materials-stat-label">标签数量</div></div>
         </div>
         <div class="materials-center-layout">
-          <aside class="materials-tree"><div class="materials-tree-heading">任务分类</div><div id="materialsTree"></div></aside>
+          <aside class="materials-tree"><div class="materials-tree-heading">项目资料</div><div id="materialsTree"></div></aside>
           <section class="materials-content">
             <div class="materials-content-toolbar">
               <div><div class="materials-content-title" id="materialsContentTitle">全部项目资料</div><div class="materials-content-desc" id="materialsContentDesc">按任务、文件类型与上传信息快速定位审计资料</div></div>
@@ -5850,17 +5880,18 @@ function renderMaterialsTree(allFiles) {
   const tree = document.getElementById('materialsTree');
   if (!tree) return;
   const active = currentMaterialLocation;
-  const root = (id, label, count, onclick) => `<button class="material-tree-item ${active.type === id ? 'active' : ''}" onclick="${onclick}"><span>${label}</span><span class="tree-count">${count}</span></button>`;
-  const taskContext = getActiveTaskMaterialsContext();
-  const taskFiles = taskContext ? allFiles.filter(file => file.projectId === taskContext.projectId && file.taskKey === taskContext.taskKey) : [];
-  const currentTaskNode = taskContext ? `<div class="material-tree-section"><button class="material-tree-item ${active.type === 'task' ? 'active' : ''}" onclick="selectMaterialLocation('task', ${taskContext.projectId}, null, '${taskContext.taskKey}')"><span>当前任务专属素材库</span><span class="tree-count">${taskFiles.length}</span></button></div>` : `<div class="material-tree-section"><button class="material-tree-item" onclick="showToast('请先进入具体审计任务后查看任务专属素材库')"><span>当前任务专属素材库</span><span class="tree-count">锁定</span></button></div>`;
-  const projectNodes = projectData.filter(project => materialsData[project.id]).map(project => {
+  const projectNodes = projectData.filter(project => allFiles.some(file => file.projectId === project.id)).map(project => {
     const projectFiles = allFiles.filter(file => file.projectId === project.id);
     const isExpanded = expandedMaterialProjectIds.has(project.id);
-    const childNodes = materialFolders.map(folder => `<button class="material-tree-item level-2 ${active.projectId === project.id && active.folder === folder.id ? 'active' : ''}" onclick="selectMaterialLocation('project', ${project.id}, '${folder.id}')">${folder.title}<span class="tree-count">${projectFiles.filter(file => getMaterialFolder(file) === folder.id).length}</span></button>`).join('');
-    return `<div class="material-tree-section"><button class="material-tree-item ${active.type === 'project' && active.projectId === project.id && !active.folder ? 'active' : ''}" onclick="toggleMaterialProject(${project.id})">${project.name}<span class="tree-count">${projectFiles.length}</span><span class="tree-arrow" id="projectTreeArrow-${project.id}">${isExpanded ? '⌄' : '›'}</span></button><div class="materials-tree-children ${isExpanded ? '' : 'hidden'}" id="projectTreeChildren-${project.id}">${childNodes}</div></div>`;
+    const childNodes = materialFolders.map(folder => {
+      const folderCount = projectFiles.filter(file => getMaterialFolder(file) === folder.id).length;
+      if (!folderCount) return '';
+      return `<button class="material-tree-item level-2 ${active.projectId === project.id && active.folder === folder.id ? 'active' : ''}" onclick="selectMaterialLocation('project', ${project.id}, '${folder.id}')"><span>${folder.title}</span><span class="tree-count">${folderCount}</span></button>`;
+    }).join('');
+    const selected = active.type === 'project' && active.projectId === project.id && !active.folder;
+    return `<div class="material-tree-section"><button class="material-tree-item project-tree-item ${selected ? 'active' : ''} ${isExpanded ? 'expanded' : ''}" onclick="toggleMaterialProject(${project.id})"><span class="project-tree-folder" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span><span class="project-tree-name">${project.name}</span><span class="tree-count">${projectFiles.length}</span><span class="tree-arrow">›</span></button><div class="materials-tree-children ${isExpanded ? '' : 'hidden'}" id="projectTreeChildren-${project.id}">${childNodes}</div></div>`;
   }).join('');
-  tree.innerHTML = `${currentTaskNode}${root('all', '全部项目资料', allFiles.length, "selectMaterialLocation('all')")}<div class="material-tree-section"><button class="material-tree-item ${active.type === 'project-root' ? 'active' : ''}" onclick="selectMaterialLocation('project-root')">按审计项目分类<span class="tree-count">${projectData.filter(project => materialsData[project.id]).length}</span></button><div class="materials-tree-children">${projectNodes}</div></div>${root('knowledge', '公共审计知识库', 4, "selectMaterialLocation('knowledge')")}${root('queue', 'AI 文件任务队列', 4, "selectMaterialLocation('queue')")}${root('recycle', '资料回收站', 2, "selectMaterialLocation('recycle')")}${root('permission', '资料权限设置', 3, "selectMaterialLocation('permission')")}`;
+  tree.innerHTML = projectNodes || '<div class="materials-empty">暂无项目资料</div>';
 }
 
 function toggleMaterialProject(projectId) {
@@ -5944,7 +5975,7 @@ function renderMaterialsCenter() {
     files = files.filter(file => file.projectId === location.projectId);
     title.textContent = location.folder ? materialFolders.find(item => item.id === location.folder).title : project.name;
     desc.textContent = location.folder ? materialFolders.find(item => item.id === location.folder).desc : project.name + ' 的全部资料目录';
-    breadcrumb.textContent = '项目资料中心 / 按审计项目分类 / ' + project.name + (location.folder ? ' / ' + title.textContent : '');
+    breadcrumb.textContent = '项目资料中心 / ' + project.name + (location.folder ? ' / ' + title.textContent : '');
     if (location.folder) { files = files.filter(file => getMaterialFolder(file) === location.folder); groupByFolder = false; }
   } else if (location.type === 'project-root') {
     title.textContent = '按审计项目分类'; desc.textContent = '选择左侧项目文件夹，进入六类标准审计资料目录'; breadcrumb.textContent = '项目资料中心 / 按审计项目分类';
@@ -7348,13 +7379,6 @@ function markAllTaskSkillsUsed(taskKey) {
   markTaskSkillsUsed(taskKey, (taskSkillCatalog[taskKey] || []).map(([label]) => label));
 }
 
-function renderUsedTaskSkills(taskKey) {
-  const skills = getUsedTaskSkills(taskKey);
-  return skills.length
-    ? `<span>调用技能：${skills.join('、')}</span>`
-    : '<span>调用技能：未调用专用技能</span>';
-}
-
 const taskCategories = [
   {
     key: 'initiation',
@@ -8223,8 +8247,8 @@ function updateTaskWorkspaceState() {
     input.disabled = false;
     input.setAttribute('aria-disabled', 'false');
     input.placeholder = hasTask
-      ? '补充资料或直接描述当前审计任务...'
-      : '例如：分析采购费用和公开招标执行率，识别风险并查看明细';
+      ? '直接描述当前任务，或 @ 审计任务后切换办理事项...'
+      : '直接输入问题，或 @ 审计任务后提出办理要求';
   }
   if (upload) {
     upload.disabled = !hasTask;
@@ -8298,6 +8322,11 @@ document.addEventListener('click', function(e) {
   if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
     closeUploadDropdown();
   }
+  const taskMenu = document.getElementById('taskMentionMenu');
+  const taskButton = document.getElementById('taskMentionButton');
+  if (taskMenu && taskButton && !taskMenu.contains(e.target) && !taskButton.contains(e.target)) {
+    closeTaskMentionMenu();
+  }
   // Close admin dropdown when clicking outside
   const adminDropdown = document.getElementById('topbarAdminDropdown');
   const adminBtn = document.getElementById('topbarAdminBtn');
@@ -8365,13 +8394,112 @@ function detectTaskIntent(text) {
   return recognizeAuditIntent(text).taskKey;
 }
 
+let selectedTaskMention = null;
+
+function getAuditQuestionOptions() {
+  return [
+    { taskKey: 'find_issue', text: '分析采购费用和公开招标执行率，识别风险并查看明细' },
+    { taskKey: 'generate_draft', text: '根据采购合同和付款凭证生成审计底稿' },
+    { taskKey: 'audit_scheme', text: '根据项目资料编制审计实施方案并列出审计重点' },
+    { taskKey: 'rect_progress', text: '查看项目整改进度，并对逾期事项发起督办' },
+    { taskKey: 'write_report', text: '根据已审核底稿撰写审计报告初稿' },
+    { taskKey: 'archive_list', text: '汇总本项目归档材料并生成归档清单' }
+  ];
+}
+
+function renderAuditInputControls() {
+  const menu = document.getElementById('taskMentionMenu');
+  const select = document.getElementById('auditQuestionSelect');
+  if (menu) {
+    menu.innerHTML = taskCategories.map(category => `<div class="task-mention-stage">${escapeHtml(category.name)}</div>${category.subItems.map(task => `<button type="button" class="task-mention-option" onclick="selectTaskMention('${task.key}')"><strong>@${escapeHtml(task.name)}</strong><span>${escapeHtml(task.desc)}</span></button>`).join('')}`).join('');
+  }
+  if (select && select.options.length <= 1) {
+    select.insertAdjacentHTML('beforeend', getAuditQuestionOptions().map(item => {
+      const meta = getTaskMeta(item.taskKey);
+      return `<option value="${item.taskKey}">${escapeHtml(meta.category.name)} · ${escapeHtml(meta.task.name)}：${escapeHtml(item.text)}</option>`;
+    }).join(''));
+  }
+  updateTaskMentionChip();
+}
+
+function updateTaskMentionChip() {
+  const chip = document.getElementById('taskMentionChip');
+  const label = document.getElementById('taskMentionLabel');
+  const button = document.getElementById('taskMentionButton');
+  if (chip) chip.classList.toggle('show', Boolean(selectedTaskMention));
+  if (label) label.textContent = selectedTaskMention ? `@${selectedTaskMention.name}` : '';
+  if (button) button.classList.toggle('active', Boolean(selectedTaskMention));
+}
+
+function toggleTaskMentionMenu(event) {
+  if (event) event.stopPropagation();
+  const menu = document.getElementById('taskMentionMenu');
+  if (!menu) return;
+  renderAuditInputControls();
+  menu.classList.toggle('show');
+}
+
+function closeTaskMentionMenu() {
+  const menu = document.getElementById('taskMentionMenu');
+  if (menu) menu.classList.remove('show');
+}
+
+function selectTaskMention(taskKey) {
+  const meta = getTaskMeta(taskKey);
+  if (!meta || !meta.task) return;
+  selectedTaskMention = { taskKey, name: meta.task.name, category: meta.category.name };
+  updateTaskMentionChip();
+  closeTaskMentionMenu();
+  const input = document.getElementById('homeChatInput');
+  if (input) {
+    input.focus();
+    if (!input.value.trim() || input.value.trim() === '@') input.value = '';
+  }
+}
+
+function clearTaskMention() {
+  selectedTaskMention = null;
+  updateTaskMentionChip();
+}
+
+function buildMentionIntent(mention) {
+  if (!mention) return null;
+  const meta = getTaskMeta(mention.taskKey);
+  if (!meta || !meta.task || !meta.category) return null;
+  return { taskKey: mention.taskKey, category: meta.category, task: meta.task, matchedKeywords: [`@${meta.task.name}`], confidence: 'high', candidates: [] };
+}
+
+function useSelectedAuditQuestion(select) {
+  const taskKey = select && select.value;
+  if (!taskKey) return;
+  const option = getAuditQuestionOptions().find(item => item.taskKey === taskKey);
+  const input = document.getElementById('homeChatInput');
+  if (!option || !input) return;
+  input.value = option.text;
+  autoResize(input);
+  input.focus();
+  if (!selectedTaskMention) selectTaskMention(taskKey);
+  select.value = '';
+}
+
+function handleAuditInput(event) {
+  const input = event && event.target;
+  if (!input) return;
+  autoResize(input);
+  if (!selectedTaskMention && input.value.trim() === '@') {
+    const menu = document.getElementById('taskMentionMenu');
+    renderAuditInputControls();
+    if (menu) menu.classList.add('show');
+  }
+}
+
 function useAuditQuestionExample(trigger) {
   const input = document.getElementById('homeChatInput');
   const text = trigger && trigger.textContent ? trigger.textContent.trim() : '';
   if (!input || !text) return;
   input.value = text;
   autoResize(input);
-  handleHomeInput();
+  input.focus();
 }
 
 function renderAuditIntentRecognition(intent) {
@@ -8801,14 +8929,13 @@ function renderTaskFollowUps(taskKey) {
 function scheduleTaskOutput(taskKey, sim, title, resultData, includeActions = true) {
   const workflow = taskWorkflowData[taskKey];
   const assistant = getTaskAssistantMeta(taskKey);
-  const skillTrace = renderUsedTaskSkills(taskKey);
   const inner = document.getElementById('chatInner');
   if (!inner) return;
 
   setTimeout(() => {
     const msg = document.createElement('div');
     msg.className = 'message ai unified-task-response';
-    msg.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;"><details class="output-process" aria-label="审计分析与任务拆解"><summary class="output-process-summary"><span class="output-process-summary-icon">✦</span>已完成审计分析 <span class="output-process-summary-meta">${workflow ? workflow.steps.length : 0} 个处理步骤</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${workflow ? workflow.title : title}</span><span class="output-process-subtitle">${workflow ? workflow.status : '已完成分析'}</span></div><div class="output-process-context"><span>任务拆解</span><span>${title}</span>${workflow ? `<span>${workflow.role}</span>` : ''}${skillTrace}</div><div class="output-process-flow">${workflow ? workflow.steps.map(step => `<div class="output-process-node ${step[2] || ''}"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('') : '<div class="output-process-node done"><span class="output-process-dot"></span><span class="output-process-node-name">任务解析</span><span class="output-process-node-state">已完成</span></div>'}</div>${workflow ? `<p class="output-process-note"><strong>处理说明：</strong>${workflow.rule} ${workflow.todo}</p>` : ''}</div></details><div class="task-response-section-title">成果生成</div>${sim && sim.output ? `<div class="generated-result-body"><div class="task-output-text">${sim.output}</div></div>${generatedResultActions(`${title.split(' · ').pop()}成果说明`)}` : ''}${renderTaskOutputCard(sim, resultData)}${renderTaskTraceability(taskKey)}${renderTaskFollowUps(taskKey)}</div></div>`;
+    msg.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(taskKey, title, title.split(' · ').pop())}<div class="task-response-section-title">成果生成</div>${sim && sim.output ? `<div class="generated-result-body"><div class="task-output-text">${sim.output}</div></div>${generatedResultActions(`${title.split(' · ').pop()}成果说明`)}` : ''}${renderTaskOutputCard(sim, resultData)}${renderTaskTraceability(taskKey)}${renderTaskFollowUps(taskKey)}</div></div>`;
     inner.appendChild(msg);
     scrollToBottom();
   }, 180);
@@ -9224,33 +9351,16 @@ function addWorkflowCard(taskKey) {
   const workflow = taskWorkflowData[taskKey];
   const inner = document.getElementById('chatInner');
   if (!inner || !workflow) return;
+  const assistant = getTaskAssistantMeta(taskKey);
+  const display = getTaskDisplayName(taskKey);
   const msg = document.createElement('div');
-  msg.className = 'message ai';
+  msg.className = 'message ai unified-task-response';
   msg.innerHTML = `
-    <div class="message-avatar">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h5M8 16h8"/></svg>
-    </div>
+    <div class="message-avatar">${assistant.icon}</div>
     <div class="message-content">
-      <div class="message-name">审计智能助手</div>
+      <div class="message-name">${assistant.name}</div>
       <div class="message-bubble" style="background:transparent;border:none;padding:0;">
-        <details class="output-process" aria-label="深度思考过程">
-          <summary class="output-process-summary"><span class="output-process-summary-icon">✦</span>已完成审计分析 <span class="output-process-summary-meta">${workflow.steps.length} 个处理步骤</span></summary>
-          <div class="output-process-body">
-            <div class="output-process-heading">
-              <span class="output-process-title">${workflow.title}</span>
-              <span class="output-process-subtitle">${workflow.status}</span>
-            </div>
-            <div class="output-process-context">
-              <span>${workflow.project}</span>
-              <span>${workflow.role}</span>
-              <span>当前：${workflow.status}</span>
-            </div>
-            <div class="output-process-flow">
-              ${workflow.steps.map(step => `<div class="output-process-node ${step[2] || ''}"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}
-            </div>
-            <p class="output-process-note"><strong>处理说明：</strong>${workflow.rule} ${workflow.todo}</p>
-          </div>
-        </details>
+        ${renderToolchainProcess(taskKey, display.task || workflow.title, '审计成果')}
       </div>
     </div>
   `;
@@ -9675,34 +9785,23 @@ function addTemplateGeneratedDocument(data) {
   scrollToBottom();
 }
 
+function renderToolchainProcess(taskKey, title, resultLabel = '审计成果') {
+  const trace = getTaskTraceability(taskKey);
+  const source = (trace.sources && trace.sources[0]) || '当前审计项目资料';
+  const steps = [
+    ['调用取数', `已完成 · ${source}`, 'done'],
+    ['检索核验', '已完成 · 关联资料与规则校验', 'done'],
+    ['分析处理', '已完成 · 形成审计判断', 'done'],
+    ['生成成果', `已完成 · ${resultLabel}`, 'done']
+  ];
+  return `<details class="output-process toolchain-process" aria-label="工具链执行过程"><summary class="output-process-summary"><span class="output-process-summary-icon">✦</span>执行过程 <span class="output-process-summary-meta">调用取数、检索、分析、生成</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">工具链执行留痕</span><span class="output-process-subtitle">4 个工具动作已完成</span></div><div class="output-process-context"><span>当前任务：${title}</span><span>数据范围：${source}</span></div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node ${step[2]}"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div></div></details>`;
+}
+
 function renderDocumentGenerationProcess(taskKey, data) {
   const isWorkingPaper = taskKey === 'generate_draft';
-  const steps = isWorkingPaper
-    ? [
-        ['任务与范围解析', '已完成', 'done'],
-        ['调取合同、招投标及付款凭证', '已完成 · 3类材料', 'done'],
-        ['证据编号关联与交叉核验', '已完成 · 8项证据', 'done'],
-        ['异常筛查与法规精确匹配', '已完成 · 2项问题', 'done'],
-        ['按底稿模板填充字段', '已完成', 'done'],
-        ['主审复核与签认附件校验', '待处理', 'pending']
-      ]
-    : [
-        ['报告范围与版本解析', '已完成', 'done'],
-        ['归集已审核底稿与问题清单', '已完成 · 2份底稿', 'done'],
-        ['问题归并、排序与影响分析', '已完成 · 5项问题', 'done'],
-        ['法规引用与审理意见比对', '已完成 · 2项提示', 'alert'],
-        ['套用报告模板并生成初稿', '已完成', 'done'],
-        ['组长、项目负责人及审理复核', '待处理', 'pending']
-      ];
-  const title = isWorkingPaper ? '审计底稿生成执行过程' : '审计报告撰写执行过程';
-  const context = isWorkingPaper
-    ? ['现场实施助手', data.project || '当前审计项目', '合同、招投标、付款与取证材料']
-    : ['报告编制助手', data.project || '当前审计项目', '已审核底稿、问题清单与审理意见'];
-  const note = isWorkingPaper
-    ? '已对合同、招投标文件和付款凭证建立证据索引；法规匹配和模板填充已完成。底稿需经主审复核，并补充被审计单位盖章确认附件后，方可推送问题清单。'
-    : '仅引用已审核底稿和已确认问题；系统未新增底稿外问题。初稿已完成法规引用和版本检查，诊断提示及报告内容仍须经组长、项目负责人和审理人员复核。';
-  const skillTrace = renderUsedTaskSkills(taskKey);
-  return `<details class="output-process document-generation-process" aria-label="${title}"><summary class="output-process-summary"><span class="output-process-summary-icon">✦</span>执行过程 <span class="output-process-summary-meta">检索、核验、生成与复核已留痕</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${title}</span><span class="output-process-subtitle">已完成 ${steps.filter(step => step[2] === 'done').length} / ${steps.length} 个步骤</span></div><div class="output-process-context">${context.map(item => `<span>${item}</span>`).join('')}${skillTrace}</div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node ${step[2]}"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note"><strong>执行说明：</strong>${note}</p></div></details>`;
+  const title = isWorkingPaper ? '生成审计底稿' : '撰写审计报告';
+  const resultLabel = isWorkingPaper ? '审计问题底稿' : '审计报告初稿';
+  return renderToolchainProcess(taskKey, title, resultLabel);
 }
 
 function addWorkingPaperDemo(data, taskKey = 'generate_draft') {
@@ -9897,10 +9996,12 @@ function addReportGeneratedDocument(data) {
   scrollToBottom();
 }
 
-function addCardMessage(type, data) {
+function addCardMessage(type, data, taskKey = currentSubTaskKey) {
   const inner = document.getElementById('chatInner');
   const msg = document.createElement('div');
-  msg.className = 'message ai';
+  msg.className = 'message ai unified-task-response';
+  const assistant = taskKey ? getTaskAssistantMeta(taskKey) : { name: '审计智能助手', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>' };
+  const process = taskKey ? renderToolchainProcess(taskKey, getTaskDisplayName(taskKey).task || data.title, data.title || '审计成果') : '';
   let cardHtml = '';
 
   if (type === 'report-output') {
@@ -10229,16 +10330,7 @@ function enrichExecutionProcess(taskKey, title) {
   const last = document.querySelector('#chatInner .message.ai:last-of-type .output-process');
   if (!last || last.dataset.auditEnriched === 'true') return;
   last.dataset.auditEnriched = 'true';
-  const trace = taskTraceability[taskKey] || taskTraceability.default;
-  const summary = last.querySelector('.output-process-summary');
-  if (summary) summary.innerHTML = `<span class="output-process-summary-icon">✦</span>执行过程 <span class="output-process-summary-meta">检索、调用、生成与复核已留痕</span>`;
-  const body = last.querySelector('.output-process-body');
-  if (body) {
-    const explain = document.createElement('div');
-    explain.className = 'output-process-context';
-    explain.innerHTML = `<span>检索依据：${trace.sources[0]}</span><span>工具调用：审计规则匹配与证据核验</span><span>成果生成：${title}</span><span>人工复核：${trace.control.replace('人工复核点：', '')}</span>`;
-    body.insertBefore(explain, body.querySelector('.output-process-flow'));
-  }
+  // 统一过程面板只保留四类工具链动作，成果说明与人工确认在独立区域展示。
 }
 
 scheduleTaskOutput = function(taskKey, sim, title, resultData, includeActions = true) {
@@ -10306,18 +10398,20 @@ sendMessage = function() {
   const input = document.getElementById('homeChatInput');
   const text = input && input.value.trim();
   if (!text) return;
+  const mentionIntent = buildMentionIntent(selectedTaskMention);
   input.value = '';
   input.style.height = '28px';
 
-  if (pendingTemplateGeneration && hasActiveAuditTask()) {
+  if (pendingTemplateGeneration && hasActiveAuditTask() && (!mentionIntent || mentionIntent.taskKey === currentSubTaskKey)) {
     addMessage('user', text, currentSubTaskKey);
     handlePendingTemplateGeneration(text);
     return;
   }
 
-  const intent = recognizeAuditIntent(text);
+  const intent = mentionIntent || recognizeAuditIntent(text);
   if (intent.taskKey && (!hasActiveAuditTask() || intent.taskKey !== currentSubTaskKey)) {
     routeAuditQuestion(text, intent);
+    clearTaskMention();
     return;
   }
   if (!hasActiveAuditTask()) {
@@ -10325,8 +10419,11 @@ sendMessage = function() {
     return;
   }
 
-  executeAuditInstruction(text, currentSubTaskKey, '审计指令');
+  executeAuditInstruction(text, currentSubTaskKey, mentionIntent ? '指定审计任务' : '审计指令');
+  clearTaskMention();
 };
+
+renderAuditInputControls();
 
 confirmWorkingPaperOutput = function(trigger) {
   legacyConfirmWorkingPaperOutput(trigger);
