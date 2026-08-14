@@ -7806,7 +7806,7 @@ const taskSimulations = {
     input: '根据已核验的采购合同、招投标文件和付款凭证，生成采购合规性审计问题底稿',
     output: '已识别采购合规性问题并完成证据匹配。以下按“问题清单 → 模板底稿 → 审计处理建议”的连续对话方式生成：',
     card: { type: 'working-paper-demo', data: {
-      title: '采购合规性审计底稿生成演示',
+      title: '采购合规性审计底稿生成',
       template: '14.2审计问题底稿--现场实施--审计工作底稿.docx',
       project: 'AG-2026-001 · 2026年度信息化建设项目专项审计',
       auditedUnit: '信息中心',
@@ -8592,7 +8592,7 @@ function getAuditQuestionOptions() {
     { id: 'working-paper', group: '成果生成', taskKey: 'generate_draft', text: '根据核验资料生成采购合规审计问题底稿', title: '采购合规审计问题底稿', summary: '已将已核验的审计事实、法规依据和证据编号自动写入标准审计问题底稿。', metrics: [['识别问题', '2 项'], ['涉及金额', '¥125.0 万'], ['证据编号', '8 份']], fields: [['问题定性', '未按规定履行公开招标程序'], ['审计依据', '招标投标法及集团采购管理制度'], ['审计事实', '限额以上采购采用邀请招标，未见例外审批'], ['处理建议', '补充合规说明并完善招标审批控制']], insights: ['已生成可编辑的标准问题底稿预览，待主审复核。', '证据链已绑定 EV-2026-001-001 至 008。'] },
     { id: 'audit-report', group: '成果生成', taskKey: 'write_report', text: '基于审计发现生成审计报告初稿', title: '信息化建设项目专项审计报告初稿', summary: '已归集审核通过的问题底稿、统计数据和审计依据，形成可送审的审计报告初稿。', metrics: [['审计发现', '3 项'], ['高风险问题', '1 项'], ['整改时限', '30 日']], fields: [['报告范围', '采购、合同履约、资金支付及项目管理'], ['主要发现', '采购招标执行不足、资料留存不完整、付款控制偏弱'], ['问题影响', '涉及金额 ¥125.0 万，存在采购合规与内控风险'], ['审计建议', '完善公开招标、例外审批、资料归档和付款复核机制']], insights: ['报告已按标准结构生成：基本情况、审计发现、问题影响、审计建议和整改要求。', '进入审理前需完成主审、组长和项目负责人的复核确认。'] },
     { id: 'rectification-tracking', group: '成果生成', taskKey: 'rect_progress', text: '生成审计整改跟踪清单和逾期预警', title: '审计整改跟踪清单', summary: '已根据问题台账、整改反馈和证据附件生成整改跟踪清单，并标记逾期风险。', metrics: [['整改事项', '12 项'], ['已完成', '7 项'], ['临期或逾期', '3 项']], fields: [['高风险问题', '公开招标程序缺失，整改期限 2026-08-30'], ['逾期事项', '2 项资料补正未完成，已生成督办提醒'], ['待验收事项', '3 项待上传整改证据'], ['跟踪建议', '每周同步整改进度，逾期 3 日自动预警']], insights: ['整改完成率 58.3%，仍有 3 项事项需要重点关注。', '已输出责任单位、责任人、时限、证据状态和督办建议。'] },
-    { id: 'system-guide', group: '系统使用问答', taskKey: 'audit_scheme', text: '如何上传资料、选择问题和设置审批权限？', title: '审计数字员工操作指引', summary: '已根据当前工作区功能生成操作说明，支持直接按问题发起审计任务或结合附件提交。', metrics: [['上传类型', '4 类'], ['预设问题', '10 个'], ['审批模式', '3 种']], fields: [['上传资料', '点击上传入口，选择视频、音频、图片或文档；附件可单独发送或与问题一并发送'], ['选择问题', '从“选择问题”中选择高频场景，系统回填问题后点击发送即可获得演示成果'], ['审批权限', '默认“请求审批”；可选择“替我审批”或“完全自主审批”处理高风险和异常事项'], ['结果复核', '展开执行过程查看取数、检索、分析和生成留痕，再对成果进行人工复核']], insights: ['系统使用问答不改变审计项目数据，仅提供当前功能的操作说明。', '涉及高风险事项时，建议保留“请求审批”以便人工确认处置方案。'] }
+    { id: 'system-guide', group: '系统使用问答', taskKey: 'audit_scheme', text: '如何上传资料、选择问题和设置审批权限？', title: '审计工作区操作指引', summary: '已根据当前工作区功能生成操作说明，支持直接按问题发起审计任务或结合附件提交。', metrics: [['上传类型', '4 类'], ['问题选项', '10 个'], ['审批模式', '3 种']], fields: [['上传资料', '点击上传入口，选择视频、音频、图片或文档；附件可单独发送或与问题一并发送'], ['选择问题', '从“选择问题”中选择高频场景，系统回填问题后点击发送即可获取对应任务结果'], ['审批权限', '默认“请求审批”；可选择“替我审批”或“完全自主审批”处理高风险和异常事项'], ['结果复核', '展开执行过程查看取数、检索、分析和生成留痕，再对成果进行人工复核']], insights: ['系统使用问答不改变审计项目数据，仅提供当前功能的操作说明。', '涉及高风险事项时，建议保留“请求审批”以便人工确认处置方案。'] }
   ];
 }
 
@@ -8641,7 +8641,7 @@ function renderAuditDemoCard(option) {
   const metrics = (option.metrics || []).map(item => `<div class="audit-demo-metric"><span class="audit-demo-metric-label">${escapeHtml(item[0])}</span><strong class="audit-demo-metric-value">${escapeHtml(item[1])}</strong></div>`).join('');
   const fields = (option.fields || []).map(item => `<div class="draft-field"><span class="draft-field-label">${escapeHtml(item[0])}</span><span class="draft-field-value">${escapeHtml(item[1])}</span></div>`).join('');
   const insights = (option.insights || []).map(item => `<div class="audit-demo-insight">${escapeHtml(item)}</div>`).join('');
-  return `<div class="chat-card audit-demo-card"><div class="chat-card-header"><div class="chat-card-icon">✦</div><span class="chat-card-title">${escapeHtml(option.title)}</span><span class="issue-tag">模拟数据</span></div><div class="generated-result-body"><p class="audit-demo-summary">${escapeHtml(option.summary)}</p><div class="audit-demo-metrics">${metrics}</div>${renderAuditDemoChart(option.chart)}<div class="draft-card-fields">${fields}</div><div class="audit-demo-insights">${insights}</div><div class="ai-tag">模拟数据演示，请结合实际项目资料进行人工复核</div></div>${generatedResultActions(option.title)}</div>`;
+  return `<div class="chat-card audit-demo-card"><div class="chat-card-header"><div class="chat-card-icon">✦</div><span class="chat-card-title">${escapeHtml(option.title)}</span><span class="issue-tag">任务结果</span></div><div class="generated-result-body"><p class="audit-demo-summary">${escapeHtml(option.summary)}</p><div class="audit-demo-metrics">${metrics}</div>${renderAuditDemoChart(option.chart)}<div class="draft-card-fields">${fields}</div><div class="audit-demo-insights">${insights}</div><div class="ai-tag">请结合当前项目资料进行人工复核</div></div>${generatedResultActions(option.title)}</div>`;
 }
 
 function runSelectedAuditDemo(option, userText) {
@@ -8658,13 +8658,13 @@ function runSelectedAuditDemo(option, userText) {
   showTyping(option.taskKey);
   window.setTimeout(() => {
     removeTyping();
-    const assistant = { name: '审计数字员工', icon: '✦' };
+    const assistant = getTaskAssistantMeta(option.taskKey);
     const message = document.createElement('div');
     message.className = 'message ai unified-task-response selected-audit-demo-response';
-    message.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(option.taskKey, option.title, option.title)}<div class="task-response-section-title">演示成果</div>${renderAuditDemoCard(option)}</div></div>`;
+    message.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(option.taskKey, option.title, option.title)}<div class="task-response-section-title">任务结果</div>${renderAuditDemoCard(option)}</div></div>`;
     inner.appendChild(message);
     captureGeneratedResult('selected-audit-demo', option.taskKey);
-    updateConversationSummary(`已生成“${option.title}”模拟演示成果，待人工复核`);
+    updateConversationSummary(`已生成“${option.title}”任务结果，待人工复核`);
     scrollToBottom();
   }, 420);
 }
@@ -8872,10 +8872,10 @@ function buildTemplateGenerationData(taskKey, inputData) {
 function getTaskAssistantMeta(taskKey) {
   for (const cat of taskCategories) {
     if (cat.subItems.some(item => item.key === taskKey)) {
-      return { name: `${cat.name}助手`, icon: cat.icon || '✦' };
+      return { name: cat.homeName || `${cat.name}助手`, icon: cat.icon || '✦' };
     }
   }
-  return { name: '审计智能助手', icon: '✦' };
+  return { name: '审计任务助手', icon: '✦' };
 }
 
 function renderTrendAnalysisCard(data) {
@@ -10349,7 +10349,7 @@ function getTaskMeta(taskKey) {
 getTaskAssistantMeta = function(taskKey) {
   const meta = getTaskMeta(taskKey);
   if (meta.category) return { name: meta.category.homeName || `${meta.category.name}助手`, icon: meta.category.icon || '✦' };
-  return { name: '审计智能助手', icon: '✦' };
+  return { name: '审计任务助手', icon: '✦' };
 };
 
 detectTaskIntent = function(text) {
