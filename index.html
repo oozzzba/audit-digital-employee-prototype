@@ -3242,6 +3242,32 @@ input, textarea { font-family: inherit; }
 .approval-select option { color: var(--gray-700); background: var(--white); font-weight: 400; }
 @media (max-width: 768px) { .input-routing-toolbar { flex-wrap: wrap; padding: 4px 4px 5px; } .approval-select { flex: 0 1 116px; } .question-select { flex: 1 1 150px; } }
 .home-input-action { border-radius: 5px; }
+.home-voice-btn {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--gray-200);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--gray-500);
+}
+.home-voice-btn:hover { border-color: #E7A09B; background: var(--primary-lighter); color: var(--primary); }
+.home-voice-btn.is-recording { border-color: var(--primary); background: var(--primary); color: var(--white); animation: voiceRecordingPulse 1.2s ease-in-out infinite; }
+.home-voice-btn.is-recording::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  top: 3px;
+  right: 3px;
+  border-radius: 50%;
+  background: #FFDED9;
+  border: 1px solid var(--primary);
+}
+.home-voice-btn:disabled { border-color: var(--gray-200); background: var(--gray-50); color: var(--gray-300); cursor: not-allowed; }
+.home-voice-hint { margin: 0 12px 7px; color: var(--primary); font-size: 11px; line-height: 1.4; }
+.home-voice-hint[hidden] { display: none; }
+@keyframes voiceRecordingPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(211,47,47,0.22); } 50% { box-shadow: 0 0 0 5px rgba(211,47,47,0); } }
 .home-send-btn { width: 32px; height: 32px; border-radius: 6px; }
 .output-process, .output-explanation { border-radius: 6px; }
 .follow-up-suggestions { margin-top: 10px; }
@@ -3485,12 +3511,16 @@ input, textarea { font-family: inherit; }
                 </select>
               </div>
               <div class="home-attachment-list" id="homeAttachmentList" aria-live="polite"></div>
+              <div class="home-voice-hint" id="homeVoiceHint" role="status" aria-live="polite" hidden></div>
               <div class="home-input">
                 <textarea id="homeChatInput" placeholder="请描述审计任务，示例：分析采购费用和公开招标执行率" rows="1" onkeydown="handleHomeKeyDown(event)" oninput="handleAuditInput(event)" aria-disabled="false"></textarea>
                 <div class="home-input-actions" style="position:relative">
                   <input id="homeFileInput" type="file" multiple hidden onchange="handleSelectedFiles(this.files)">
                   <button class="home-input-action" id="homeUploadBtn" title="添加审计附件" onclick="toggleUploadDropdown(event)" aria-disabled="false">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  </button>
+                  <button class="home-input-action home-voice-btn" id="homeVoiceBtn" type="button" title="语音输入" aria-label="语音输入" aria-pressed="false" onclick="toggleVoiceInput()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v4"/><path d="M8.5 21h7"/></svg>
                   </button>
                   <div class="home-upload-dropdown" id="homeUploadDropdown">
                     <div class="home-upload-item" onclick="selectAuditFiles(event, 'video/*')">
@@ -4996,6 +5026,89 @@ const recentConversations = [
 let activeConversationId = null;
 let activeConversation = null;
 let pendingAuditFiles = [];
+let voiceRecognition = null;
+let isVoiceRecording = false;
+let voiceStopRequested = false;
+let voiceInputBase = '';
+
+function setVoiceInputState(recording, hint = '') {
+  isVoiceRecording = recording;
+  const button = document.getElementById('homeVoiceBtn');
+  const hintElement = document.getElementById('homeVoiceHint');
+  if (button) {
+    button.classList.toggle('is-recording', recording);
+    button.setAttribute('aria-pressed', String(recording));
+    button.title = recording ? '停止语音输入' : '语音输入';
+    button.setAttribute('aria-label', recording ? '停止语音输入' : '语音输入');
+  }
+  if (hintElement) {
+    hintElement.textContent = hint;
+    hintElement.hidden = !hint;
+  }
+}
+
+function toggleVoiceInput() {
+  const input = document.getElementById('homeChatInput');
+  if (!input || input.disabled) return;
+  if (isVoiceRecording && voiceRecognition) {
+    voiceStopRequested = true;
+    voiceRecognition.stop();
+    return;
+  }
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showToast('当前浏览器不支持语音转文字，请使用 Chrome 或 Edge');
+    return;
+  }
+
+  voiceStopRequested = false;
+  voiceInputBase = input.value.trim();
+  voiceRecognition = new SpeechRecognition();
+  voiceRecognition.lang = 'zh-CN';
+  voiceRecognition.continuous = true;
+  voiceRecognition.interimResults = true;
+  voiceRecognition.maxAlternatives = 1;
+
+  voiceRecognition.onstart = () => {
+    setVoiceInputState(true, '正在聆听，点击麦克风结束语音输入');
+  };
+  voiceRecognition.onresult = event => {
+    let transcript = '';
+    for (let index = event.resultIndex; index < event.results.length; index += 1) {
+      transcript += event.results[index][0].transcript;
+    }
+    const separator = voiceInputBase && transcript ? ' ' : '';
+    input.value = `${voiceInputBase}${separator}${transcript}`.trim();
+    if (input.dataset.auditDemoId) delete input.dataset.auditDemoId;
+    autoResize(input);
+  };
+  voiceRecognition.onerror = event => {
+    const messages = {
+      'not-allowed': '未获得麦克风权限，请在浏览器中允许后重试',
+      'service-not-allowed': '浏览器语音服务不可用，请检查权限后重试',
+      'audio-capture': '未检测到可用麦克风，请检查设备连接',
+      'no-speech': '未检测到语音，请重试'
+    };
+    if (event.error !== 'aborted') showToast(messages[event.error] || '语音转写失败，请重试');
+  };
+  voiceRecognition.onend = () => {
+    const hasTranscript = input.value.trim().length > voiceInputBase.length;
+    setVoiceInputState(false, '');
+    voiceRecognition = null;
+    if (!voiceStopRequested && hasTranscript) showToast('语音已转为文字，可继续编辑或发送');
+    voiceStopRequested = false;
+    input.focus();
+  };
+
+  try {
+    voiceRecognition.start();
+  } catch (error) {
+    setVoiceInputState(false, '');
+    voiceRecognition = null;
+    showToast('语音输入正在初始化，请稍后重试');
+  }
+}
 
 function getConversation(conversationId) {
   return recentConversations.find(item => item.id === conversationId) || null;
@@ -8251,6 +8364,7 @@ function updateTaskWorkspaceState() {
   const hasTask = hasActiveAuditTask();
   const input = document.getElementById('homeChatInput');
   const upload = document.getElementById('homeUploadBtn');
+  const voice = document.getElementById('homeVoiceBtn');
   const send = document.getElementById('homeSendBtn');
   if (input) {
     input.disabled = false;
@@ -8261,6 +8375,10 @@ function updateTaskWorkspaceState() {
     upload.disabled = false;
     upload.setAttribute('aria-disabled', 'false');
     upload.title = '添加审计附件';
+  }
+  if (voice) {
+    voice.disabled = false;
+    voice.setAttribute('aria-disabled', 'false');
   }
   if (send) {
     send.disabled = false;
@@ -10433,6 +10551,12 @@ useFollowUpSuggestion = function(trigger) {
 };
 
 sendMessage = function() {
+  if (isVoiceRecording && voiceRecognition) {
+    voiceStopRequested = true;
+    voiceRecognition.stop();
+    showToast('已停止语音输入，请确认转写内容后发送');
+    return;
+  }
   const input = document.getElementById('homeChatInput');
   const text = input && input.value.trim();
   const selectedDemoId = input && input.dataset.auditDemoId;
