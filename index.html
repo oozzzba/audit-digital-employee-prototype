@@ -1703,13 +1703,6 @@ input, textarea { font-family: inherit; }
   cursor: pointer; transition: background 0.15s;
 }
 .materials-upload-btn:hover { background: var(--primary-hover); }
-.materials-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; max-width: 1080px; margin-left: auto; margin-right: auto; }
-.materials-stat-card {
-  background: var(--white); border: 1px solid var(--gray-200);
-  border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow-xs);
-}
-.materials-stat-value { font-size: 22px; font-weight: 700; color: var(--gray-900); line-height: 1; }
-.materials-stat-label { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
 .materials-file-list { max-width: 1080px; margin: 0 auto; }
 .materials-phase-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; max-width: 1080px; margin-left: auto; margin-right: auto; }
 .materials-phase-tab {
@@ -1788,14 +1781,6 @@ input, textarea { font-family: inherit; }
 .materials-header-actions { display: flex; align-items: center; gap: 8px; }
 .materials-header-actions .topbar-btn { min-height: 32px; padding: 0 13px; border-radius: 5px; font-size: 12px; }
 .materials-header-actions .topbar-btn:not(.primary) { background: var(--white); border: 1px solid var(--gray-200); color: var(--gray-700); }
-.materials-stats { max-width: 1440px; grid-template-columns: 1.18fr repeat(3, 1fr); gap: 12px; margin: 0 auto 16px; }
-.materials-stat-card { min-height: 80px; padding: 14px 16px; border-radius: 7px; box-shadow: 0 1px 3px rgba(22, 31, 46, 0.05); display: flex; flex-direction: column; justify-content: center; }
-.materials-stat-card.primary-stat { position: relative; overflow: hidden; color: var(--white); border: 0; background: linear-gradient(135deg, #C92E35 0%, #E24D4B 100%); }
-.materials-stat-card.primary-stat .materials-stat-value, .materials-stat-card.primary-stat .materials-stat-label { color: var(--white); }
-.materials-stat-card.primary-stat .materials-stat-label { opacity: 0.78; }
-.materials-stat-value { font-size: 22px; letter-spacing: 0; }
-.materials-stat-label { margin-top: 5px; }
-.materials-stat-meta { position: absolute; right: 16px; top: 23px; padding-left: 16px; border-left: 1px solid rgba(255,255,255,0.35); font-size: 11px; line-height: 1.65; color: rgba(255,255,255,0.78); }
 .materials-center-layout { max-width: 1440px; grid-template-columns: 178px minmax(0, 1fr) 280px; gap: 12px; align-items: stretch; }
 .materials-tree, .materials-content, .materials-detail { border: 1px solid #E8EBEF; border-radius: 7px; background: var(--white); box-shadow: 0 1px 3px rgba(22, 31, 46, 0.04); }
 .materials-tree { position: sticky; top: 16px; align-self: start; padding: 10px 8px 12px; }
@@ -2735,7 +2720,6 @@ input, textarea { font-family: inherit; }
 
   /* Materials */
   .materials-view { padding: 12px; }
-  .materials-stats { grid-template-columns: repeat(2, 1fr) !important; gap: 8px; }
   .materials-upload-area { padding: 20px 16px; }
   .materials-upload-icon { font-size: 28px; }
   .materials-upload-text { font-size: 13px; }
@@ -2821,7 +2805,6 @@ input, textarea { font-family: inherit; }
   .home-cards { grid-template-columns: 1fr !important; }
   .project-stats { grid-template-columns: repeat(2, 1fr) !important; }
   .todo-stats { grid-template-columns: repeat(2, 1fr) !important; }
-  .materials-stats { grid-template-columns: repeat(2, 1fr) !important; }
   .role-grid { grid-template-columns: repeat(2, 1fr); }
   .home-greeting h1 { font-size: 18px; }
   .home-tabs { gap: 6px; }
@@ -4719,14 +4702,8 @@ input, textarea { font-family: inherit; }
             <div class="page-title">项目资料</div>
           </div>
           <div class="materials-header-actions">
-            <button class="topbar-btn primary" onclick="showToast('已打开当前任务资料上传入口')">上传资料</button>
+            <button class="topbar-btn primary" onclick="showToast('已打开批量上传入口')">批量上传</button>
           </div>
-        </div>
-        <div class="materials-stats">
-          <div class="materials-stat-card primary-stat"><div class="materials-stat-value" id="matStatTotal">0</div><div class="materials-stat-label">资料总数</div><div class="materials-stat-meta"><strong id="matStatReviewed">0</strong><br>全部已阅</div></div>
-          <div class="materials-stat-card"><div class="materials-stat-value" id="matStatSize">0 MB</div><div class="materials-stat-label">存储空间</div></div>
-          <div class="materials-stat-card"><div class="materials-stat-value" id="matStatProjects">0</div><div class="materials-stat-label">时间范围</div></div>
-          <div class="materials-stat-card"><div class="materials-stat-value" id="matStatToday">0</div><div class="materials-stat-label">标签数量</div></div>
         </div>
         <div class="materials-center-layout">
           <aside class="materials-tree"><div class="materials-tree-heading">项目资料</div><div id="materialsTree"></div></aside>
@@ -5990,12 +5967,6 @@ function renderMaterialsCenter() {
   const list = document.getElementById('materialsFileList');
   if (!list) return;
   const allFiles = getAllMaterialFiles();
-  const totalSize = allFiles.reduce((sum, file) => sum + parseFloat(file.size) * (file.size.includes('KB') ? 1 / 1024 : file.size.includes('GB') ? 1024 : 1), 0);
-  document.getElementById('matStatTotal').textContent = allFiles.length;
-  document.getElementById('matStatReviewed').textContent = allFiles.length;
-  document.getElementById('matStatSize').textContent = totalSize > 1024 ? (totalSize / 1024).toFixed(1) + ' GB' : totalSize.toFixed(1) + ' MB';
-  document.getElementById('matStatProjects').textContent = allFiles.length ? `${Math.max(1, Math.ceil(allFiles.length / 6))} 个周期` : '0 个周期';
-  document.getElementById('matStatToday').textContent = new Set(allFiles.map(file => file.resourceType || '任务资料')).size;
   renderMaterialsTree(allFiles);
   const title = document.getElementById('materialsContentTitle');
   const location = currentMaterialLocation;
