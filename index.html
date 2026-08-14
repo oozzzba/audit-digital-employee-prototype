@@ -733,6 +733,26 @@ input, textarea { font-family: inherit; }
 /* Audit trend analysis output */
 .trend-analysis-card { border-left: 3px solid var(--primary); }
 .trend-analysis-card .chat-card-icon { background: var(--primary-light); color: var(--primary); }
+.audit-demo-card { border-left: 3px solid var(--primary); }
+.audit-demo-card .chat-card-icon { background: var(--primary-light); color: var(--primary); }
+.audit-demo-summary { margin: 0 0 12px; color: var(--gray-600); font-size: 12px; line-height: 1.65; }
+.audit-demo-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+.audit-demo-metric { min-width: 0; padding: 9px 10px; border: 1px solid var(--gray-100); border-radius: 5px; background: var(--gray-50); }
+.audit-demo-metric-label { display: block; color: var(--gray-500); font-size: 10px; line-height: 1.4; }
+.audit-demo-metric-value { display: block; margin-top: 4px; color: var(--gray-800); font-size: 14px; font-weight: 700; line-height: 1.4; word-break: break-word; }
+.audit-demo-chart { margin: 12px 0; padding: 10px; border: 1px solid var(--gray-100); border-radius: 6px; background: var(--white); }
+.audit-demo-chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; color: var(--gray-700); font-size: 12px; font-weight: 700; }
+.audit-demo-chart-head span { color: var(--gray-400); font-size: 10px; font-weight: 400; }
+.audit-demo-chart-bars { display: flex; align-items: end; gap: 9px; height: 112px; padding: 8px 4px 0; border-bottom: 1px solid var(--gray-200); }
+.audit-demo-chart-item { display: grid; flex: 1; min-width: 0; grid-template-rows: 1fr auto auto; align-items: end; gap: 4px; height: 100%; text-align: center; }
+.audit-demo-chart-value { color: var(--gray-500); font-size: 9px; white-space: nowrap; }
+.audit-demo-chart-bar { width: min(28px, 100%); min-height: 8px; margin: 0 auto; border-radius: 3px 3px 0 0; background: #F5C2C7; }
+.audit-demo-chart-item.is-highlight .audit-demo-chart-bar { background: var(--primary); }
+.audit-demo-chart-item.is-forecast .audit-demo-chart-bar { border: 1px dashed var(--primary); background: var(--primary-lighter); }
+.audit-demo-chart-label { color: var(--gray-500); font-size: 10px; white-space: nowrap; }
+.audit-demo-insights { display: grid; gap: 7px; margin-top: 12px; }
+.audit-demo-insight { padding-left: 9px; border-left: 2px solid var(--primary); color: var(--gray-600); font-size: 11px; line-height: 1.6; }
+@media (max-width: 640px) { .audit-demo-metrics { grid-template-columns: 1fr; } .audit-demo-chart-bars { gap: 5px; } }
 .trend-analysis-intro { margin: 0 0 12px; color: var(--gray-600); font-size: 12px; line-height: 1.65; }
 .trend-analysis-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
 .trend-analysis-metric { padding: 9px 10px; border: 1px solid var(--gray-100); border-radius: 5px; background: var(--gray-50); }
@@ -8440,30 +8460,16 @@ function handleDispositionApproval(config) {
 
 function getAuditQuestionOptions() {
   return [
-    { categoryKey: 'initiation', taskKey: 'create_project', text: '创建一个信息化建设项目专项审计，并检查立项依据是否齐全' },
-    { categoryKey: 'initiation', taskKey: 'project_approval', text: '查看当前审计项目的立项审批状态和待补充材料' },
-    { categoryKey: 'initiation', taskKey: 'audit_plan', text: '根据年度计划和项目风险，提出本项目立项建议' },
-
-    { categoryKey: 'preaudit', taskKey: 'audit_scheme', text: '根据项目资料编制审计实施方案并列出审计重点' },
-    { categoryKey: 'preaudit', taskKey: 'pre_survey', text: '汇总被审计单位基础资料，生成审前调查要点' },
-    { categoryKey: 'preaudit', taskKey: 'audit_notice', text: '生成审计通知书，并列出需提供的资料清单' },
-
-    { categoryKey: 'fieldwork', taskKey: 'find_issue', text: '分析采购费用和公开招标执行率，识别风险并查看明细' },
-    { categoryKey: 'fieldwork', taskKey: 'generate_draft', text: '根据采购合同和付款凭证生成审计底稿' },
-    { categoryKey: 'fieldwork', taskKey: 'collect_evidence', text: '核验合同、付款凭证和招投标资料的证据链完整性' },
-    { categoryKey: 'fieldwork', taskKey: 'interview_record', text: '根据访谈纪要整理审计访谈记录并提取疑点' },
-
-    { categoryKey: 'report', taskKey: 'write_report', text: '根据已审核底稿撰写审计报告初稿' },
-    { categoryKey: 'report', taskKey: 'seek_opinion', text: '生成审计报告征求意见稿，并汇总反馈意见' },
-    { categoryKey: 'report', taskKey: 'submit_review', text: '检查报告送审材料是否齐全，并生成审理提交清单' },
-
-    { categoryKey: 'rectification', taskKey: 'rect_progress', text: '查看项目整改进度，并对逾期事项发起督办' },
-    { categoryKey: 'rectification', taskKey: 'rect_plan', text: '针对已发现问题生成整改方案和责任分工建议' },
-    { categoryKey: 'rectification', taskKey: 'rect_accept', text: '核验整改证据，判断问题是否满足销号条件' },
-
-    { categoryKey: 'archive', taskKey: 'archive_list', text: '汇总本项目归档材料并生成归档清单' },
-    { categoryKey: 'archive', taskKey: 'file_materials', text: '检查各阶段资料是否齐全，并分类整理归档' },
-    { categoryKey: 'archive', taskKey: 'project_close', text: '核验报告、整改和归档状态，生成项目终结检查结论' }
+    { id: 'data-ledger', group: '数据取数与核验', taskKey: 'find_issue', text: '汇总采购、合同、付款和招标数据，生成审计数据台账', title: '审计数据取数台账', summary: '已从采购、合同、财务和招投标系统归集 4 类数据，并完成项目编号、合同编号和付款流水的关联。', metrics: [['数据表', '4 张'], ['关联记录', '1,286 条'], ['取数覆盖率', '98.6%']], fields: [['采购合同', '86 份，合同金额 ¥4,290.0 万'], ['付款凭证', '318 笔，付款金额 ¥3,876.4 万'], ['招投标记录', '72 份，已关联 69 份'], ['待补数据', '3 份招投标文件缺少项目编号']], insights: ['已建立“项目-合同-付款-招投标”四维审计数据台账。', '3 条待补数据已标记，后续分析不纳入风险统计。'] },
+    { id: 'evidence-check', group: '数据取数与核验', taskKey: 'collect_evidence', text: '核验合同、付款凭证与招投标资料的证据链完整性', title: '审计证据链核验结果', summary: '系统对已归集资料进行一对一关联和关键字段校验，形成可复核的证据链完整性结论。', metrics: [['核验合同', '86 份'], ['完整证据链', '78 条'], ['待补证据', '8 条']], fields: [['合同与付款匹配', '83 份合同已匹配付款凭证'], ['采购方式核验', '72 份招投标记录已识别采购方式'], ['验收资料核验', '78 个项目留存验收依据'], ['重点缺口', '8 笔付款缺少对应验收或例外审批材料']], insights: ['证据链完整率为 90.7%，低于 95% 的复核阈值。', '缺口集中于信息化建设项目的紧急采购场景。'] },
+    { id: 'reconcile-data', group: '数据取数与核验', taskKey: 'find_issue', text: '对比预算、合同和付款数据，定位差异记录', title: '预算、合同与付款差异核对', summary: '已完成预算、合同和付款三表核对，并识别超预算、未签合同付款和合同执行偏差。', metrics: [['预算金额', '¥4,500.0 万'], ['合同金额', '¥4,290.0 万'], ['付款金额', '¥3,876.4 万']], fields: [['预算超支记录', '2 条，合计 ¥86.0 万'], ['未签合同付款', '1 条，金额 ¥18.5 万'], ['合同执行偏差', '6 条，偏差率超过 10%'], ['核对结论', '发现 9 条需进一步核验的差异记录']], insights: ['预算执行率 86.1%，整体处于可控区间。', '未签合同付款和超预算记录已自动进入高风险核验清单。'] },
+    { id: 'trend-analysis', group: '分析与预测', taskKey: 'find_issue', text: '分析采购费用和公开招标执行率，识别风险并下钻明细', title: '采购费用与招标执行趋势分析', summary: '已完成月度采购费用、公开招标执行率和采购方式的交叉分析，异常月份可下钻至合同明细。', metrics: [['期间采购费用', '¥429.0 万'], ['3月费用异动', '+246.4%'], ['3月招标执行率', '33.3%']], chart: { title: '月度采购费用与公开招标执行率', unit: '费用：万元', labels: ['1月', '2月', '3月', '4月', '5月', '6月'], values: [42, 55, 168, 61, 49, 54], highlightIndex: 2 }, fields: [['异常合同', 'HT-2026-031，金额 ¥125.0 万'], ['采购方式', '邀请招标，未见公开招标例外审批'], ['风险结论', '高风险，建议优先核验采购依据并生成问题底稿']], insights: ['3月采购费用占期间总额 39.2%，显著高于前两月均值。', '限额以上项目公开招标执行率降至 33.3%，异常集中于信息化建设项目。'] },
+    { id: 'trend-forecast', group: '分析与预测', taskKey: 'find_issue', text: '预测未来三个月采购费用与招标合规风险趋势', title: '采购费用与合规风险预测', summary: '基于最近 6 个月的费用、项目计划和采购方式数据，预测未来 3 个月的费用区间与合规风险。', metrics: [['预测采购费用', '¥246-286 万'], ['高风险项目', '2 个'], ['预测招标合规率', '78%']], chart: { title: '采购费用预测趋势', unit: '费用：万元', labels: ['4月', '5月', '6月', '7月', '8月', '9月'], values: [61, 49, 54, 72, 88, 96], highlightIndex: 4, forecastStart: 3 }, fields: [['预测依据', '近 6 个月费用、立项计划、合同执行进度'], ['风险窗口', '8-9 月有 2 个限额以上项目尚未启动招标'], ['预警建议', '提前 30 日校验采购方式和例外审批材料']], insights: ['预计 8 月采购费用环比上升 22.2%，应提前安排合规核验。', '模型预测招标合规率为 78%，低于 85% 的控制目标。'] },
+    { id: 'risk-identification', group: '分析与预测', taskKey: 'find_issue', text: '识别合同拆分、重复付款和异常供应商风险', title: '采购异常风险识别', summary: '系统通过合同金额聚合、付款序列去重和供应商关联关系分析，识别需人工复核的异常模式。', metrics: [['合同拆分疑点', '3 组'], ['重复付款疑点', '2 笔'], ['异常供应商', '4 家']], fields: [['合同拆分', '3 组同类采购金额均接近公开招标限额'], ['重复付款', '2 笔付款金额、发票号和收款方高度相似'], ['供应商集中度', '前 3 家供应商占采购金额 68.4%'], ['风险结论', '7 条异常记录已生成复核线索']], insights: ['合同拆分疑点涉及金额 ¥186.0 万，应结合采购批次和需求计划核验。', '重复付款疑点暂未作为问题定性，需人工确认退款或冲销记录。'] },
+    { id: 'working-paper', group: '成果生成', taskKey: 'generate_draft', text: '根据核验资料生成采购合规审计问题底稿', title: '采购合规审计问题底稿', summary: '已将已核验的审计事实、法规依据和证据编号自动写入标准审计问题底稿。', metrics: [['识别问题', '2 项'], ['涉及金额', '¥125.0 万'], ['证据编号', '8 份']], fields: [['问题定性', '未按规定履行公开招标程序'], ['审计依据', '招标投标法及集团采购管理制度'], ['审计事实', '限额以上采购采用邀请招标，未见例外审批'], ['处理建议', '补充合规说明并完善招标审批控制']], insights: ['已生成可编辑的标准问题底稿预览，待主审复核。', '证据链已绑定 EV-2026-001-001 至 008。'] },
+    { id: 'audit-report', group: '成果生成', taskKey: 'write_report', text: '基于审计发现生成审计报告初稿', title: '信息化建设项目专项审计报告初稿', summary: '已归集审核通过的问题底稿、统计数据和审计依据，形成可送审的审计报告初稿。', metrics: [['审计发现', '3 项'], ['高风险问题', '1 项'], ['整改时限', '30 日']], fields: [['报告范围', '采购、合同履约、资金支付及项目管理'], ['主要发现', '采购招标执行不足、资料留存不完整、付款控制偏弱'], ['问题影响', '涉及金额 ¥125.0 万，存在采购合规与内控风险'], ['审计建议', '完善公开招标、例外审批、资料归档和付款复核机制']], insights: ['报告已按标准结构生成：基本情况、审计发现、问题影响、审计建议和整改要求。', '进入审理前需完成主审、组长和项目负责人的复核确认。'] },
+    { id: 'rectification-tracking', group: '成果生成', taskKey: 'rect_progress', text: '生成审计整改跟踪清单和逾期预警', title: '审计整改跟踪清单', summary: '已根据问题台账、整改反馈和证据附件生成整改跟踪清单，并标记逾期风险。', metrics: [['整改事项', '12 项'], ['已完成', '7 项'], ['临期或逾期', '3 项']], fields: [['高风险问题', '公开招标程序缺失，整改期限 2026-08-30'], ['逾期事项', '2 项资料补正未完成，已生成督办提醒'], ['待验收事项', '3 项待上传整改证据'], ['跟踪建议', '每周同步整改进度，逾期 3 日自动预警']], insights: ['整改完成率 58.3%，仍有 3 项事项需要重点关注。', '已输出责任单位、责任人、时限、证据状态和督办建议。'] },
+    { id: 'system-guide', group: '系统使用问答', taskKey: 'audit_scheme', text: '如何上传资料、选择问题和设置审批权限？', title: '审计数字员工操作指引', summary: '已根据当前工作区功能生成操作说明，支持直接按问题发起审计任务或结合附件提交。', metrics: [['上传类型', '4 类'], ['预设问题', '10 个'], ['审批模式', '3 种']], fields: [['上传资料', '点击上传入口，选择视频、音频、图片或文档；附件可单独发送或与问题一并发送'], ['选择问题', '从“选择问题”中选择高频场景，系统回填问题后点击发送即可获得演示成果'], ['审批权限', '默认“请求审批”；可选择“替我审批”或“完全自主审批”处理高风险和异常事项'], ['结果复核', '展开执行过程查看取数、检索、分析和生成留痕，再对成果进行人工复核']], insights: ['系统使用问答不改变审计项目数据，仅提供当前功能的操作说明。', '涉及高风险事项时，建议保留“请求审批”以便人工确认处置方案。'] }
   ];
 }
 
@@ -8471,20 +8477,21 @@ function renderAuditInputControls() {
   const select = document.getElementById('auditQuestionSelect');
   if (!select || select.options.length > 1) return;
   const options = getAuditQuestionOptions();
-  select.insertAdjacentHTML('beforeend', taskCategories.map(category => {
-    const stageQuestions = options.filter(item => item.categoryKey === category.key);
-    if (!stageQuestions.length) return '';
-    return `<optgroup label="${escapeHtml(category.name)}">${stageQuestions.map(item => `<option value="${item.taskKey}">${escapeHtml(item.text)}</option>`).join('')}</optgroup>`;
+  const groups = [...new Set(options.map(item => item.group))];
+  select.insertAdjacentHTML('beforeend', groups.map(group => {
+    const questions = options.filter(item => item.group === group);
+    return `<optgroup label="${escapeHtml(group)}">${questions.map(item => `<option value="${item.id}">${escapeHtml(item.text)}</option>`).join('')}</optgroup>`;
   }).join(''));
 }
 
 function useSelectedAuditQuestion(select) {
-  const taskKey = select && select.value;
-  if (!taskKey) return;
-  const option = getAuditQuestionOptions().find(item => item.taskKey === taskKey);
+  const optionId = select && select.value;
+  if (!optionId) return;
+  const option = getAuditQuestionOptions().find(item => item.id === optionId);
   const input = document.getElementById('homeChatInput');
   if (!option || !input) return;
   input.value = option.text;
+  input.dataset.auditDemoId = option.id;
   autoResize(input);
   input.focus();
   select.value = '';
@@ -8492,7 +8499,51 @@ function useSelectedAuditQuestion(select) {
 
 function handleAuditInput(event) {
   const input = event && event.target;
-  if (input) autoResize(input);
+  if (!input) return;
+  if (input.dataset.auditDemoId) delete input.dataset.auditDemoId;
+  autoResize(input);
+}
+
+function renderAuditDemoChart(chart) {
+  if (!chart || !Array.isArray(chart.values) || !chart.values.length) return '';
+  const max = Math.max(...chart.values, 1);
+  return `<div class="audit-demo-chart"><div class="audit-demo-chart-head">${escapeHtml(chart.title)}<span>${escapeHtml(chart.unit || '')}</span></div><div class="audit-demo-chart-bars">${chart.values.map((value, index) => {
+    const classes = [index === chart.highlightIndex ? 'is-highlight' : '', Number.isInteger(chart.forecastStart) && index >= chart.forecastStart ? 'is-forecast' : ''].filter(Boolean).join(' ');
+    const height = Math.max(10, Math.round(value / max * 78));
+    return `<div class="audit-demo-chart-item ${classes}"><span class="audit-demo-chart-value">${value}</span><i class="audit-demo-chart-bar" style="height:${height}px"></i><span class="audit-demo-chart-label">${escapeHtml(chart.labels[index] || '')}</span></div>`;
+  }).join('')}</div></div>`;
+}
+
+function renderAuditDemoCard(option) {
+  const metrics = (option.metrics || []).map(item => `<div class="audit-demo-metric"><span class="audit-demo-metric-label">${escapeHtml(item[0])}</span><strong class="audit-demo-metric-value">${escapeHtml(item[1])}</strong></div>`).join('');
+  const fields = (option.fields || []).map(item => `<div class="draft-field"><span class="draft-field-label">${escapeHtml(item[0])}</span><span class="draft-field-value">${escapeHtml(item[1])}</span></div>`).join('');
+  const insights = (option.insights || []).map(item => `<div class="audit-demo-insight">${escapeHtml(item)}</div>`).join('');
+  return `<div class="chat-card audit-demo-card"><div class="chat-card-header"><div class="chat-card-icon">✦</div><span class="chat-card-title">${escapeHtml(option.title)}</span><span class="issue-tag">模拟数据</span></div><div class="generated-result-body"><p class="audit-demo-summary">${escapeHtml(option.summary)}</p><div class="audit-demo-metrics">${metrics}</div>${renderAuditDemoChart(option.chart)}<div class="draft-card-fields">${fields}</div><div class="audit-demo-insights">${insights}</div><div class="ai-tag">模拟数据演示，请结合实际项目资料进行人工复核</div></div>${generatedResultActions(option.title)}</div>`;
+}
+
+function runSelectedAuditDemo(option, userText) {
+  const meta = getTaskMeta(option.taskKey);
+  if (!meta.category || !meta.task) return;
+  setConversationMode();
+  beginTaskConversation(meta.category, meta.task);
+  currentSubTaskKey = option.taskKey;
+  const inner = document.getElementById('chatInner');
+  if (!inner) return;
+  inner.innerHTML = '';
+  addMessage('user', userText, option.taskKey);
+  markAllTaskSkillsUsed(option.taskKey);
+  showTyping(option.taskKey);
+  window.setTimeout(() => {
+    removeTyping();
+    const assistant = { name: '审计数字员工', icon: '✦' };
+    const message = document.createElement('div');
+    message.className = 'message ai unified-task-response selected-audit-demo-response';
+    message.innerHTML = `<div class="message-avatar">${assistant.icon}</div><div class="message-content"><div class="message-name">${assistant.name}</div><div class="message-bubble" style="background:transparent;border:none;padding:0;">${renderToolchainProcess(option.taskKey, option.title, option.title)}<div class="task-response-section-title">演示成果</div>${renderAuditDemoCard(option)}</div></div>`;
+    inner.appendChild(message);
+    captureGeneratedResult('selected-audit-demo', option.taskKey);
+    updateConversationSummary(`已生成“${option.title}”模拟演示成果，待人工复核`);
+    scrollToBottom();
+  }, 420);
 }
 
 function renderAuditIntentRecognition(intent) {
@@ -10384,14 +10435,22 @@ useFollowUpSuggestion = function(trigger) {
 sendMessage = function() {
   const input = document.getElementById('homeChatInput');
   const text = input && input.value.trim();
+  const selectedDemoId = input && input.dataset.auditDemoId;
   const files = pendingAuditFiles.slice();
   if (!text && !files.length) return;
   const attachmentSummary = files.length ? `\n附件：${files.map(file => `${file.name}（${getAuditFileKind(file)}，${formatAuditFileSize(file.size)}）`).join('、')}` : '';
   const userText = `${text || '请处理以下审计附件'}${attachmentSummary}`;
   input.value = '';
   input.style.height = '28px';
+  if (input && input.dataset.auditDemoId) delete input.dataset.auditDemoId;
   pendingAuditFiles = [];
   renderPendingAuditFiles();
+
+  const selectedDemo = selectedDemoId && !files.length ? getAuditQuestionOptions().find(item => item.id === selectedDemoId) : null;
+  if (selectedDemo) {
+    runSelectedAuditDemo(selectedDemo, userText);
+    return;
+  }
 
   if (pendingTemplateGeneration && hasActiveAuditTask()) {
     addMessage('user', userText, currentSubTaskKey);
