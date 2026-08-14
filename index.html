@@ -4418,19 +4418,12 @@ input, textarea { font-family: inherit; }
         <div class="admin-header">
           <div>
             <div class="admin-title" id="orchestrationTitle">创建审计智能体</div>
-            <div class="admin-subtitle" id="orchestrationSubtitle">默认采用对话型单 Agent 模式，可按业务复杂度切换协作方式</div>
           </div>
           <div class="admin-actions">
             <button class="topbar-btn" onclick="openOrchestrationParams()">编辑参数</button>
             <button class="topbar-btn primary" onclick="publishOrchestrationAgent()">发布智能体</button>
           </div>
         </div>
-        <div class="orchestration-mode-tabs">
-          <button class="orchestration-mode-tab active" data-orch-mode="single" onclick="switchOrchestrationMode('single')">对话型 · 单 Agent</button>
-          <button class="orchestration-mode-tab" data-orch-mode="multi" onclick="switchOrchestrationMode('multi')">对话型 · 多 Agents</button>
-          <button class="orchestration-mode-tab" data-orch-mode="flow" onclick="switchOrchestrationMode('flow')">对话流模式</button>
-        </div>
-        <div class="orchestration-notice" id="orchestrationNotice">单 Agent 模式适合职责明确的审计任务。全局配置将应用于当前智能体；可在画布中编辑默认 Agent 并直接调试。</div>
         <div class="orchestration-layout">
           <section class="orchestration-panel">
             <div class="orchestration-panel-head"><div><div class="orchestration-panel-title">全局设置</div><div class="orchestration-panel-subtitle">对画布中的所有 Agent 生效</div></div></div>
@@ -6994,9 +6987,6 @@ let userVariables = [
   { id: 'var-risk', name: 'risk_threshold', defaultValue: '中风险', scope: '会话级', description: '风险提示阈值' }
 ];
 
-function modeLabel(mode) {
-  return { single: '对话型 · 单 Agent', multi: '对话型 · 多 Agents', flow: '对话流模式' }[mode] || '单 Agent';
-}
 const agentBuildProfiles = {
   '项目立项': { role: '核验立项依据、年度计划匹配关系及审批材料完整性', prompt: '你是立项助手。围绕项目立项请求，核验年度计划、审计范围、项目编号与审批链路的一致性。仅基于已获取资料形成可追溯结论；缺少依据时列入待补录清单，涉及立项范围调整时提示人工复核。', tools: ['年度计划检索', '立项规则校验', '项目台账查询'], inputs: ['年度审计计划', '项目基本信息', '立项申请及审批材料'], outputs: ['立项校验结论', '审批材料清单', '待补录项与人工复核提示'], knowledgeAssets: ['年度审计计划库', '立项审批规则库', '项目台账与历史立项'], processing: 'PDF / Word / Excel 解析；按项目编号、年度和审批单元建立元数据索引', chunking: '按“项目—立项依据—审批节点”分段，保留原件页码', retrieval: { strategy: '混合检索 + 规则过滤', topK: 6, threshold: '0.78', rerank: true }, flow: ['接收立项申请', '核验计划与项目台账', '匹配审批规则', '生成校验结论', '人工确认立项范围'], review: '项目编号、审计范围、年度计划不一致或涉及计划外立项时，必须由项目负责人确认。' },
   '审前准备': { role: '完成审计组配置、审前调查、方案和通知书准备', prompt: '你是审前准备助手。根据项目计划和调查材料，生成可执行的审前准备清单，明确审计重点、人员分工、资料需求和通知书要点。不得直接确认人员权限、审计重点或签发结果，相关事项需提交组长复核。', tools: ['审计组配置查询', '审前调查问卷', '审计方案模板', '通知书模板'], inputs: ['项目立项资料', '被审计单位基础信息', '历史审计问题'], outputs: ['审前调查摘要', '审计方案要点', '审计通知书草稿'], knowledgeAssets: ['审前调查问卷库', '审计方案与通知书模板', '历史项目问题库', '审计人员能力台账'], processing: '对调查问卷、历史问题和单位资料提取主体、业务领域、风险事项标签', chunking: '按“单位—业务领域—风险事项”分段，问卷答案与来源材料双向关联', retrieval: { strategy: '语义检索 + 同类项目召回', topK: 8, threshold: '0.72', rerank: true }, flow: ['读取已立项资料', '匹配审计组与回避规则', '生成审前风险画像', '编排审计方案', '生成通知书草稿', '组长复核'], review: '审计重点、人员权限、回避关系与通知书签发信息必须由审计组长复核。' },
@@ -7034,18 +7024,8 @@ function switchOrchestrationMode(mode) {
 function renderAgentOrchestration() {
   const existing = getAgent(activeOrchestrationAgentId);
   const title = document.getElementById('orchestrationTitle');
-  const subtitle = document.getElementById('orchestrationSubtitle');
-  const notice = document.getElementById('orchestrationNotice');
   if (!title) return;
   title.textContent = existing ? `编排 · ${existing.name}` : '创建审计智能体';
-  subtitle.textContent = existing ? `当前采用${modeLabel(activeOrchestrationMode)}，修改后发布生效` : `默认采用${modeLabel(activeOrchestrationMode)}，可随时切换协作方式`;
-  const notices = {
-    single: '单 Agent 模式适合职责明确的审计任务。全局配置将应用于当前智能体；可在画布中编辑默认 Agent 并直接调试。',
-    multi: '多 Agents 模式支持通过不同的职责、提示词和转交条件完成复杂审计任务。全局设置对所有画布节点生效，正在对话的节点可随时切换。',
-    flow: '对话流模式下，每轮用户对话都严格进入预设工作流，以提升审计处理的一致性和可控性。技能、知识等能力需在流程节点内配置。'
-  };
-  notice.textContent = notices[activeOrchestrationMode];
-  document.querySelectorAll('[data-orch-mode]').forEach(tab => tab.classList.toggle('active', tab.dataset.orchMode === activeOrchestrationMode));
   renderOrchestrationSettings();
   renderOrchestrationCanvas();
   renderOrchestrationInspector();
@@ -7191,7 +7171,7 @@ function deleteUserVariable(id) { const variable = userVariables.find(item => it
 function confirmDeleteUserVariable(id) { userVariables = userVariables.filter(item => item.id !== id); closeModal(); renderOrchestrationSettings(); showToast('用户变量已删除'); }
 function publishOrchestrationAgent() { const selected = getAgent(activeOrchestrationAgentId); if (selected) { selected.mode = activeOrchestrationMode; selected.updated = '刚刚'; selected.status = 'enabled'; } else { const agent = { id: `agent-${Date.now()}`, name: activeOrchestrationMode === 'multi' ? '多 Agents 审计协作助手' : activeOrchestrationMode === 'flow' ? '审计对话流助手' : '审计任务助手', stage: '现场实施', capability: activeOrchestrationMode === 'multi' ? '多 Agent 分工协作、条件转交与审计结论汇总' : activeOrchestrationMode === 'flow' ? '固定对话流处理、受控审计输出' : '审计任务识别、知识检索与专业结论输出', knowledgeBase: activeOrchestrationMode === 'flow' ? '在流程节点中配置' : '法规库 / 案例库 / 模板库', model: '审计推理模型 V4.0', status: 'enabled', runtime: 'idle', updated: '刚刚', runs: 0, owner: currentUser.name, reviewRule: '关键审计结论需人工复核', mode: activeOrchestrationMode }; agentData.unshift(agent); activeOrchestrationAgentId = agent.id; }
   renderAgentOrchestration();
-  showToast(`智能体已发布：${modeLabel(activeOrchestrationMode)}`);
+  showToast('智能体已发布');
 }
 
 function openAgentRunLogs(id) {
