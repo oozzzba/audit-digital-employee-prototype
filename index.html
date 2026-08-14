@@ -699,36 +699,28 @@ input, textarea { font-family: inherit; }
 .workflow-lane-action { display: block; color: var(--gray-600); font-size: 11px; line-height: 1.5; }
 .workflow-lane-output { display: block; margin-top: 4px; color: var(--gray-400); font-size: 10px; line-height: 1.45; }
 
-/* Generated-output explanation: deliberately unframed, not a second result card. */
-.output-process { margin: 4px 0 0; padding: 0; border: 0; background: transparent; }
-.output-process-summary { display: flex; align-items: center; gap: 8px; padding: 6px 0; color: var(--primary); font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; }
+/* Unified pre-output execution explanation: a vertical audit trail, not a second result card. */
+.output-process { margin: 2px 0 14px; padding: 12px 14px; border: 1px solid var(--gray-100); border-radius: 8px; background: linear-gradient(180deg, #FFFDFC 0%, var(--white) 100%); }
+.output-process-summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 8px; color: var(--gray-800); font-size: 13px; font-weight: 700; list-style: none; }
 .output-process-summary::-webkit-details-marker { display: none; }
-.output-process-summary::after { content: ''; width: 7px; height: 7px; margin-left: 2px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .15s ease; }
-.output-process[open] .output-process-summary::after { transform: rotate(225deg) translateY(-2px); }
-.output-process-summary-icon { display: inline-flex; width: 17px; height: 17px; align-items: center; justify-content: center; border: 1px solid #F1B8BD; border-radius: 50%; font-size: 11px; line-height: 1; }
+.output-process-summary-icon { display: inline-flex; width: 18px; height: 18px; align-items: center; justify-content: center; border-radius: 50%; background: var(--primary); color: var(--white); font-size: 11px; line-height: 1; }
 .output-process-summary-meta { color: var(--gray-400); font-size: 11px; font-weight: 400; }
-.output-process-body { margin-top: 5px; padding: 12px 0 0 14px; border-left: 1px solid var(--gray-200); }
-.output-process-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.output-process-body { margin-top: 11px; }
+.output-process-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 9px; }
 .output-process-title { color: var(--gray-700); font-size: 12px; font-weight: 700; }
 .output-process-subtitle { color: var(--gray-400); font-size: 11px; text-align: right; }
-.output-process-context { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; color: var(--gray-500); font-size: 11px; }
-.output-process-context span { padding: 0; background: transparent; border: 0; }
-.output-process-context span:not(:last-child)::after { content: '·'; margin-left: 6px; color: var(--gray-300); }
-.output-process-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 0 0 10px; }
-.output-process-node { position: relative; min-width: 0; padding: 0 10px 0 14px; }
-.output-process-node:first-child { padding-left: 0; }
-.output-process-node:not(:last-child)::after { content: ''; position: absolute; top: 7px; right: 0; width: 10px; height: 1px; background: var(--gray-300); }
-.output-process-node:not(:last-child)::before { content: ''; position: absolute; top: 4px; right: -1px; width: 6px; height: 6px; border-top: 1px solid var(--gray-300); border-right: 1px solid var(--gray-300); transform: rotate(45deg); }
-.output-process-dot { display: block; width: 14px; height: 14px; margin-bottom: 6px; border: 3px solid #B0BEC5; border-radius: 50%; background: var(--white); box-sizing: border-box; }
-.output-process-node.done .output-process-dot { border-color: #2E7D32; background: #E8F5E9; }
-.output-process-node.pending .output-process-dot { border-color: #E65100; background: #FFF3E0; }
-.output-process-node.alert .output-process-dot { border-color: var(--primary); background: var(--primary-light); }
-.output-process-node-name { display: block; min-height: 31px; color: var(--gray-700); font-size: 11px; font-weight: 600; line-height: 1.4; }
-.output-process-node-state { display: block; margin-top: 3px; color: var(--gray-400); font-size: 10px; line-height: 1.35; }
-.output-process-node.done .output-process-node-state { color: #2E7D32; }
-.output-process-node.pending .output-process-node-state { color: #E65100; }
-.output-process-node.alert .output-process-node-state { color: var(--primary); }
-.output-process-note { margin: 0; padding-left: 10px; border-left: 2px solid var(--primary); color: var(--gray-600); font-size: 11px; line-height: 1.65; }
+.output-process-context { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; color: var(--gray-500); font-size: 11px; }
+.output-process-context span { padding: 3px 7px; border: 1px solid var(--gray-100); border-radius: 999px; background: var(--gray-50); }
+.output-process-flow { display: grid; gap: 0; margin: 0; }
+.output-process-node { position: relative; min-width: 0; padding: 0 0 14px 31px; }
+.output-process-node:last-child { padding-bottom: 0; }
+.output-process-node:not(:last-child)::after { content: ''; position: absolute; top: 20px; bottom: 0; left: 9px; width: 1px; background: #F1D6D8; }
+.output-process-dot { position: absolute; top: 2px; left: 0; display: inline-flex; width: 20px; height: 20px; align-items: center; justify-content: center; border: 1px solid #F1B8BD; border-radius: 50%; background: #FFF7F7; color: var(--primary); font-size: 12px; font-weight: 700; box-sizing: border-box; }
+.output-process-node.done .output-process-dot::before { content: '✓'; }
+.output-process-node-name { display: block; color: var(--gray-700); font-size: 12px; font-weight: 700; line-height: 1.45; }
+.output-process-node-state { display: block; margin-top: 3px; color: var(--gray-500); font-size: 11px; line-height: 1.6; }
+.output-process-node.done .output-process-node-state { color: var(--gray-600); }
+.output-process-note { margin: 10px 0 0 31px; padding: 8px 10px; border-left: 2px solid var(--primary); border-radius: 0 5px 5px 0; background: var(--primary-lighter); color: var(--gray-600); font-size: 11px; line-height: 1.65; }
 
 /* Audit trend analysis output */
 .trend-analysis-card { border-left: 3px solid var(--primary); }
@@ -2719,19 +2711,15 @@ input, textarea { font-family: inherit; }
   .workflow-step:not(:last-child)::after { content: ''; }
   .trace-grid { grid-template-columns: 1fr; }
   .trace-section.wide { grid-column: auto; }
+  .output-process { padding: 11px 12px; }
   .output-process-summary { font-size: 13px; }
-  .output-process-body { padding-left: 12px; }
   .output-process-heading { display: block; }
   .output-process-subtitle { display: block; margin-top: 4px; text-align: left; }
   .output-explanation-summary { gap: 7px; align-items: flex-start; }
   .output-explanation-summary-meta { line-height: 1.45; }
-  .output-process-flow { grid-template-columns: 1fr; gap: 0; }
-  .output-process-node { padding: 0 0 14px 25px; }
-  .output-process-node:first-child { padding-left: 25px; }
-  .output-process-node:not(:last-child)::after { top: 16px; left: 6px; right: auto; width: 1px; height: calc(100% - 10px); }
-  .output-process-node:not(:last-child)::before { top: auto; bottom: 6px; left: 3px; right: auto; transform: rotate(135deg); }
-  .output-process-dot { position: absolute; top: 0; left: 0; }
-  .output-process-node-name { min-height: auto; }
+  .output-process-node { padding-left: 30px; }
+  .output-process-node:not(:last-child)::after { left: 9px; }
+  .output-process-note { margin-left: 30px; }
   .output-explanation-grid { grid-template-columns: 1fr; }
   .output-explanation-item.wide { grid-column: auto; }
   .generated-result-actions { justify-content: flex-start; }
@@ -9950,16 +9938,35 @@ function addTemplateGeneratedDocument(data) {
   scrollToBottom();
 }
 
+function getExecutionActionItems(taskKey, trace, title, resultLabel) {
+  const templates = taskTemplateReferences[taskKey] || [];
+  const templateNames = templates.slice(0, 2).map(item => item.name).join('、') || '当前任务标准模板';
+  const category = getTaskMeta(taskKey).category;
+  const categoryName = category ? category.name : '当前审计阶段';
+  const common = [
+    ['读取与提取', `读取${trace.sources.slice(0, 2).join('、')}，提取与“${title}”相关的业务字段、附件版本和责任主体。`],
+    ['依据与核验', `根据${trace.sources[trace.sources.length - 1] || '适用制度、法规和业务规则'}进行规则匹配，核验资料完整性、项目范围与数据权限。`],
+    ['分析与判断', `围绕${trace.logic}梳理关键事实、异常线索、影响范围及需人工复核事项。`]
+  ];
+  const actionMap = {
+    initiation: ['构建项目要素', '构建项目范围、阶段任务、人员关系与审批链路，并补充待完善的立项信息。'],
+    preaudit: ['梳理审前任务', '梳理资料清单、审计重点、实施方案与通知要求，更新缺失资料和待办事项。'],
+    fieldwork: ['构建证据链', '将合同、招采、付款及反馈材料关联到底稿事项，提取问题证据并形成定性判断。'],
+    report: ['归集报告内容', '归集已审核底稿、确认问题、法规依据和反馈意见，按模板构建报告章节并标识待修改内容。'],
+    rectification: ['更新整改台账', '梳理责任主体、整改措施、佐证材料与时限，更新审核路径、进度状态及销号建议。'],
+    archive: ['整理归档索引', '按项目阶段、资料类型和保管期限整理材料，核验签章、签发和整改闭环状态。']
+  };
+  const action = actionMap[category && category.key] || ['构建处理结果', '梳理任务要素、更新处理记录，并形成可复核的结构化结果。'];
+  return [...common, action, ['模板与成果准备', `引用${templateNames}，完成字段映射、结果校验和版本留痕，准备生成${resultLabel}。`]];
+}
+
 function renderToolchainProcess(taskKey, title, resultLabel = '审计成果') {
   const trace = getTaskTraceability(taskKey);
   const source = (trace.sources && trace.sources[0]) || '当前审计项目资料';
-  const steps = [
-    ['调用取数', `已完成 · ${source}`, 'done'],
-    ['检索核验', '已完成 · 关联资料与规则校验', 'done'],
-    ['分析处理', '已完成 · 形成审计判断', 'done'],
-    ['生成成果', `已完成 · ${resultLabel}`, 'done']
-  ];
-  return `<details class="output-process toolchain-process" aria-label="工具链执行过程"><summary class="output-process-summary"><span class="output-process-summary-icon">✦</span>执行过程 <span class="output-process-summary-meta">调用取数、检索、分析、生成</span></summary><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">工具链执行留痕</span><span class="output-process-subtitle">4 个工具动作已完成</span></div><div class="output-process-context"><span>当前任务：${title}</span><span>数据范围：${source}</span></div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node ${step[2]}"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div></div></details>`;
+  const category = getTaskMeta(taskKey).category;
+  const steps = getExecutionActionItems(taskKey, trace, title, resultLabel);
+  const phase = category ? category.name : '审计任务';
+  return `<section class="output-process toolchain-process" aria-label="成果生成前执行逻辑"><div class="output-process-summary"><span class="output-process-summary-icon">✦</span>执行过程与产出说明 <span class="output-process-summary-meta">成果生成前的处理依据、分析动作与结果准备</span></div><div class="output-process-body"><div class="output-process-heading"><span class="output-process-title">${phase} · ${title}</span><span class="output-process-subtitle">${steps.length} 个执行动作已完成</span></div><div class="output-process-context"><span>数据范围：${source}</span><span>复核口径：${trace.control.replace('人工复核点：', '')}</span></div><div class="output-process-flow">${steps.map(step => `<div class="output-process-node done"><span class="output-process-dot"></span><span class="output-process-node-name">${step[0]}</span><span class="output-process-node-state">${step[1]}</span></div>`).join('')}</div><p class="output-process-note">已完成${phase}阶段的处理逻辑留痕。以下基于上述资料、制度依据和分析判断生成${resultLabel}，请结合项目实际情况进行人工复核。</p></div></section>`;
 }
 
 function renderDocumentGenerationProcess(taskKey, data) {
