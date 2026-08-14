@@ -5923,7 +5923,7 @@ const materialSpecialPanels = {
 let currentMaterialLocation = { type: 'all', projectId: null, folder: null, taskKey: null };
 let currentMatFilter = { keyword: '' };
 let selectedMaterialFileId = null;
-const expandedMaterialProjectIds = new Set(projectData.map(project => project.id));
+const expandedMaterialProjectIds = new Set();
 
 const taskOutputResources = [
   { id: 'ai-wp-001', projectId: 1, taskKey: 'generate_draft', name: 'AI生成审计问题底稿-采购合规.docx', type: 'word', size: '268 KB', uploader: '审计数字员工', date: '2026-08-12', phase: '现场实施', resourceType: 'AI生成底稿' },
